@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Merdeka Warta | Portal Berita SMK Merdeka</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#aa5700",
+                        "surface-variant": "#e1e3e4",
+                        "on-background": "#191c1d",
+                        "background": "#f8f9fa",
+                        "on-tertiary-container": "#ffede3",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#76014e",
+                        "on-primary-container": "#eeefff",
+                        "secondary": "#a43073",
+                        "surface": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#b4c5ff",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "tertiary-fixed": "#ffdcc5",
+                        "tertiary": "#864300",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "outline-variant": "#c3c6d7",
+                        "on-tertiary-fixed": "#301400",
+                        "secondary-fixed": "#ffd8e7",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffafd3",
+                        "on-error-container": "#93000a",
+                        "outline": "#737686",
+                        "primary": "#004ac6",
+                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e7e8e9",
+                        "surface-dim": "#d9dadb",
+                        "inverse-surface": "#2e3132",
+                        "on-primary-fixed": "#00174b",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#434655",
+                        "primary-container": "#2563eb",
+                        "surface-container-low": "#f3f4f5",
+                        "on-surface": "#191c1d",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-secondary-fixed-variant": "#85145a",
+                        "on-secondary-fixed": "#3d0026",
+                        "inverse-on-surface": "#f0f1f2",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#fc79bd",
+                        "surface-tint": "#0053db",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-bright": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "grid-unit": "8px",
+                        "border-width": "3px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Anton"],
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Anton"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-xl": ["Anton"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["36px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "label-mono": ["12px", {
+                            "lineHeight": "1.2",
+                            "fontWeight": "700"
+                        }],
+                        "headline-lg": ["48px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "body-md": ["16px", {
+                            "lineHeight": "1.6",
+                            "fontWeight": "500"
+                        }],
+                        "display-xl": ["84px", {
+                            "lineHeight": "90%",
+                            "letterSpacing": "-0.02em",
+                            "fontWeight": "400"
+                        }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 32px 32px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .brutalist-shadow {
+            box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-shadow-hover:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-shadow-sm {
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-border {
+            border: 3px solid #191c1d;
+        }
+        
+        .sticker-tilt {
+            transform: rotate(-2deg);
+        }
+        
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+        
+        @keyframes scroll-right {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        
+        .animate-scroll-right {
+            animation: scroll-right 40s linear infinite;
+        }
+        
+        @keyframes infinite-scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+        
+        .animate-infinite-scroll {
+            animation: infinite-scroll 40s linear infinite;
+        }
+        
+        .pause-on-hover:hover .animate-infinite-scroll {
+            animation-play-state: paused;
+        }
+        
+        .btn-press:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+        }
+        /* Fixed Carousel Styles */
+        
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .carousel-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            position: relative;
+        }
+        
+        .hero-height {
+            min-height: 400px;
+        }
+        
+        @media (min-width: 768px) {
+            .hero-height {
+                min-height: 500px;
+            }
+        }
+        /* News Slider Styles */
+        
+        .news-slider-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .news-slider-item {
+            flex: 0 0 100%;
+            padding: 0 12px;
+        }
+        
+        @media (min-width: 768px) {
+            .news-slider-item {
+                flex: 0 0 50%;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .news-slider-item {
+                flex: 0 0 33.333%;
+            }
+        }
+        /* Sidebar Transition */
+        
+        #mobile-sidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #mobile-sidebar.closed {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+
+<body class="text-on-surface">
+    <!-- Mobile Sidebar -->
+    <div class="fixed inset-0 bg-on-background/50 z-[60] closed transition-opacity" id="sidebar-overlay" style="opacity: 0; pointer-events: none;"></div>
+    <div class="fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-surface z-[70] closed brutalist-border border-y-0 border-r-0 p-8 shadow-[-8px_0px_0px_0px_rgba(0,0,0,1)] flex flex-col" id="mobile-sidebar">
+        <div class="flex justify-between items-center mb-12">
+            <span class="font-headline-lg text-2xl uppercase">MENU</span>
+            <button class="p-2 brutalist-border brutalist-shadow-sm bg-error text-on-error btn-press" id="close-sidebar">
+<span class="material-symbols-outlined block">close</span>
+</button>
+        </div>
+        <nav class="flex flex-col gap-6">
+            <a class="text-2xl font-bold font-body-md text-primary border-l-4 border-primary pl-4" href="#">HOME</a>
+            <a class="text-2xl font-bold font-body-md hover:text-primary transition-colors border-l-4 border-transparent pl-4" href="#">ARTICLE</a>
+            <a class="text-2xl font-bold font-body-md hover:text-primary transition-colors border-l-4 border-transparent pl-4" href="#">PEMBERITAHUAN</a>
+        </nav>
+        <div class="mt-auto pt-12">
+            <button class="w-full brutalist-border bg-primary text-on-primary px-6 py-4 font-label-mono text-label-mono brutalist-shadow-sm btn-press mb-4">
+            LOGIN
+        </button>
+        </div>
+    </div>
+    <!-- TopNavBar -->
+    <nav class="sticky top-0 w-full z-50 bg-surface border-b-3 border-on-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-4 max-w-[1440px] mx-auto">
+            <a class="font-headline-lg text-[24px] md:text-headline-lg uppercase tracking-tighter text-on-surface" href="#">
+            MERDEKA WARTA
+        </a>
+            <div class="hidden lg:flex gap-8 items-center">
+                <a class="text-primary border-b-3 border-primary pb-1 font-bold font-body-md text-body-md" href="#">Home</a>
+                <a class="text-on-surface font-bold hover:text-primary transition-colors font-body-md text-body-md" href="#">Article</a>
+                <a class="text-on-surface font-bold hover:text-primary transition-colors font-body-md text-body-md" href="#">Pemberitahuan</a>
+            </div>
+            <div class="flex items-center gap-2 md:gap-4">
+                <button class="p-2 hover:translate-x-1 hover:translate-y-1 transition-all">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+                <button class="hidden lg:block brutalist-border bg-primary text-on-primary px-6 py-2 font-label-mono text-label-mono brutalist-shadow-sm btn-press transition-all">
+                LOGIN
+            </button>
+                <button class="lg:hidden p-2 brutalist-border brutalist-shadow-sm bg-surface-container-highest btn-press" id="open-sidebar">
+<span class="material-symbols-outlined block">menu</span>
+</button>
+            </div>
+        </div>
+    </nav>
+    <!-- News Ticker -->
+    <div class="w-full bg-secondary text-on-secondary py-3 brutalist-border border-x-0 overflow-hidden whitespace-nowrap">
+        <div class="flex animate-marquee">
+            <div class="flex items-center gap-8 px-4">
+                <span class="font-label-mono text-label-mono uppercase tracking-widest">BREAKING NEWS: SMK MERDEKA WINS NATIONAL INNOVATION AWARD 2024</span>
+                <span class="material-symbols-outlined">stars</span>
+                <span class="font-label-mono text-label-mono uppercase tracking-widest">REGISTRATION FOR NEW SEMESTER STARTS JULY 1ST</span>
+                <span class="material-symbols-outlined">event</span>
+                <span class="font-label-mono text-label-mono uppercase tracking-widest">ANNUAL SPORTS MEET POSTPONED TO NEXT WEEK</span>
+                <span class="material-symbols-outlined">warning</span>
+            </div>
+            <div class="flex items-center gap-8 px-4">
+                <span class="font-label-mono text-label-mono uppercase tracking-widest">BREAKING NEWS: SMK MERDEKA WINS NATIONAL INNOVATION AWARD 2024</span>
+                <span class="material-symbols-outlined">stars</span>
+                <span class="font-label-mono text-label-mono uppercase tracking-widest">REGISTRATION FOR NEW SEMESTER STARTS JULY 1ST</span>
+                <span class="material-symbols-outlined">event</span>
+                <span class="font-label-mono text-label-mono uppercase tracking-widest">ANNUAL SPORTS MEET POSTPONED TO NEXT WEEK</span>
+                <span class="material-symbols-outlined">warning</span>
+            </div>
+        </div>
+    </div>
+    <main class="max-w-[1440px] mx-auto px-4 md:px-margin-desktop py-8 md:py-12">
+        <!-- Hero Section with Carousel -->
+        <section class="mb-12 md:mb-16 grid grid-cols-1 lg:grid-cols-12 gap-gutter pb-4">
+            <div class="lg:col-span-8 group relative brutalist-border brutalist-shadow bg-surface-container-highest hero-height carousel-container" id="hero-carousel">
+                <!-- Slide 1 -->
+                <div class="carousel-slide p-6 md:p-8">
+                    <img alt="Students working on innovation" class="absolute inset-0 w-full h-full object-cover transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5qafomWEoZRrPlO0EM_z8xJBZNw5Gioj3pi5v2IG8UMWh_unnGvHTcEIAPrhIp_sDkiFNCGMnawNHRU8sz7pFvGanj4urgROIuCsgK7hliSVhFqz3kbOddzBAckJMG8StEKBv2NXZM8GrdhgmoK4jzXkeiZ7RjQ8zjOcUMN1xwa9xRV_n1qCoid7u4CaB9PcqbYwD8k_4t7OValt35jXUXdcPzvQL1hNRGW8B-rFXpKASPYO-uFud61OuA3VWWz8r2CudG0RfHRSB">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                    <div class="relative z-10">
+                        <span class="inline-block bg-primary text-on-primary font-label-mono text-[10px] md:text-label-mono px-3 py-1 md:px-4 md:py-2 brutalist-border brutalist-shadow-sm sticker-tilt mb-4 md:mb-6">LATEST NEWS</span>
+                        <h1 class="font-headline-lg text-2xl md:text-headline-lg text-white mb-2 md:mb-4 leading-none uppercase">
+                            SMK MERDEKA MENANGI PENGHARGAAN INOVASI NASIONAL
+                        </h1>
+                        <p class="text-white/90 font-body-md text-sm md:text-body-md mb-4 md:mb-6 max-w-xl line-clamp-3 md:line-clamp-none">
+                            Tim robotik kami berhasil mengamankan posisi pertama di National Innovation Award 2024 dengan proyek 'Smart School Energy'.
+                        </p>
+                        <button class="bg-white text-on-surface brutalist-border brutalist-shadow-sm px-6 py-2 md:px-8 md:py-3 font-bold flex items-center gap-2 btn-press w-fit text-sm md:text-base">
+                        BACA SELENGKAPNYA <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide p-6 md:p-8 active">
+                    <img alt="New Tech Lab" class="absolute inset-0 w-full h-full object-cover transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsMMxBC6t89E1Kk1j3hpe4auQhd-jlFPk72uANi4nrLzsACvr0k3N5jsPCMB_Gt8Hood0tFzmdBGSDVyMhHUlXCvDn4UB1-GyWVlyc8sgy3_zQN-pf6GKRlraJcq6wzjMNKCPNnQwQYFNIxOA7BaGO4n0-8tTZoMYgq4n5jS23JqeUEpzpp91bkRAKh_7ljf-vklMk9c7G4uXVr2vIK-ptxE_UPCFZaOb3tuM9K8Al7CcjOvnEtZBiYqaD04ImM-CY9rR9VfIAJLua">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                    <div class="relative z-10">
+                        <span class="inline-block bg-secondary text-on-secondary font-label-mono text-[10px] md:text-label-mono px-3 py-1 md:px-4 md:py-2 brutalist-border brutalist-shadow-sm sticker-tilt mb-4 md:mb-6">HIGHLIGHT</span>
+                        <h1 class="font-headline-lg text-2xl md:text-headline-lg text-white mb-2 md:mb-4 leading-none uppercase">
+                            PERESMIAN LAB TEKNIK TERBARU KELAS INDUSTRI
+                        </h1>
+                        <p class="text-white/90 font-body-md text-sm md:text-body-md mb-4 md:mb-6 max-w-xl line-clamp-3 md:line-clamp-none">
+                            Bekerjasama dengan perusahaan teknologi global, SMK Merdeka kini memiliki lab dengan standar industri internasional.
+                        </p>
+                        <button class="bg-white text-on-surface brutalist-border brutalist-shadow-sm px-6 py-2 md:px-8 md:py-3 font-bold flex items-center gap-2 btn-press w-fit text-sm md:text-base">
+                        BACA SELENGKAPNYA <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide p-6 md:p-8">
+                    <img alt="Graduation" class="absolute inset-0 w-full h-full object-cover transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi7wqtjz9yKKHTtIBABtJFrBYBYWM0VcqN0a93n9PDYbD3pn5xUNK3IaThAB2zqaiNcQL9ZjDLBmAb0EYAubEmxmfN1PvShIoF9zlvZJzuwD8LjIG5NXBWK37-3NubUjFamkMgpae6kIGcfUdHUuyzjNRObsvNTrrNok9Iu_NAOwEQ632NPaZYo-QWIdLnFkia14sBjRx6bgOxm6AswaB8j5kGAVCMwd4HIs5iI-sgjY_XfPvCwUMNkwvzBVOKvzCZo7FXa0iRp6w-">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                    <div class="relative z-10">
+                        <span class="inline-block bg-tertiary text-on-tertiary font-label-mono text-[10px] md:text-label-mono px-3 py-1 md:px-4 md:py-2 brutalist-border brutalist-shadow-sm sticker-tilt mb-4 md:mb-6">SUCCESS STORY</span>
+                        <h1 class="font-headline-lg text-2xl md:text-headline-lg text-white mb-2 md:mb-4 leading-none uppercase">
+                            ALUMNI KITA: DARI SMK MENUJU KARIER GLOBAL
+                        </h1>
+                        <p class="text-white/90 font-body-md text-sm md:text-body-md mb-4 md:mb-6 max-w-xl line-clamp-3 md:line-clamp-none">
+                            Simak kisah inspiratif kakak kelasmu yang kini sukses berkarir di Tokyo dan Silicon Valley setelah lulus dari SMK Merdeka.
+                        </p>
+                        <button class="bg-white text-on-surface brutalist-border brutalist-shadow-sm px-6 py-2 md:px-8 md:py-3 font-bold flex items-center gap-2 btn-press w-fit text-sm md:text-base">
+                        BACA SELENGKAPNYA <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+                    </div>
+                </div>
+                <!-- Carousel Nav -->
+                <div class="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-10 z-20 hidden sm:block">
+                    <button class="bg-white/90 text-on-surface brutalist-border brutalist-shadow-sm p-2 hover:bg-white btn-press transition-all" id="prevBtn">
+<span class="material-symbols-outlined block">arrow_back</span>
+</button>
+                </div>
+                <div class="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-10 z-20 hidden sm:block">
+                    <button class="bg-white/90 text-on-surface brutalist-border brutalist-shadow-sm p-2 hover:bg-white btn-press transition-all" id="nextBtn">
+<span class="material-symbols-outlined block">arrow_forward</span>
+</button>
+                </div>
+                <!-- Dots -->
+                <div class="relative md:absolute mt-6 md:mt-0 bottom-0 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex justify-center gap-2 md:gap-3">
+                    <button class="carousel-dot w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-on-background bg-white/50 transition-all" data-slide="0" style="background-color: rgba(255, 255, 255, 0.5); width: 1rem;"></button>
+                    <button class="carousel-dot w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-on-background bg-white/50 transition-all" data-slide="1" style="background-color: white; width: 1.5rem;"></button>
+                    <button class="carousel-dot w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-on-background bg-white/50 transition-all" data-slide="2" style="background-color: rgba(255, 255, 255, 0.5); width: 1rem;"></button>
+                </div>
+            </div>
+            <!-- Bento Sidebar: Announcements -->
+            <div class="lg:col-span-4 flex flex-col gap-gutter">
+                <div class="brutalist-border brutalist-shadow bg-tertiary-fixed p-6 flex flex-col h-full">
+                    <div class="flex items-center gap-2 mb-6">
+                        <span class="material-symbols-outlined text-tertiary text-4xl">campaign</span>
+                        <h2 class="font-headline-lg text-2xl md:text-3xl uppercase">PENGUMUMAN</h2>
+                    </div>
+                    <ul class="space-y-4 flex-grow">
+                        <li class="p-4 bg-white brutalist-border brutalist-shadow-sm hover:-translate-y-1 transition-transform cursor-pointer"><span class="material-symbols-outlined text-tertiary font-bold mb-2 block">school</span>
+                            <span class="font-label-mono text-xs text-tertiary">12 JUNI 2024</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md mt-1">Pendaftaran Semester Baru Dimulai</p>
+                        </li>
+                        <li class="p-4 bg-white brutalist-border brutalist-shadow-sm hover:-translate-y-1 transition-transform cursor-pointer"><span class="material-symbols-outlined text-tertiary font-bold mb-2 block">calendar_today</span>
+                            <span class="font-label-mono text-xs text-tertiary">10 JUNI 2024</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md mt-1">Jadwal Libur Sekolah Semester Genap</p>
+                        </li>
+                        <li class="p-4 bg-white brutalist-border brutalist-shadow-sm hover:-translate-y-1 transition-transform cursor-pointer"><span class="material-symbols-outlined text-tertiary font-bold mb-2 block">sports_basketball</span>
+                            <span class="font-label-mono text-xs text-tertiary">05 JUNI 2024</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md mt-1">Persiapan Pekan Olahraga Tahunan</p>
+                        </li>
+                    </ul>
+                    <a class="mt-6 text-center font-bold underline decoration-4 decoration-tertiary text-on-surface hover:text-tertiary transition-colors" href="#">
+                    Lihat Semua Pengumuman
+                </a>
+                </div>
+            </div>
+        </section>
+        <!-- News Section with Carousel -->
+        <section class="mb-12 md:mb-16 relative">
+            <div class="flex items-center justify-between mb-8 gap-4">
+                <h2 class="font-headline-lg text-2xl md:text-headline-lg uppercase whitespace-nowrap">BERITA TERBARU</h2>
+                <div class="h-1 bg-on-background flex-grow hidden md:block"></div>
+                <div class="flex gap-2 md:gap-4 shrink-0">
+                    <button class="bg-surface text-on-surface brutalist-border brutalist-shadow-sm p-2 md:p-3 btn-press hover:bg-primary hover:text-on-primary transition-all" id="newsPrevBtn">
+<span class="material-symbols-outlined block">arrow_back</span>
+</button>
+                    <button class="bg-surface text-on-surface brutalist-border brutalist-shadow-sm p-2 md:p-3 btn-press hover:bg-primary hover:text-on-primary transition-all" id="newsNextBtn">
+<span class="material-symbols-outlined block">arrow_forward</span>
+</button>
+                </div>
+            </div>
+            <div class="overflow-hidden pb-8 px-2 -mx-2">
+                <div class="news-slider-track" id="newsSliderTrack" style="transform: translateX(0%);">
+                    <!-- Card 1 -->
+                    <div class="news-slider-item">
+                        <article class="brutalist-border brutalist-shadow bg-secondary-fixed h-full transition-all flex flex-col">
+                            <div class="aspect-video brutalist-border m-4 overflow-hidden bg-surface-variant">
+                                <img alt="Student life" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgYcRA_rQeMC7B-3IHMzx6kRAMwGrmGK1tUFM_NJUCNowRJzorlzW_Iu2rYUz1b3Rryve3Iyv6HMbf42aQZYE78QPqjgWHu4k2kdySjsstjKW51YShXBDVMRkA1yvfR8sg7us5NCobl1II8HIfvFN1m3EXsPE1vccdCNUyvXAZNGoLj_yOSqpSY_f-AnkpvtPiNysbLckH4P4lUONgF5ccXgE7p02tDWYXOe_977SneGWNxUdaEPgJcn-JSnQrXli0Et1mN-gBlVF8">
+                            </div>
+                            <div class="p-6 flex-grow flex flex-col">
+                                <span class="inline-block bg-secondary text-on-secondary px-3 py-1 font-label-mono text-[10px] brutalist-border mb-4 w-fit sticker-tilt">STUDENT LIFE</span>
+                                <h3 class="font-bold font-headline-lg text-xl md:text-2xl leading-tight mb-4 uppercase">Keseruan Festival Seni Akhir Tahun</h3>
+                                <p class="font-body-md text-sm md:text-body-md mb-6 flex-grow">Momen-momen terbaik dari pertunjukan drama dan pameran lukisan siswa kelas XII.</p>
+                                <a class="font-bold flex items-center gap-2 group text-sm md:text-base" href="#">
+                                BACA BERITA <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="news-slider-item">
+                        <article class="brutalist-border brutalist-shadow bg-tertiary-fixed h-full transition-all flex flex-col">
+                            <div class="aspect-video brutalist-border m-4 overflow-hidden bg-surface-variant">
+                                <img alt="Sports" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD532YT8KNnhZZb3XN58xC127kxh24sA3I70kbKuxiCJFpSPly38n5NmpIQdEkVoHkrXgUpe50ctu3bPtwtLCrciRpXbyEKYOVskyls3bWIwsSegMgHrBd0APwqe1UVHhehQsf1oS1ucWJlRG2Q7WtTQeQ5-7bdyTf_mRmvnBmqjQYtcZDKsvf-derX_GrB3NVH2rYYMEKqyZ6jxAZ1vY_RZ_q3uUB3sDsi3mlalhXIABXoIjBL3nB9pX755VKhxf9tsj0uFYz30ejY">
+                            </div>
+                            <div class="p-6 flex-grow flex flex-col">
+                                <span class="inline-block bg-tertiary text-on-tertiary px-3 py-1 font-label-mono text-[10px] brutalist-border mb-4 w-fit sticker-tilt">SPORTS</span>
+                                <h3 class="font-bold font-headline-lg text-xl md:text-2xl leading-tight mb-4 uppercase">Tim Basket Melaju ke Final DBL</h3>
+                                <p class="font-body-md text-sm md:text-body-md mb-6 flex-grow">Setelah kemenangan dramatis semalam, Merdeka Warriors siap menghadapi tantangan terakhir.</p>
+                                <a class="font-bold flex items-center gap-2 group text-sm md:text-base" href="#">
+                                BACA BERITA <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="news-slider-item">
+                        <article class="brutalist-border brutalist-shadow bg-primary-fixed h-full transition-all flex flex-col">
+                            <div class="aspect-video brutalist-border m-4 overflow-hidden bg-surface-variant">
+                                <img alt="Academic" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvWZU1zctQ6AHqdoqtuMPK78gSUTB4cNovAFhehwGCpQZr1x7Q6lufjlrGu90zAavogcIUQ2UnBLxp19YqRFe_BhzQ8rEPtKbwDCGiQp7gRCpppCNTuozEDGIYJgoRVOt6ACsE6YIaTjtdThqcTF71jg8jq8fKtZPcz1hiUs3CSkMtPppd8UqM0EJO71lEo6QHNtZqeHQXM5iJjAA1ujfe43Zfwqxuna8prnT_vOFN5uDI2MwZP-k6ACK8_j6vpHP3RrgZCkHDdoPg">
+                            </div>
+                            <div class="p-6 flex-grow flex flex-col">
+                                <span class="inline-block bg-primary text-on-primary px-3 py-1 font-label-mono text-[10px] brutalist-border mb-4 w-fit sticker-tilt">ADMIN</span>
+                                <h3 class="font-bold font-headline-lg text-xl md:text-2xl leading-tight mb-4 uppercase">Renovasi Laboratorium Teknik Selesai</h3>
+                                <p class="font-body-md text-sm md:text-body-md mb-6 flex-grow">Fasilitas baru kini sudah bisa dinikmati oleh siswa Jurusan Teknik Komputer dan Jaringan.</p>
+                                <a class="font-bold flex items-center gap-2 group text-sm md:text-base" href="#">
+                                BACA BERITA <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="news-slider-item">
+                        <article class="brutalist-border brutalist-shadow bg-secondary-fixed h-full transition-all flex flex-col">
+                            <div class="aspect-video brutalist-border m-4 overflow-hidden bg-surface-variant">
+                                <img alt="Innovation" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5qafomWEoZRrPlO0EM_z8xJBZNw5Gioj3pi5v2IG8UMWh_unnGvHTcEIAPrhIp_sDkiFNCGMnawNHRU8sz7pFvGanj4urgROIuCsgK7hliSVhFqz3kbOddzBAckJMG8StEKBv2NXZM8GrdhgmoK4jzXkeiZ7RjQ8zjOcUMN1xwa9xRV_n1qCoid7u4CaB9PcqbYwD8k_4t7OValt35jXUXdcPzvQL1hNRGW8B-rFXpKASPYO-uFud61OuA3VWWz8r2CudG0RfHRSB">
+                            </div>
+                            <div class="p-6 flex-grow flex flex-col">
+                                <span class="inline-block bg-secondary text-on-secondary px-3 py-1 font-label-mono text-[10px] brutalist-border mb-4 w-fit sticker-tilt">INNOVATION</span>
+                                <h3 class="font-bold font-headline-lg text-xl md:text-2xl leading-tight mb-4 uppercase">Teknologi Panel Surya Sekolah</h3>
+                                <p class="font-body-md text-sm md:text-body-md mb-6 flex-grow">Implementasi energi terbarukan di atap gedung sekolah untuk operasional mandiri.</p>
+                                <a class="font-bold flex items-center gap-2 group text-sm md:text-base" href="#">
+                                BACA BERITA <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination Dots for Slider -->
+            <div class="flex justify-center gap-3 mt-4" id="newsSliderDots"><button class="w-4 h-4 rounded-full border-2 border-on-background transition-all" style="background-color: rgb(0, 74, 198); width: 1.5rem;"></button><button class="w-4 h-4 rounded-full border-2 border-on-background transition-all" style="background-color: rgb(237, 238, 239); width: 1rem;"></button></div>
+        </section>
+        <!-- CTA Section -->
+        <section class="mb-12 md:mb-16 brutalist-border brutalist-shadow bg-on-background text-surface p-8 md:p-12 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-24 h-24 md:w-40 md:h-40 bg-secondary rounded-full brutalist-border sticker-tilt opacity-50"></div>
+            <div class="absolute -bottom-10 -left-10 w-20 h-20 md:w-32 md:h-32 bg-primary brutalist-border sticker-tilt opacity-50"></div>
+            <div class="relative z-10 max-w-2xl mx-auto text-center">
+                <h2 class="font-headline-lg text-2xl md:text-headline-lg mb-4 md:mb-6 leading-none">PUNYA BERITA MENARIK? SUARAKAN DISINI!</h2>
+                <p class="font-body-md text-sm md:text-body-md mb-8 text-surface-variant">Ayo, suarakan ide dan ceritamu! Kirimkan tulisanmu sekarang dan jadilah bagian dari Merdeka Warta.</p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <button class="bg-primary text-on-primary brutalist-border brutalist-shadow-sm px-8 py-4 font-bold text-base md:text-lg btn-press w-full md:w-auto uppercase">KIRIM DISINI</button>
+                </div>
+            </div>
+        </section>
+        <!-- Activity Gallery -->
+        <section class="mb-12 md:mb-16">
+            <div class="flex items-center justify-between mb-8 gap-4">
+                <h2 class="font-headline-lg text-2xl md:text-headline-lg uppercase text-on-surface whitespace-nowrap">MOMEN DI SMK MERDEKA</h2>
+                <div class="h-1 bg-on-background flex-grow hidden md:block"></div>
+            </div>
+            <div class="w-full overflow-hidden">
+                <div class="flex animate-scroll-right">
+                    <!-- Original set -->
+                    <div class="flex shrink-0 gap-gutter px-3">
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 1" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9oK-FJ67qFTpUhyCXyUKhx4QOoHD6nD6Q9ak8x9tyjmBWDEV3-qUCpu14iNoYJTvj490t-WRXZNcL1gNlCSlxMoRCR5l2KC5tFD6pN9vD16YAnwOFwMPPcZiQi7oFSBybpkaGdx1CEiTpzSiO5czhwPd28D7k1qv_PnTf9gkG1g-UjrmjoL6u2o7JYQNkTBQl0njwHIe872FEpAdydrFWFHqBlYiqicdgYEFguuFeHb5Ozv2yul8Q4opITbc1JvikyJMklD2VOoN5buo">
+                        </div>
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 2" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmef2Va4u0vh4JlU6iCDJX_MxJwsolSzmIcESpfl1Ve0FlQiM08O6sbtH1pZFjbku5jRXBQ-bN7KMTNIo9JXXSHVfeM4iX5L8DuQW5JHj-Inv4RANGrKVCxtA4MLdX9prt5FxMFRzei55_BHezHaP3K3pCnF3msCx5vkmNFb087T_P2YDk6XqLe4eNkTSkL7q51EHuAjDyKT1ZHiYd1-eP_lSuoYt8pC4tgJPQ-KXkOOMboRv8lmXm_OHvXjB2xH3b7n-6clv3kfo9v8A">
+                        </div>
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 3" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz1basDdJuQMTcIcO5Zy7Mjgf-hFBTRfnAMEivO6BGK0lRcjrm_UjM7LFZuD9Uq44US-PTSB9tHblp43XabpK5suZKmuumFoumk8fRBcxHLbsp5KcwTD7nft4M-HsZgtJArjl8nFxEKZrWAI53gviNpYmbahpAbIhTcXytMYRWf_BEkw3RCVAcMLgCBgJvWOtw_A7_UzAFk-PLPJv3EzgB9YCTmu-Qvd_e9xZoikrIlfW80BT2gouRq-Wp_aFiC4fJqw00u4gRY6iQ">
+                        </div>
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 4" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0OJPPZvby9Rs3wZLjXjRHKGmsyHxoEuOR-9C6pwez-zJJRmQT3uQIt8PcPX3xM17F8dvjYiiox4M98LEFfEFd9SiTVPXUtfWuCDRI-Yj5xeoJAIL3Qg4sKmqDFL6EStdww3uxlGBVPInWhS_8r29fedss1LLF1_yo4RyV_1sLvmjNXTKQl2eB2DN_-KNCOPGzsTtWMEXL-rSMBkxHP-Bv6L0Olciphr0viR4ympLKZYlfgOXcwtC0GjLXqXl6jpkG7HdEiPN2cOul">
+                        </div>
+                    </div>
+                    <!-- Duplicate set -->
+                    <div class="flex shrink-0 gap-gutter px-3">
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 1" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9oK-FJ67qFTpUhyCXyUKhx4QOoHD6nD6Q9ak8x9tyjmBWDEV3-qUCpu14iNoYJTvj490t-WRXZNcL1gNlCSlxMoRCR5l2KC5tFD6pN9vD16YAnwOFwMPPcZiQi7oFSBybpkaGdx1CEiTpzSiO5czhwPd28D7k1qv_PnTf9gkG1g-UjrmjoL6u2o7JYQNkTBQl0njwHIe872FEpAdydrFWFHqBlYiqicdgYEFguuFeHb5Ozv2yul8Q4opITbc1JvikyJMklD2VOoN5buo">
+                        </div>
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 2" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmef2Va4u0vh4JlU6iCDJX_MxJwsolSzmIcESpfl1Ve0FlQiM08O6sbtH1pZFjbku5jRXBQ-bN7KMTNIo9JXXSHVfeM4iX5L8DuQW5JHj-Inv4RANGrKVCxtA4MLdX9prt5FxMFRzei55_BHezHaP3K3pCnF3msCx5vkmNFb087T_P2YDk6XqLe4eNkTSkL7q51EHuAjDyKT1ZHiYd1-eP_lSuoYt8pC4tgJPQ-KXkOOMboRv8lmXm_OHvXjB2xH3b7n-6clv3kfo9v8A">
+                        </div>
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 3" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz1basDdJuQMTcIcO5Zy7Mjgf-hFBTRfnAMEivO6BGK0lRcjrm_UjM7LFZuD9Uq44US-PTSB9tHblp43XabpK5suZKmuumFoumk8fRBcxHLbsp5KcwTD7nft4M-HsZgtJArjl8nFxEKZrWAI53gviNpYmbahpAbIhTcXytMYRWf_BEkw3RCVAcMLgCBgJvWOtw_A7_UzAFk-PLPJv3EzgB9YCTmu-Qvd_e9xZoikrIlfW80BT2gouRq-Wp_aFiC4fJqw00u4gRY6iQ">
+                        </div>
+                        <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
+                            <img alt="School life 4" class="w-full h-full object-cover transition-all duration-300" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0OJPPZvby9Rs3wZLjXjRHKGmsyHxoEuOR-9C6pwez-zJJRmQT3uQIt8PcPX3xM17F8dvjYiiox4M98LEFfEFd9SiTVPXUtfWuCDRI-Yj5xeoJAIL3Qg4sKmqDFL6EStdww3uxlGBVPInWhS_8r29fedss1LLF1_yo4RyV_1sLvmjNXTKQl2eB2DN_-KNCOPGzsTtWMEXL-rSMBkxHP-Bv6L0Olciphr0viR4ympLKZYlfgOXcwtC0GjLXqXl6jpkG7HdEiPN2cOul">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Tanggapan (Infinite Scroll) -->
+        <section class="mb-12 md:mb-16 overflow-hidden">
+            <div class="flex items-center justify-between mb-8 gap-4">
+                <h2 class="font-headline-lg text-2xl md:text-headline-lg uppercase text-on-surface whitespace-nowrap">TANGGAPAN</h2>
+                <div class="h-1 bg-on-background flex-grow hidden md:block"></div>
+            </div>
+            <div class="w-full overflow-hidden pause-on-hover py-4">
+                <div class="flex animate-infinite-scroll w-max gap-gutter">
+                    <!-- Original Set -->
+                    <div class="flex gap-gutter px-3">
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-secondary-fixed p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-secondary text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Sangat membantu untuk mengetahui info sekolah terbaru! Merdeka Warta jadi rujukan utama saya."</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Budi, Siswa Kelas XI</p>
+                            </div>
+                        </div>
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-tertiary-fixed p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-tertiary text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Desain beritanya sangat modern dan mudah dibaca oleh semua kalangan civitas akademika."</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Ibu Siti, Guru</p>
+                            </div>
+                        </div>
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-primary-fixed p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-primary text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Informasi pengumuman sekarang jauh lebih jelas dan transparan. Sukses terus untuk tim redaksi!"</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Rian, Alumni</p>
+                            </div>
+                        </div>
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-on-secondary-fixed-variant/20 p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-on-secondary-fixed-variant text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Saya bangga melihat prestasi siswa ditampilkan di sini. Ini motivasi besar bagi seluruh sekolah."</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Bpk. Ahmad, Kepala Sekolah</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Cloned Set -->
+                    <div class="flex gap-gutter px-3">
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-secondary-fixed p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-secondary text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Sangat membantu untuk mengetahui info sekolah terbaru! Merdeka Warta jadi rujukan utama saya."</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Budi, Siswa Kelas XI</p>
+                            </div>
+                        </div>
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-tertiary-fixed p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-tertiary text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Desain beritanya sangat modern dan mudah dibaca oleh semua kalangan civitas akademika."</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Ibu Siti, Guru</p>
+                            </div>
+                        </div>
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-primary-fixed p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-primary text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Informasi pengumuman sekarang jauh lebih jelas dan transparan. Sukses terus untuk tim redaksi!"</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Rian, Alumni</p>
+                            </div>
+                        </div>
+                        <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow bg-on-secondary-fixed-variant/20 p-6 flex flex-col gap-4 shrink-0">
+                            <span class="material-symbols-outlined text-on-secondary-fixed-variant text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
+                            <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">"Saya bangga melihat prestasi siswa ditampilkan di sini. Ini motivasi besar bagi seluruh sekolah."</p>
+                            <div class="border-t-3 border-on-background pt-4">
+                                <p class="font-label-mono text-[10px] md:text-xs uppercase">Bpk. Ahmad, Kepala Sekolah</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-on-background text-primary-fixed border-t-3 border-on-background">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-gutter px-4 md:px-margin-desktop py-12 w-full max-w-[1440px] mx-auto">
+            <div class="space-y-6">
+                <h3 class="font-headline-lg text-2xl md:text-headline-lg text-surface">MERDEKA WARTA</h3>
+                <p class="font-body-md text-sm md:text-body-md text-surface/80">
+                    Wadah aspirasi dan informasi resmi bagi seluruh civitas akademika SMK Merdeka.
+                </p>
+                <div class="flex gap-4">
+                    <a class="w-10 h-10 flex items-center justify-center brutalist-border bg-surface text-on-surface hover:bg-primary hover:text-white transition-all" href="#">
+                        <span class="material-symbols-outlined">share</span>
+                    </a>
+                    <a class="w-10 h-10 flex items-center justify-center brutalist-border bg-surface text-on-surface hover:bg-secondary hover:text-white transition-all" href="#">
+                        <span class="material-symbols-outlined">mail</span>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold uppercase mb-6 text-surface">Alamat Sekolah</h4>
+                <p class="text-surface/80 font-body-md text-sm md:text-body-md leading-relaxed">
+                    Jl. Merdeka No. 45<br> Kota Kreatif, Indonesia 12345<br><br> Telp: (021) 1234-5678<br> Email: info@smkmerdeka.sch.id
+                </p>
+            </div>
+        </div>
+        <div class="w-full border-t border-surface/20 py-6 text-center text-surface/50 font-label-mono text-[10px] md:text-xs">
+            © 2024 SMK MERDEKA - All Rights Reserved
+        </div>
+    </footer>
+    <script>
+        // Sidebar Interactivity
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('mobile-sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        function openSidebar() {
+            sidebar.classList.remove('closed');
+            sidebarOverlay.style.opacity = '1';
+            sidebarOverlay.style.pointerEvents = 'auto';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add('closed');
+            sidebarOverlay.style.opacity = '0';
+            sidebarOverlay.style.pointerEvents = 'none';
+            document.body.style.overflow = '';
+        }
+
+        openSidebarBtn.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
+
+        // Hero Carousel Logic
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        const totalSlides = slides.length;
+        let autoSlideInterval;
+
+        function showSlide(index) {
+            if (index >= totalSlides) currentSlide = 0;
+            else if (index < 0) currentSlide = totalSlides - 1;
+            else currentSlide = index;
+
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentSlide);
+            });
+
+            dots.forEach((dot, i) => {
+                if (i === currentSlide) {
+                    dot.style.backgroundColor = 'white';
+                    dot.style.width = window.innerWidth >= 768 ? '1.5rem' : '1rem';
+                } else {
+                    dot.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+                    dot.style.width = window.innerWidth >= 768 ? '1rem' : '0.75rem';
+                }
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function startAutoSlide() {
+            stopAutoSlide();
+            autoSlideInterval = setInterval(nextSlide, 6000);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            nextSlide();
+            startAutoSlide();
+        });
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            prevSlide();
+            startAutoSlide();
+        });
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showSlide(parseInt(dot.dataset.slide));
+                startAutoSlide();
+            });
+        });
+
+        showSlide(0);
+        startAutoSlide();
+
+        // News Slider Logic
+        let newsCurrentIndex = 0;
+        const newsSliderTrack = document.getElementById('newsSliderTrack');
+        const newsItems = document.querySelectorAll('.news-slider-item');
+        const newsDotsContainer = document.getElementById('newsSliderDots');
+        let newsAutoSlideInterval;
+
+        function getVisibleCount() {
+            if (window.innerWidth >= 1024) return 3;
+            if (window.innerWidth >= 768) return 2;
+            return 1;
+        }
+
+        function updateNewsSlider() {
+            const visibleCount = getVisibleCount();
+            const maxIndex = Math.max(0, newsItems.length - visibleCount);
+            if (newsCurrentIndex > maxIndex) newsCurrentIndex = 0;
+
+            const offset = -(newsCurrentIndex * (100 / visibleCount));
+            newsSliderTrack.style.transform = `translateX(${offset}%)`;
+
+            // Update Dots
+            const dotButtons = newsDotsContainer.querySelectorAll('button');
+            dotButtons.forEach((btn, i) => {
+                if (i === newsCurrentIndex) {
+                    btn.style.backgroundColor = '#004ac6'; // primary
+                    btn.style.width = '1.5rem';
+                } else {
+                    btn.style.backgroundColor = '#edeeef'; // surface-container
+                    btn.style.width = '1rem';
+                }
+            });
+        }
+
+        function createNewsDots() {
+            newsDotsContainer.innerHTML = '';
+            const visibleCount = getVisibleCount();
+            const count = newsItems.length - (visibleCount - 1);
+            if (count <= 0) return;
+            for (let i = 0; i < count; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'w-4 h-4 rounded-full border-2 border-on-background transition-all';
+                btn.addEventListener('click', () => {
+                    newsCurrentIndex = i;
+                    updateNewsSlider();
+                    startNewsAutoSlide();
+                });
+                newsDotsContainer.appendChild(btn);
+            }
+        }
+
+        function newsNext() {
+            const visibleCount = getVisibleCount();
+            if (newsCurrentIndex < newsItems.length - visibleCount) {
+                newsCurrentIndex++;
+            } else {
+                newsCurrentIndex = 0;
+            }
+            updateNewsSlider();
+        }
+
+        function newsPrev() {
+            const visibleCount = getVisibleCount();
+            if (newsCurrentIndex > 0) {
+                newsCurrentIndex--;
+            } else {
+                newsCurrentIndex = Math.max(0, newsItems.length - visibleCount);
+            }
+            updateNewsSlider();
+        }
+
+        function startNewsAutoSlide() {
+            clearInterval(newsAutoSlideInterval);
+            newsAutoSlideInterval = setInterval(newsNext, 5000);
+        }
+
+        document.getElementById('newsNextBtn').addEventListener('click', () => {
+            newsNext();
+            startNewsAutoSlide();
+        });
+        document.getElementById('newsPrevBtn').addEventListener('click', () => {
+            newsPrev();
+            startNewsAutoSlide();
+        });
+
+        window.addEventListener('resize', () => {
+            createNewsDots();
+            updateNewsSlider();
+            showSlide(currentSlide); // Refresh hero dot sizes
+        });
+
+        // Initialize News Slider
+        createNewsDots();
+        updateNewsSlider();
+        startNewsAutoSlide();
+
+        // Micro-interactions
+        document.querySelectorAll('.brutalist-shadow-hover').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translate(-4px, -4px)';
+                card.style.boxShadow = '12px 12px 0px 0px rgba(0,0,0,1)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translate(0, 0)';
+                card.style.boxShadow = '8px 8px 0px 0px rgba(0,0,0,1)';
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

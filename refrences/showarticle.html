@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>SMK Merdeka Menang Penghargaan Inovasi Nasional | Merdeka Warta</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#aa5700",
+                        "surface-container-low": "#f3f4f5",
+                        "primary": "#004ac6",
+                        "tertiary-fixed": "#ffdcc5",
+                        "surface-bright": "#f8f9fa",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#b4c5ff",
+                        "secondary-container": "#fc79bd",
+                        "on-secondary-fixed": "#3d0026",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-tint": "#0053db",
+                        "primary-container": "#2563eb",
+                        "surface": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "secondary": "#a43073",
+                        "on-surface": "#191c1d",
+                        "tertiary": "#864300",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-container": "#edeeef",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "surface-variant": "#e1e3e4",
+                        "on-secondary-fixed-variant": "#85145a",
+                        "outline-variant": "#c3c6d7",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-dim": "#d9dadb",
+                        "on-secondary-container": "#76014e",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary-container": "#eeefff",
+                        "background": "#f8f9fa",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary-fixed": "#00174b",
+                        "on-surface-variant": "#434655",
+                        "on-background": "#191c1d",
+                        "outline": "#737686",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "secondary-fixed": "#ffd8e7",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "on-tertiary-container": "#ffede3",
+                        "inverse-surface": "#2e3132",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#ffafd3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "border-width": "3px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "16px",
+                        "grid-unit": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Anton"],
+                        "headline-lg": ["Anton"],
+                        "display-xl": ["Anton"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "label-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["36px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "headline-lg": ["48px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "display-xl": ["84px", {
+                            "lineHeight": "90%",
+                            "letterSpacing": "-0.02em",
+                            "fontWeight": "400"
+                        }],
+                        "body-md": ["16px", {
+                            "lineHeight": "1.6",
+                            "fontWeight": "500"
+                        }],
+                        "label-mono": ["12px", {
+                            "lineHeight": "1.2",
+                            "fontWeight": "700"
+                        }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background-image: linear-gradient(to right, #e5e7eb 1px, transparent 1px), linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        
+        .brutalist-shadow {
+            box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-shadow-sm {
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-shadow-hover:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-button:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .sticker-rotate {
+            transform: rotate(-2deg);
+        }
+        
+        .sticker-rotate-alt {
+            transform: rotate(2deg);
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body class="font-body-md text-on-surface">
+    <!-- TopNavBar -->
+    <nav class="sticky top-0 w-full z-50 bg-surface border-b-3 border-on-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+
+    </nav>
+    <!-- News Ticker -->
+
+    <style>
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+    <main class="max-w-[1440px] mx-auto px-4 md:px-16 py-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <!-- ARTICLE CONTENT (8 COLUMNS) -->
+        <article class="lg:col-span-8 flex flex-col gap-8">
+            <!-- Breadcrumbs & Category -->
+            <div class="flex items-center gap-4">
+                <span class="bg-tertiary-container text-on-tertiary px-4 py-1 border-3 border-on-background font-label-mono uppercase sticker-rotate brutalist-shadow-sm">
+                    Innovation
+                </span>
+                <div class="flex items-center text-on-surface-variant font-label-mono text-xs uppercase gap-2">
+                    <a class="hover:underline" href="#">Home</a>
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <a class="hover:underline" href="#">News</a>
+                </div>
+            </div>
+            <!-- Title -->
+            <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface leading-tight uppercase">SMK MERDEKA MENANGI PENGHARGAAN INOVASI NASIONAL</h1>
+            <!-- Metadata -->
+            <div class="flex flex-wrap items-center gap-6 border-y-3 border-on-background py-4 font-label-mono uppercase text-sm">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined">calendar_today</span> 12 JUNI 2024
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined">person</span> BY ADMIN
+                </div>
+
+            </div>
+            <!-- Featured Image -->
+            <div class="relative w-full border-3 border-on-background brutalist-shadow">
+                <img class="w-full aspect-video object-cover" data-alt="A group of diverse high school students cheering around a complex robotic arm built from aluminum and circuit boards. The scene is set in a high-tech school workshop with tools and blueprints visible in the background. The lighting is dynamic and cinematic with blue and orange highlights, maintaining a vibrant Neo-Brutalist energy. The composition is a low-angle shot to emphasize the achievement and scale of their innovation."
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5lb_hPTM5VYv6IcxJD74Ll0r4gsZ6j9HWuhkqEmSeU7ME1Uf3k7F3kZBjhyGi2U_XUSW06uWP8v_4dgvN_EOqqhLo_PZfdOvxQ4L6P5NqP-ikmjdKr44ovWz9xuInY4oZARXmkUaUDFdNtRgc7SmmCOogjL9C3ToOPexgiUQcJ3uD7T48V89oSbXicqssIS-PAjSSw_19NnmeeZqShsrd49xwEcUXvzl4mAE5-yn5MDh0C1ALG1b5eACQPAgbIwwCzHE0Mk6HfwYV">
+                <div class="absolute -bottom-4 -right-4 bg-primary text-on-primary border-3 border-on-background p-4 brutalist-shadow-sm sticker-rotate-alt font-label-mono max-w-xs hidden md:block">
+                    PROYEK: SMART SCHOOL ENERGY
+                </div>
+            </div>
+            <!-- Rich Text Content -->
+            <div class="prose prose-lg max-w-none font-body-md text-on-surface space-y-6">
+                <p class="text-xl font-bold leading-relaxed italic border-l-8 border-secondary-container pl-6 py-2">
+                    SMK Merdeka kembali menorehkan tinta emas di kancah nasional. Kali ini, tim robotik sekolah berhasil meraih juara pertama dalam kompetisi Inovasi Energi Terbarukan tingkat Nasional yang diselenggarakan di Jakarta pekan lalu.
+                </p>
+                <p class="">
+                    Keberhasilan ini diraih melalui proyek berjudul <strong>"Smart School Energy"</strong>. Sistem ini mengintegrasikan panel surya dengan algoritma optimasi berbasis AI untuk mengatur penggunaan listrik di lingkungan sekolah secara otomatis.
+                    Proyek ini berhasil mengalahkan ratusan peserta dari berbagai SMK dan SMA unggulan di seluruh Indonesia.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
+                    <div class="bg-surface-container-low p-6 border-3 border-on-background brutalist-shadow-sm">
+                        <h4 class="font-headline-lg text-2xl mb-4 border-b-3 border-on-background pb-2">Fitur Utama</h4>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li class="">Optimasi Pencahayaan Real-time</li>
+                            <li class="">Monitoring Panel Surya IoT</li>
+                            <li class="">Prediksi Konsumsi Energi Mingguan</li>
+                        </ul>
+                    </div>
+                    <img class="border-3 border-on-background brutalist-shadow-sm object-cover h-full" data-alt="Close up shot of a complex green electronic circuit board with glowing LEDs and microchips. The aesthetic is sharp and technical with hard edges, reflecting the smart school energy project's precision. Lighting is high-contrast with deep shadows and neon highlights in cyan and pink, matching the school's vibrant brand colors."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7w78A-b4e2JCngMrQD1oZycImUu62UKF5wTr_leyW3e30iM0zDkrW7Kf52J_FpFLOIK1gdOCMkJnavjE9ub30vySt5uYWaWEXQ3u7RItFu8k43vt9TCcVljwcyEV86Cty1LfieGdftBkFGTp_xFIVH5uWh0bag9vUkm41d0nSC2p0rAbJiccCZ1NuBo0-WcYIsNigBKiGYmlI0-HpJxZH-OZQcq02KkwG_7b22EpaW6tinM6RHAifhNfKWjASQdvCXFNutsPI8GGw">
+                </div>
+                <p class="">
+                    Kepala Sekolah SMK Merdeka, Drs. Ahmad Wijaya, menyatakan kebanggaannya dalam sesi wawancara. Beliau menekankan bahwa prestasi ini merupakan bukti nyata bahwa kurikulum berbasis proyek (PBL) yang diterapkan sekolah sangat efektif.
+                </p>
+                <blockquote class="bg-on-background text-surface p-8 border-3 border-on-background brutalist-shadow italic relative overflow-hidden">
+                    <span class="material-symbols-outlined absolute -top-4 -left-4 text-9xl opacity-20 rotate-12">format_quote</span> "Penghargaan ini bukan hanya tentang piala, tapi tentang bagaimana siswa-siswi kita mampu menjawab tantangan krisis energi
+                    global melalui solusi yang praktis dan aplikatif. Kami akan terus mendukung inovasi siswa di segala bidang."
+                </blockquote>
+                <p class="">
+                    Tim yang terdiri dari lima siswa jurusan Elektronika dan Rekayasa Perangkat Lunak ini telah mengerjakan proyek tersebut selama enam bulan. Ke depannya, pihak sekolah berencana untuk mengimplementasikan sistem "Smart School Energy" secara penuh di seluruh
+                    gedung sekolah untuk mengurangi emisi karbon secara signifikan.
+                </p>
+            </div>
+            <!-- Tags -->
+            <section class="mt-12 pt-12 border-t-3 border-on-background">
+                <h2 class="font-headline-lg text-3xl uppercase mb-8">ARTIKEL LAINNYA</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Card 1 -->
+                    <div class="bg-surface-container-low border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col">
+                        <div class="relative border-b-3 border-on-background">
+                            <img alt="School Bazaar" class="w-full aspect-video object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLs1UDpsS0X-iACXDtHnuZyZ8wYd3glM9K66Uk8aN12ANN2cHakPfFnEZBcoLXcNpm8bTtP9yehGRpHn4IlH2RiaU5lhnxkW1ywkxfLJQzU9bB0AAVqWPnM2d4nR3e9nrwlSde0L5wkYc5CiCBwrkcKa3lhTE3YgHYGMiOZVboPGU6j4a_DLobomkKYDB4lK_NlW_2TBAHPkJyCmcz5tpYR2OepvYsBOHGeMVAJ3DilQVaG4iCt6ZJk69EI">
+                            <span class="absolute top-2 left-2 bg-secondary text-on-secondary px-2 py-1 text-xs font-label-mono uppercase border-2 border-on-background">STUDENT LIFE</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="font-headline-lg text-xl uppercase mb-2 leading-tight">Bazaar Tahunan SMK Merdeka Berlangsung Meriah</h3>
+                            <p class="text-sm mb-4 flex-grow">Kemeriahan festival sekolah tahun ini menghadirkan berbagai karya kreatif siswa dan stand kuliner nusantara.</p>
+                            <a class="font-label-mono text-xs uppercase font-bold text-primary hover:underline flex items-center gap-1" href="#">
+                    Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-surface-container-low border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col">
+                        <div class="relative border-b-3 border-on-background">
+                            <img alt="Sports" class="w-full aspect-video object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5lb_hPTM5VYv6IcxJD74Ll0r4gsZ6j9HWuhkqEmSeU7ME1Uf3k7F3kZBjhyGi2U_XUSW06uWP8v_4dgvN_EOqqhLo_PZfdOvxQ4L6P5NqP-ikmjdKr44ovWz9xuInY4oZARXmkUaUDFdNtRgc7SmmCOogjL9C3ToOPexgiUQcJ3uD7T48V89oSbXicqssIS-PAjSSw_19NnmeeZqShsrd49xwEcUXvzl4mAE5-yn5MDh0C1ALG1b5eACQPAgbIwwCzHE0Mk6HfwYV">
+                            <span class="absolute top-2 left-2 bg-primary text-on-primary px-2 py-1 text-xs font-label-mono uppercase border-2 border-on-background">SPORTS</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="font-headline-lg text-xl uppercase mb-2 leading-tight">Turnamen Futsal Antar Kelas Segera Dimulai</h3>
+                            <p class="text-sm mb-4 flex-grow">Siapkan tim terbaikmu! Kompetisi tahunan bergengsi antar jurusan akan memperebutkan piala bergilir kepala sekolah.</p>
+                            <a class="font-label-mono text-xs uppercase font-bold text-primary hover:underline flex items-center gap-1" href="#">
+                    Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-surface-container-low border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col">
+                        <div class="relative border-b-3 border-on-background">
+                            <img alt="Achievements" class="w-full aspect-video object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7w78A-b4e2JCngMrQD1oZycImUu62UKF5wTr_leyW3e30iM0zDkrW7Kf52J_FpFLOIK1gdOCMkJnavjE9ub30vySt5uYWaWEXQ3u7RItFu8k43vt9TCcVljwcyEV86Cty1LfieGdftBkFGTp_xFIVH5uWh0bag9vUkm41d0nSC2p0rAbJiccCZ1NuBo0-WcYIsNigBKiGYmlI0-HpJxZH-OZQcq02KkwG_7b22EpaW6tinM6RHAifhNfKWjASQdvCXFNutsPI8GGw">
+                            <span class="absolute top-2 left-2 bg-tertiary-container text-on-tertiary px-2 py-1 text-xs font-label-mono uppercase border-2 border-on-background">ACHIEVEMENTS</span>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="font-headline-lg text-xl uppercase mb-2 leading-tight">Siswa SMK Merdeka Menang Lomba Robotik</h3>
+                            <p class="text-sm mb-4 flex-grow">Inovasi tanpa batas, tim robotik kita kembali membawa pulang medali emas dalam ajang teknologi tingkat provinsi.</p>
+                            <a class="font-label-mono text-xs uppercase font-bold text-primary hover:underline flex items-center gap-1" href="#">
+                    Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="flex flex-wrap gap-3 pt-8 border-t-3 border-on-background">
+                <a class="bg-surface-container-highest border-3 border-on-background px-4 py-1 font-label-mono text-sm hover:bg-primary hover:text-on-primary transition-all" href="#">#Inovasi</a>
+                <a class="bg-surface-container-highest border-3 border-on-background px-4 py-1 font-label-mono text-sm hover:bg-primary hover:text-on-primary transition-all" href="#">#Robotik</a>
+                <a class="bg-surface-container-highest border-3 border-on-background px-4 py-1 font-label-mono text-sm hover:bg-primary hover:text-on-primary transition-all" href="#">#Prestasi</a>
+                <a class="bg-surface-container-highest border-3 border-on-background px-4 py-1 font-label-mono text-sm hover:bg-primary hover:text-on-primary transition-all" href="#">#SMKMerdeka</a>
+            </div>
+        </article>
+        <!-- SIDEBAR (4 COLUMNS) -->
+        <aside class="lg:col-span-4 flex flex-col gap-10">
+            <!-- Berita Populer -->
+            <section class="bg-surface border-3 border-on-background brutalist-shadow p-6">
+                <h3 class="font-headline-lg text-2xl uppercase border-b-3 border-on-background pb-3 mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-secondary">trending_up</span> Berita Populer
+                </h3>
+                <div class="space-y-6">
+                    <!-- Pop Item 1 -->
+                    <div class="group cursor-pointer">
+                        <span class="text-xs font-label-mono text-secondary uppercase mb-1 block">01 / Events</span>
+                        <h4 class="font-bold leading-tight group-hover:text-primary transition-colors">Persiapan Dies Natalis ke-50 SMK Merdeka Dimulai!</h4>
+                    </div>
+                    <!-- Pop Item 2 -->
+                    <div class="group cursor-pointer">
+                        <span class="text-xs font-label-mono text-secondary uppercase mb-1 block">02 / Student Life</span>
+                        <h4 class="font-bold leading-tight group-hover:text-primary transition-colors">Program Pertukaran Pelajar ke Jepang Kembali Dibuka.</h4>
+                    </div>
+                    <!-- Pop Item 3 -->
+                    <div class="group cursor-pointer">
+                        <span class="text-xs font-label-mono text-secondary uppercase mb-1 block">03 / Achievements</span>
+                        <h4 class="font-bold leading-tight group-hover:text-primary transition-colors">Tim Basket SMK Merdeka Juara 2 di Turnamen Regional.</h4>
+                    </div>
+                </div>
+            </section>
+            <!-- Kategori -->
+            <section class="bg-surface border-3 border-on-background brutalist-shadow p-6">
+                <h3 class="font-headline-lg text-2xl uppercase border-b-3 border-on-background pb-3 mb-6">Kategori</h3>
+                <ul class="space-y-2">
+                    <li class="">
+                        <a class="flex justify-between items-center group p-2 hover:bg-primary-fixed border-2 border-transparent hover:border-on-background transition-all" href="#">
+                            <span class="font-bold">News</span>
+                            <span class="bg-on-background text-surface px-2 py-0.5 text-xs font-label-mono">12</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="flex justify-between items-center group p-2 hover:bg-primary-fixed border-2 border-transparent hover:border-on-background transition-all" href="#">
+                            <span class="font-bold">Events</span>
+                            <span class="bg-on-background text-surface px-2 py-0.5 text-xs font-label-mono">08</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="flex justify-between items-center group p-2 hover:bg-primary-fixed border-2 border-transparent hover:border-on-background transition-all" href="#">
+                            <span class="font-bold">Student Life</span>
+                            <span class="bg-on-background text-surface px-2 py-0.5 text-xs font-label-mono">24</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a class="flex justify-between items-center group p-2 hover:bg-primary-fixed border-2 border-transparent hover:border-on-background transition-all" href="#">
+                            <span class="font-bold">Achievement</span>
+                            <span class="bg-on-background text-surface px-2 py-0.5 text-xs font-label-mono">15</span>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <!-- CTA Card -->
+            <section class="bg-tertiary-container text-on-tertiary border-3 border-on-background brutalist-shadow p-8 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <h3 class="font-headline-lg text-3xl mb-4 leading-none uppercase">Punya Berita Menarik?</h3>
+                    <p class="mb-6 font-bold opacity-90">Kirimkan tulisan, foto, atau video kegiatan sekolahmu ke Redaksi Merdeka Warta!</p>
+                    <button class="bg-on-tertiary text-tertiary font-label-mono px-6 py-3 border-3 border-on-background brutalist-shadow-sm brutalist-button hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all">
+                        KIRIM TULISANMU
+                    </button>
+                </div>
+                <!-- Decorative Icon -->
+                <span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl opacity-30 rotate-12 group-hover:rotate-0 transition-transform duration-500">send</span>
+            </section>
+            <!-- Newsletter Box -->
+        </aside>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-on-background text-surface border-t-3 border-on-background">
+
+
+    </footer>
+    <script>
+        // Micro-interactions
+        document.querySelectorAll('.brutalist-button').forEach(button => {
+            button.addEventListener('mousedown', function() {
+                this.style.boxShadow = '0px 0px 0px 0px rgba(0,0,0,1)';
+                this.style.transform = 'translate(4px, 4px)';
+            });
+            button.addEventListener('mouseup', function() {
+                this.style.boxShadow = '4px 4px 0px 0px rgba(0,0,0,1)';
+                this.style.transform = 'translate(0px, 0px)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '4px 4px 0px 0px rgba(0,0,0,1)';
+                this.style.transform = 'translate(0px, 0px)';
+            });
+        });
+    </script>
+
+
+
+
+    <div id="snapdom-sandbox" data-snapdom-sandbox="true" aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 0px; height: 0px; overflow: hidden;"></div>
+</body>
+
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Merdeka Warta - Pemberitahuan</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#ffd8e7",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c3c6d7",
+                        "on-surface-variant": "#434655",
+                        "outline": "#737686",
+                        "surface-variant": "#e1e3e4",
+                        "tertiary-container": "#aa5700",
+                        "on-tertiary-fixed-variant": "#713700",
+                        "secondary-fixed-dim": "#ffafd3",
+                        "on-surface": "#191c1d",
+                        "surface-tint": "#0053db",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#edeeef",
+                        "secondary": "#a43073",
+                        "on-secondary-fixed-variant": "#85145a",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "primary-fixed": "#dbe1ff",
+                        "on-background": "#191c1d",
+                        "primary": "#004ac6",
+                        "inverse-surface": "#2e3132",
+                        "on-tertiary-container": "#ffede3",
+                        "on-primary-fixed": "#00174b",
+                        "surface-dim": "#d9dadb",
+                        "surface-container-high": "#e7e8e9",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "background": "#f8f9fa",
+                        "tertiary": "#864300",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#301400",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#3d0026",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f3f4f5",
+                        "primary-container": "#2563eb",
+                        "tertiary-fixed": "#ffdcc5",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-secondary-container": "#76014e",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#b4c5ff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface": "#f8f9fa",
+                        "secondary-container": "#fc79bd",
+                        "on-primary-container": "#eeefff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "border-width": "3px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "grid-unit": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Anton"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "display-xl": ["Anton"],
+                        "headline-lg-mobile": ["Anton"],
+                        "label-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["48px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "body-md": ["16px", {
+                            "lineHeight": "1.6",
+                            "fontWeight": "500"
+                        }],
+                        "display-xl": ["84px", {
+                            "lineHeight": "90%",
+                            "letterSpacing": "-0.02em",
+                            "fontWeight": "400"
+                        }],
+                        "headline-lg-mobile": ["36px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "label-mono": ["12px", {
+                            "lineHeight": "1.2",
+                            "fontWeight": "700"
+                        }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .brutalist-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-shadow-hover:hover {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+            transform: translate(4px, 4px);
+        }
+        
+        .grid-bg {
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        
+        .ticker-wrap {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 20s linear infinite;
+        }
+        
+        @keyframes ticker {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-surface font-body-md grid-bg min-h-screen flex flex-col">
+    <!-- TopNavBar -->
+
+    <!-- News Ticker -->
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 md:px-16 py-12">
+        <!-- Page Title -->
+        <div class="mb-12 text-center">
+            <div class="relative flex items-center justify-center gap-8 mb-2">
+                <!-- Left Decorations -->
+                <div class="hidden md:flex items-center gap-4">
+                    <div class="w-6 h-6 bg-primary border-3 border-on-surface rotate-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"></div>
+                    <div class="w-8 h-8 bg-secondary-container border-3 border-on-surface rounded-full -rotate-6 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"></div>
+                    <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[24px] border-b-tertiary-container rotate-12 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]"></div>
+                </div>
+                <h1 class="font-headline-lg text-headline-lg text-on-surface uppercase">PEMBERITAHUAN SEKOLAH</h1>
+                <!-- Right Decorations -->
+                <div class="hidden md:flex items-center gap-4">
+                    <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[24px] border-b-primary -rotate-12 drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]"></div>
+                    <div class="w-8 h-8 bg-secondary-fixed border-3 border-on-surface rotate-6 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"></div>
+                    <div class="w-6 h-6 bg-tertiary border-3 border-on-surface rounded-full -rotate-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"></div>
+                </div>
+            </div>
+            <div class="w-24 h-2 bg-primary mx-auto border-2 border-on-surface"></div>
+        </div>
+        <!-- Featured Section (Pemberitahuan Sorotan) -->
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="material-symbols-outlined text-primary text-3xl">star</span>
+                <h2 class="font-headline-lg text-3xl uppercase tracking-tight">Pemberitahuan Sorotan</h2>
+            </div>
+            <article class="bg-primary-container text-on-primary-container border-3 border-on-surface p-8 brutalist-shadow brutalist-shadow-hover transition-all flex flex-col md:flex-row items-center gap-8 group">
+                <div class="flex-shrink-0 bg-white p-6 border-3 border-on-surface shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <span class="material-symbols-outlined text-primary text-6xl scale-125" data-icon="campaign">campaign</span>
+                </div>
+                <div class="flex-grow">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-white text-primary px-4 py-1 font-label-mono text-sm border-2 border-on-surface -rotate-1 uppercase font-bold">Utama</span>
+                        <span class="font-label-mono text-sm opacity-80 uppercase font-bold">Diperbarui: 25 Okt 2024</span>
+                    </div>
+                    <h3 class="font-headline-lg text-4xl md:text-5xl uppercase leading-none mb-4 group-hover:underline underline-offset-8 decoration-4">Penerimaan Peserta Didik Baru Jalur Prestasi</h3>
+                    <p class="font-body-md text-lg opacity-90 max-w-3xl mb-6">Pendaftaran resmi jalur prestasi untuk tahun ajaran 2025/2026 telah dibuka. Pastikan Anda menyiapkan seluruh dokumen digital dan sertifikat prestasi yang valid untuk proses verifikasi online.</p>
+                    <button class="bg-white text-on-surface border-3 border-on-surface px-8 py-3 font-label-mono uppercase font-bold brutalist-shadow brutalist-shadow-hover hover:bg-secondary-container transition-all">Pelajari Selengkapnya</button>
+                </div>
+            </article>
+        </section>
+        <!-- Latest Section (Pemberitahuan Terbaru) -->
+        <section class="mb-16">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="material-symbols-outlined text-secondary text-3xl">new_releases</span>
+                <h2 class="font-headline-lg text-3xl uppercase tracking-tight">Pemberitahuan Terbaru</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Latest Card 1 -->
+                <article class="bg-secondary-fixed border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-secondary-container text-on-secondary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface rotate-2 uppercase">Akademik</span>
+                            <span class="font-label-mono text-label-mono opacity-60">24 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Jadwal UTS Ganjil</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Informasi lengkap mengenai jadwal pelaksanaan Ujian Tengah Semester untuk seluruh jenjang kelas.</p>
+                    </div>
+                    <div class="bg-white p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-secondary" data-icon="school">school</span>
+                    </div>
+                </article>
+                <!-- Latest Card 2 -->
+                <article class="bg-tertiary-fixed border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface -rotate-2 uppercase">Event</span>
+                            <span class="font-label-mono text-label-mono opacity-60">22 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Pesta Seni 2024</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Pendaftaran pengisi acara Pesta Seni tahunan resmi dibuka. Tunjukkan bakat senimu di panggung utama!</p>
+                    </div>
+                    <div class="bg-white p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-tertiary" data-icon="event">event</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <div class="mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <button class="w-12 h-12 flex items-center justify-center bg-white border-3 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+<span class="material-symbols-outlined">menu</span>
+</button>
+                <nav class="flex flex-wrap gap-3">
+                    <button class="px-6 py-2 bg-primary text-white font-label-mono uppercase border-3 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">Semua</button>
+                    <button class="px-6 py-2 bg-white text-on-surface font-label-mono uppercase border-3 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-secondary-container transition-all">Akademik</button>
+                    <button class="px-6 py-2 bg-white text-on-surface font-label-mono uppercase border-3 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-secondary-container transition-all">Event</button>
+                    <button class="px-6 py-2 bg-white text-on-surface font-label-mono uppercase border-3 border-on-surface shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-secondary-container transition-all">Organisasi</button>
+                </nav>
+            </div>
+            <div class="relative w-full md:w-72">
+
+
+            </div>
+        </div>
+        <!-- General Grid -->
+        <section>
+            <div class="flex items-center gap-4 mb-6">
+                <span class="material-symbols-outlined text-on-surface-variant text-3xl">list_alt</span>
+                <h2 class="font-headline-lg text-3xl uppercase tracking-tight">Semua Pemberitahuan</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 3 -->
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface -rotate-1 uppercase">Organisasi</span>
+                            <span class="font-label-mono text-label-mono opacity-60">20 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Rapat Rutin OSIS</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Agenda koordinasi program kerja bulanan untuk seluruh pengurus inti dan koordinator divisi.</p>
+                    </div>
+                    <div class="bg-primary-fixed p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-on-primary-fixed" data-icon="campaign">campaign</span>
+                    </div>
+                </article>
+                <!-- Card 4 -->
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface rotate-3 uppercase">Olahraga</span>
+                            <span class="font-label-mono text-label-mono opacity-60">18 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Seleksi Tim Basket</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Pencarian talenta baru untuk memperkuat tim basket sekolah dalam kompetisi DBL musim depan.</p>
+                    </div>
+                    <div class="bg-secondary-container p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-on-secondary-container" data-icon="sports_basketball">sports_basketball</span>
+                    </div>
+                </article>
+                <!-- Card 5 -->
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-outline-variant text-on-surface-variant px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface -rotate-2 uppercase">Admin</span>
+                            <span class="font-label-mono text-label-mono opacity-60">15 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Update Data Siswa</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Mohon segera melengkapi berkas administrasi pada portal Dapodik melalui wali kelas masing-masing.</p>
+                    </div>
+                    <div class="bg-surface-container-high p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-on-surface" data-icon="account_balance">account_balance</span>
+                    </div>
+                </article>
+                <!-- Card 6 -->
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-primary-container text-on-primary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface rotate-1 uppercase">Akademik</span>
+                            <span class="font-label-mono text-label-mono opacity-60">12 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Seminar Literasi</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Workshop penulisan kreatif dan publikasi karya ilmiah remaja di perpustakaan pusat sekolah.</p>
+                    </div>
+                    <div class="bg-tertiary-fixed p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-on-tertiary-fixed" data-icon="menu_book">menu_book</span>
+                    </div>
+                </article>
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-secondary-container text-on-secondary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface uppercase">Event</span>
+                            <span class="font-label-mono text-label-mono opacity-60">10 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Donor Darah PMR</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Kegiatan sosial rutin donor darah kerja sama dengan PMI Kota untuk siswa dan staf pengajar.</p>
+                    </div>
+                    <div class="bg-error-container p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-error" data-icon="volunteer_activism">volunteer_activism</span>
+                    </div>
+                </article>
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface uppercase">Organisasi</span>
+                            <span class="font-label-mono text-label-mono opacity-60">08 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Pelantikan Pramuka</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Upacara pengukuhan anggota baru tingkat Bantara di lapangan utama sekolah akhir pekan ini.</p>
+                    </div>
+                    <div class="bg-secondary-fixed p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-secondary" data-icon="groups">groups</span>
+                    </div>
+                </article>
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-primary-container text-on-primary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface uppercase">Akademik</span>
+                            <span class="font-label-mono text-label-mono opacity-60">05 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Lomba Debat B.Indo</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Babak penyisihan lomba debat bahasa Indonesia tingkat sekolah dalam rangka bulan bahasa.</p>
+                    </div>
+                    <div class="bg-primary-fixed p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-primary" data-icon="record_voice_over">record_voice_over</span>
+                    </div>
+                </article>
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-secondary-container text-on-secondary-container px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface uppercase">Event</span>
+                            <span class="font-label-mono text-label-mono opacity-60">03 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Bazar Kewirausahaan</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Pameran produk inovasi siswa dari kelas X hingga XII di koridor lantai satu.</p>
+                    </div>
+                    <div class="bg-secondary-fixed-dim p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-secondary" data-icon="storefront">storefront</span>
+                    </div>
+                </article>
+                <article class="bg-white border-3 border-on-surface p-6 brutalist-shadow brutalist-shadow-hover flex flex-row items-start gap-4 transition-all group">
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 font-label-mono text-[10px] border-2 border-on-surface uppercase">Olahraga</span>
+                            <span class="font-label-mono text-label-mono opacity-60">01 Okt 2024</span>
+                        </div>
+                        <h3 class="font-headline-lg text-2xl uppercase leading-tight mb-2 group-hover:text-primary transition-colors">Latihan Gabungan Futsal</h3>
+                        <p class="text-on-surface-variant text-sm line-clamp-2">Latihan bersama antar angkatan untuk memantapkan strategi tim sekolah menghadapi Liga Pelajar.</p>
+                    </div>
+                    <div class="bg-tertiary-fixed p-3 border-3 border-on-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-tertiary" data-icon="sports_soccer">sports_soccer</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <!-- Pagination -->
+        <nav class="flex justify-center items-center mt-16 gap-3">
+            <button class="w-12 h-12 flex items-center justify-center border-3 border-on-surface brutalist-shadow brutalist-shadow-hover bg-white active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+            <button class="w-12 h-12 flex items-center justify-center border-3 border-on-surface bg-primary text-white font-bold brutalist-shadow active:scale-90 transition-all">1</button>
+            <button class="w-12 h-12 flex items-center justify-center border-3 border-on-surface bg-white font-bold brutalist-shadow brutalist-shadow-hover active:scale-90 transition-all">2</button>
+            <button class="w-12 h-12 flex items-center justify-center border-3 border-on-surface bg-white font-bold brutalist-shadow brutalist-shadow-hover active:scale-90 transition-all">3</button>
+            <span class="font-bold">...</span>
+            <button class="w-12 h-12 flex items-center justify-center border-3 border-on-surface bg-white font-bold brutalist-shadow brutalist-shadow-hover active:scale-90 transition-all">10</button>
+            <button class="w-12 h-12 flex items-center justify-center border-3 border-on-surface brutalist-shadow brutalist-shadow-hover bg-white active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+        </nav>
+    </main>
+    <!-- Footer -->
+
+    <!-- Interactive script for card lift effect -->
+    <script>
+        document.querySelectorAll('article').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'translate(4px, 4px)';
+                card.style.boxShadow = '0px 0px 0px 0px rgba(0,0,0,1)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            });
+        });
+    </script>
+
+
+
+
+</body>
+
+</html>

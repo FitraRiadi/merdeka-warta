@@ -1,0 +1,73 @@
+{{-- Dashboard --}}
+<a href="{{ route('admin.dashboard') }}" class="sidebar-link @if(Route::currentRouteNamed('admin.dashboard')) active @endif">
+    <span class="material-symbols-outlined">dashboard</span>
+    <span>DASHBOARD</span>
+</a>
+
+{{-- Articles (all roles) --}}
+<a href="{{ route('admin.articles.index') }}" class="sidebar-link @if(request()->routeIs('admin.articles.*')) active @endif">
+    <span class="material-symbols-outlined">description</span>
+    <span>ARTICLES</span>
+</a>
+
+{{-- Super Admin only --}}
+@if(Auth::user()->isSuperAdmin())
+    <div class="pt-4 pb-1 px-3">
+        <p class="font-label-mono text-[10px] uppercase tracking-wider opacity-40">Management</p>
+    </div>
+
+    <a href="{{ route('admin.announcements.index') }}" class="sidebar-link @if(request()->routeIs('admin.announcements.*')) active @endif">
+        <span class="material-symbols-outlined">campaign</span>
+        <span>ANNOUNCEMENTS</span>
+    </a>
+
+    <a href="{{ route('admin.running-texts.index') }}" class="sidebar-link @if(request()->routeIs('admin.running-texts.*')) active @endif">
+        <span class="material-symbols-outlined">format_list_bulleted</span>
+        <span>RUNNING TEXT</span>
+    </a>
+
+    <a href="{{ route('admin.galleries.index') }}" class="sidebar-link @if(request()->routeIs('admin.galleries.*')) active @endif">
+        <span class="material-symbols-outlined">imagesmode</span>
+        <span>GALLERY</span>
+    </a>
+
+    <a href="{{ route('admin.spotlights.index') }}" class="sidebar-link @if(request()->routeIs('admin.spotlights.*')) active @endif">
+        <span class="material-symbols-outlined">stars</span>
+        <span>SOROTAN</span>
+    </a>
+
+    <a href="{{ route('admin.testimonials.index') }}" class="sidebar-link @if(request()->routeIs('admin.testimonials.*')) active @endif">
+        <span class="material-symbols-outlined">format_quote</span>
+        <span>TESIMONI</span>
+    </a>
+
+    <a href="{{ route('admin.users.index') }}" class="sidebar-link @if(request()->routeIs('admin.users.*')) active @endif">
+        <span class="material-symbols-outlined">group</span>
+        <span>KONTRIBUTOR</span>
+    </a>
+@endif
+
+<div class="pt-4 pb-1 px-3">
+    <p class="font-label-mono text-[10px] uppercase tracking-wider opacity-40">Others</p>
+</div>
+
+{{-- Profile / Settings --}}
+<a href="{{ route('profile.edit') }}" class="sidebar-link @if(request()->routeIs('profile.edit')) active @endif">
+    <span class="material-symbols-outlined">settings</span>
+    <span>SETTINGS</span>
+</a>
+
+{{-- Back to Website --}}
+<a href="{{ route('home') }}" target="_blank" class="sidebar-link">
+    <span class="material-symbols-outlined">open_in_new</span>
+    <span>WEBSITE</span>
+</a>
+
+{{-- Logout --}}
+<form method="POST" action="{{ route('logout') }}" class="block">
+    @csrf
+    <button type="submit" class="sidebar-link w-full text-error hover:text-error hover:bg-error-container">
+        <span class="material-symbols-outlined">logout</span>
+        <span>LOGOUT</span>
+    </button>
+</form>
