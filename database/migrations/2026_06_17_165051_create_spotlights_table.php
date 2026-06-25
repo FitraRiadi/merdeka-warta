@@ -11,9 +11,6 @@ return new class extends Migration
         Schema::create('spotlights', function (Blueprint $table) {
             $table->id();
             $table->foreignId('article_id')->constrained()->cascadeOnDelete();
-            $table->string('badge_label')->nullable();
-            $table->integer('sort_order')->default(0);
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

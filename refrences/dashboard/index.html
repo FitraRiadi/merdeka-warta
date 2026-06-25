@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html class="light" lang="en" style="">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Merdeka Warta Admin Dashboard</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=JetBrains+Mono:wght@700&amp;family=Plus+Jakarta+Sans:wght@500;700;800&amp;display=swap" rel="stylesheet">
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#713700",
+                        "primary-container": "#2563eb",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f3f4f5",
+                        "on-secondary-fixed": "#3d0026",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f0f1f2",
+                        "background": "#f8f9fa",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#301400",
+                        "tertiary": "#864300",
+                        "surface-tint": "#0053db",
+                        "secondary-fixed-dim": "#ffafd3",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "on-secondary-fixed-variant": "#85145a",
+                        "on-primary-fixed": "#00174b",
+                        "on-background": "#191c1d",
+                        "secondary-fixed": "#ffd8e7",
+                        "inverse-primary": "#b4c5ff",
+                        "outline-variant": "#c3c6d7",
+                        "tertiary-fixed-dim": "#ffb783",
+                        "on-tertiary-container": "#ffede3",
+                        "on-surface-variant": "#434655",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-primary-container": "#eeefff",
+                        "surface-container": "#edeeef",
+                        "tertiary-fixed": "#ffdcc5",
+                        "tertiary-container": "#aa5700",
+                        "outline": "#737686",
+                        "primary": "#004ac6",
+                        "on-surface": "#191c1d",
+                        "on-secondary-container": "#76014e",
+                        "surface-bright": "#f8f9fa",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "surface-container-high": "#e7e8e9",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e1e3e4",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#fc79bd",
+                        "inverse-surface": "#2e3132",
+                        "surface-dim": "#d9dadb",
+                        "secondary": "#a43073",
+                        "primary-fixed": "#dbe1ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "grid-unit": "8px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "border-width": "3px"
+                    },
+                    "fontFamily": {
+                        "label-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Anton"],
+                        "headline-lg-mobile": ["Anton"],
+                        "display-xl": ["Anton"],
+                        "body-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-mono": ["12px", {
+                            "lineHeight": "1.2",
+                            "fontWeight": "700"
+                        }],
+                        "headline-lg": ["48px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "headline-lg-mobile": ["36px", {
+                            "lineHeight": "100%",
+                            "fontWeight": "400"
+                        }],
+                        "display-xl": ["84px", {
+                            "lineHeight": "90%",
+                            "letterSpacing": "-0.02em",
+                            "fontWeight": "400"
+                        }],
+                        "body-md": ["16px", {
+                            "lineHeight": "1.6",
+                            "fontWeight": "500"
+                        }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .brutalist-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        
+        .brutalist-shadow-hover:hover {
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            transform: translate(-2px, -2px);
+        }
+        
+        .brutalist-shadow-active:active {
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+            transform: translate(4px, 4px);
+        }
+        
+        .grid-pattern {
+            background-image: radial-gradient(#E5E7EB 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        
+        .sticker-tilt-left {
+            transform: rotate(-2deg);
+        }
+        
+        .sticker-tilt-right {
+            transform: rotate(2deg);
+        }
+        
+         ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+         ::-webkit-scrollbar-track {
+            background: #f3f4f5;
+            border: 2px solid #191c1d;
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: #191c1d;
+            border: 1px solid #ffffff;
+        }
+        
+        .toggle-checkbox:checked {
+            @apply right-0 bg-primary border-on-background;
+            right: 0;
+            background-color: #004ac6;
+        }
+        
+        .toggle-checkbox:checked+.toggle-label {
+            @apply bg-primary-container;
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+
+<body class="bg-background text-on-background font-body-md text-body-md grid-pattern min-h-screen flex overflow-x-hidden">
+    <!-- SideNavBar - Responsive with hamburger & close button -->
+    <aside id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-surface border-r-[3px] border-on-background shadow-[4px_0px_0px_0px_rgba(0,0,0,1)] z-50 flex flex-col p-6 overflow-y-auto transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0">
+        <!-- Close button (mobile only) -->
+        <button id="closeSidebar" class="lg:hidden self-end w-8 h-8 flex items-center justify-center border-[3px] border-on-background bg-white brutalist-shadow-active hover:bg-surface-container transition-colors mb-4">
+            <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+        <div class="mb-6">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-12 h-12 bg-primary border-[3px] border-on-background flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                    <span class="material-symbols-outlined text-on-primary text-3xl">school</span>
+                </div>
+                <div>
+                    <h1 class="font-headline-lg text-2xl uppercase text-on-surface leading-none">Merdeka Warta</h1>
+                    <p class="font-label-mono text-[10px] uppercase opacity-70">Admin Console</p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-3">
+            <a class="flex items-center gap-3 p-3 bg-secondary-container text-on-secondary-container border-[3px] border-on-background brutalist-shadow font-label-mono text-sm transition-all hover:-translate-y-1" href="#">
+                <span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">dashboard</span> DASHBOARD
+            </a>
+            <a class="flex items-center gap-3 p-3 hover:bg-surface-container border-[3px] border-transparent hover:border-on-background transition-all font-label-mono text-sm" href="#">
+                <span class="material-symbols-outlined">description</span> ARTICLES
+            </a>
+            <a class="flex items-center gap-3 p-3 hover:bg-surface-container border-[3px] border-transparent hover:border-on-background transition-all font-label-mono text-sm" href="#">
+                <span class="material-symbols-outlined">campaign</span> ANNOUNCEMENTS
+            </a>
+            <a class="flex items-center gap-3 p-3 hover:bg-surface-container border-[3px] border-transparent hover:border-on-background transition-all font-label-mono text-sm" href="#">
+                <span class="material-symbols-outlined">group</span> KONTRIBUTOR
+            </a>
+            <a class="flex items-center gap-3 p-3 hover:bg-surface-container border-[3px] border-transparent hover:border-on-background transition-all font-label-mono text-sm" href="#">
+                <span class="material-symbols-outlined">imagesmode</span> GALLERY
+            </a>
+        </nav>
+        <div class="mt-auto pt-6 border-t-[3px] border-on-background space-y-2">
+            <a class="flex items-center gap-3 p-2 hover:text-primary transition-colors font-label-mono text-xs" href="#">
+                <span class="material-symbols-outlined text-sm">settings</span> SETTINGS
+            </a>
+            <a class="flex items-center gap-3 p-2 hover:text-error transition-colors font-label-mono text-xs" href="#">
+                <span class="material-symbols-outlined text-sm">logout</span> LOGOUT
+            </a>
+        </div>
+    </aside>
+
+    <!-- Overlay untuk mobile -->
+    <div id="overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"></div>
+
+    <!-- Main Wrapper -->
+    <div class="flex-1 min-w-0 lg:ml-64">
+        <!-- TopAppBar -->
+        <header class="h-20 px-gutter sticky top-0 z-40 bg-surface border-b-[3px] border-on-background shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-between">
+
+            <!-- Tombol Hamburger untuk mobile -->
+            <button id="hamburger" class="lg:hidden w-10 h-10 flex items-center justify-center border-[3px] border-on-background bg-white brutalist-shadow-active hover:bg-surface-container transition-colors">
+                <span class="material-symbols-outlined text-2xl">menu</span>
+            </button>
+
+            <div class="flex items-center gap-6 ml-auto">
+                <div class="flex gap-2">
+                    <button class="material-symbols-outlined p-2 border-[3px] border-transparent hover:border-on-background hover:bg-surface-container-highest transition-all duration-75" style="font-variation-settings: &quot;FILL&quot; 1; color: rgb(0, 74, 198);">notifications</button>
+                    <button class="material-symbols-outlined p-2 border-[3px] border-transparent hover:border-on-background hover:bg-surface-container-highest transition-all duration-75">help</button>
+                </div>
+                <div class="flex items-center gap-3 pl-6 border-l-[3px] border-on-background">
+                    <span class="font-label-mono text-right hidden lg:block">
+                        <p class="text-xs uppercase font-bold">Admin User</p>
+                        <p class="text-[10px] opacity-60">Super Administrator</p>
+                    </span>
+                    <div class="w-10 h-10 border-[3px] border-on-background rounded-full bg-secondary-fixed overflow-hidden">
+                        <img alt="Admin User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyh240EbP3Y-JyWb1G9bzoHPl-vYOeS39UY3j5yS8uMMDkPF-ivOMke_5ujF5wQUMwDB4pzZ1s0_hu1U9t_wiXaJ4klt7ID2kk-sB8odZ6-VXMchZoYQ2Ygu6vjR1sLV3-RS9WAxMV-CtT_fSo2IhY6RpaWCxUmAgp8BeED25w-uIEgvhRf79UCp5PIu52nJSAWVg--TfgAxcUXuOpLqBJREt11TP49iXQxH40NRzPlDYOpO_s740Ba1j8xs0_WmFrAjIA0PogrdhH">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content -->
+        <main class="p-gutter py-12 pb-24 space-y-12">
+            <!-- Header Section -->
+            <section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <h2 class="font-headline-lg text-5xl md:text-6xl uppercase text-on-background tracking-tighter">Dashboard Overview</h2>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 bg-error animate-pulse"></span>
+                    </div>
+                </div>
+            </section>
+            <!-- Statistics Grid -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Stat Card 1 -->
+                <div class="bg-primary-container p-6 border-[3px] border-on-background brutalist-shadow transition-all hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-white border-[3px] border-on-background flex items-center justify-center group-hover:rotate-12 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: &quot;FILL&quot; 1;">description</span>
+                        </div>
+                        <span class="bg-white border-[3px] border-on-background font-label-mono text-[10px] px-2 py-0.5 sticker-tilt-right">+12%</span>
+                    </div>
+                    <p class="font-label-mono text-on-primary-container text-xs uppercase opacity-80 font-bold mb-1">Total Articles</p>
+                    <p class="font-display-xl text-5xl text-on-primary-container">128</p>
+                </div>
+                <!-- Stat Card 2 -->
+                <div class="bg-secondary-container p-6 border-[3px] border-on-background brutalist-shadow transition-all hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-white border-[3px] border-on-background flex items-center justify-center group-hover:-rotate-12 transition-transform">
+                            <span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: &quot;FILL&quot; 1;">campaign</span>
+                        </div>
+                        <span class="bg-white border-[3px] border-on-background font-label-mono text-[10px] px-2 py-0.5 sticker-tilt-left">HOT</span>
+                    </div>
+                    <p class="font-label-mono text-on-secondary-container text-xs uppercase opacity-80 font-bold mb-1">Total Pemberitahuan</p>
+                    <p class="font-display-xl text-5xl text-on-secondary-container">56</p>
+                </div>
+                <!-- Stat Card 3 -->
+                <div class="bg-tertiary-container p-6 border-[3px] border-on-background brutalist-shadow transition-all hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-on-tertiary-container group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-white border-[3px] border-on-background flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings: &quot;FILL&quot; 1;">pending_actions</span>
+                        </div>
+                        <span class="bg-error border-[3px] border-on-background text-white font-label-mono text-[10px] px-2 py-0.5">ACTION REQ</span>
+                    </div>
+                    <p class="font-label-mono text-xs uppercase opacity-80 font-bold mb-1">Pending Requests</p>
+                    <p class="font-display-xl text-5xl">12</p>
+                </div>
+                <!-- Stat Card 4 -->
+                <div class="bg-surface-container-highest p-6 border-[3px] border-on-background brutalist-shadow transition-all hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-white border-[3px] border-on-background flex items-center justify-center group-hover:skew-x-12 transition-transform">
+                            <span class="material-symbols-outlined text-on-background text-3xl" style="font-variation-settings: &quot;FILL&quot; 1;">imagesmode</span>
+                        </div>
+                        <span class="bg-white border-[3px] border-on-background font-label-mono text-[10px] px-2 py-0.5 sticker-tilt-right">NEW</span>
+                    </div>
+                    <p class="font-label-mono text-on-background text-xs uppercase opacity-80 font-bold mb-1">Gallery Assets</p>
+                    <p class="font-display-xl text-5xl text-on-background">214</p>
+                </div>
+            </section>
+
+            <!-- ========== QUICK MANAGEMENT (FLEX HORIZONTAL) ========== -->
+            <section>
+                <h3 class="font-headline-lg text-3xl uppercase mb-6">Quick Management</h3>
+                <div class="flex flex-wrap gap-4">
+                    <button class="flex-1 min-w-[180px] bg-primary-container text-on-primary-container border-[3px] border-on-background p-4 flex items-center gap-4 brutalist-shadow brutalist-shadow-hover transition-all active:shadow-none active:translate-x-1 active:translate-y-1 group relative overflow-hidden"
+                        style="box-shadow: rgb(0, 0, 0) 4px 4px 0px 0px;">
+                        <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-8xl">post_add</span>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl bg-white text-primary border-[3px] border-on-background p-2">post_add</span>
+                        <span class="font-headline-lg text-xl uppercase tracking-tight">ADD Articles</span>
+                    </button>
+                    <button class="flex-1 min-w-[180px] bg-secondary-container text-on-secondary-container border-[3px] border-on-background p-4 flex items-center gap-4 brutalist-shadow brutalist-shadow-hover transition-all active:shadow-none active:translate-x-1 active:translate-y-1 group relative overflow-hidden"
+                        style="box-shadow: rgb(0, 0, 0) 4px 4px 0px 0px;">
+                        <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-8xl">notification_add</span>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl bg-white text-secondary border-[3px] border-on-background p-2">notification_add</span>
+                        <span class="font-headline-lg text-xl uppercase tracking-tight">ADD Pemberitahuan</span>
+                    </button>
+                    <button class="flex-1 min-w-[180px] bg-orange-400 text-on-background border-[3px] border-on-background p-4 flex items-center gap-4 brutalist-shadow brutalist-shadow-hover transition-all active:shadow-none active:translate-x-1 active:translate-y-1 group relative overflow-hidden"
+                        style="box-shadow: rgb(0, 0, 0) 4px 4px 0px 0px;">
+                        <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-8xl">person_add</span>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl bg-white text-orange-600 border-[3px] border-on-background p-2">person_add</span>
+                        <span class="font-headline-lg text-xl uppercase tracking-tight">ADD Kontributor</span>
+                    </button>
+                    <button class="flex-1 min-w-[180px] bg-surface-container-highest border-[3px] border-on-background p-4 flex items-center gap-4 brutalist-shadow brutalist-shadow-hover transition-all active:shadow-none active:translate-x-1 active:translate-y-1 group relative overflow-hidden"
+                        style="box-shadow: rgb(0, 0, 0) 4px 4px 0px 0px;">
+                        <div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-8xl">add_photo_alternate</span>
+                        </div>
+                        <span class="material-symbols-outlined text-4xl bg-white text-on-background border-[3px] border-on-background p-2">add_photo_alternate</span>
+                        <span class="font-headline-lg text-xl uppercase tracking-tight">ADD Gallery</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- ========== SPOTLIGHT MANAGEMENT ========== -->
+            <section class="grid grid-cols-1 gap-8">
+                <div class="space-y-8 mb-12">
+                    <h3 class="font-headline-lg text-3xl uppercase">Spotlight Management</h3>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Article Spotlight (2/3 width) -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <h4 class="font-label-mono font-bold uppercase flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">star</span> Article Spotlight (Max 3)
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <!-- Slot 1 -->
+                                <div class="bg-white border-[3px] border-on-background p-3 brutalist-shadow flex flex-col gap-3">
+                                    <div class="aspect-video bg-surface-container-highest border-[3px] border-on-background overflow-hidden">
+                                        <img alt="Article" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6_hRzGegwQTsq2dn2gY-s0se8pT-mAYlhofLS7aG1DytethpfnAqEziSdGguAYDNP80L5RxNFt01RIE6NX7Tz4RH1xf1QhuWqJx5TpQy9gnB1ddhFFQynMqjF3aR2gltf4yvhjaenXR-EnjPlp3W2BqKxQKp3miGqWEI0av6cfIW4aBL7KIe0iYv-caClEiAq2xvFTjWuYTHyyt0bknM5L5o4duX8l-bf2v61FU_O8wNETDS_iYpEN0uIjJvbT9sJ8Kv02pyo_zZz">
+                                    </div>
+                                    <p class="font-bold text-xs line-clamp-2">Inovasi Teknologi Mahasiswa di Era Digital 2024</p>
+                                    <button class="mt-auto w-full py-1 border-[3px] border-on-background bg-error text-white font-label-mono text-[10px] uppercase hover:bg-on-background transition-colors">Remove</button>
+                                </div>
+                                <!-- Slot 2 -->
+                                <div class="bg-white border-[3px] border-on-background p-3 brutalist-shadow flex flex-col gap-3">
+                                    <div class="aspect-video bg-surface-container-highest border-[3px] border-on-background overflow-hidden">
+                                        <img alt="Article" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLGoLm_V_ZU_byDsXxirm5RkgzAZJRru4t5sRByA0816KFt0sFTUOqCMOboJ_oRvTQSQtWci-rvPlXvjtfwL3kl7qLrR9htjaxfRLyza9z_oE31Ka09Lz-_nMvqyuswFx9560ibauEpE5V8SGnfMW1O8-Ne60bKT4nIRASJYg6cqBI3fxz0mNFQtsBFbPZU92ZRtyDxSetuOOO9RnVENeONFXKhSdy1A5tpmKp7yHuMR_6o0UPLLceF-7PsM_uLgqVFiCx1-cY3fGr">
+                                    </div>
+                                    <p class="font-bold text-xs line-clamp-2">Prestasi Gemilang Tim Debat Bahasa Inggris</p>
+                                    <button class="mt-auto w-full py-1 border-[3px] border-on-background bg-error text-white font-label-mono text-[10px] uppercase hover:bg-on-background transition-colors">Remove</button>
+                                </div>
+                                <!-- Slot 3 (Empty) -->
+                                <button class="bg-surface-container-low border-[3px] border-dashed border-on-background/40 p-3 flex flex-col items-center justify-center gap-2 hover:bg-surface-container transition-colors group">
+                                    <span class="material-symbols-outlined text-3xl text-on-background/40 group-hover:scale-110 transition-transform">add_circle</span>
+                                    <span class="font-label-mono text-[10px] uppercase text-on-background/40">Empty Slot</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Announcement Spotlight (1/3 width) -->
+                        <div class="space-y-6">
+                            <h4 class="font-label-mono font-bold uppercase flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary" style="font-variation-settings: &quot;FILL&quot; 1;">campaign</span> Announcement Spotlight
+                            </h4>
+                            <div class="bg-secondary-container border-[3px] border-on-background p-4 brutalist-shadow h-full flex flex-col">
+                                <div class="flex items-start gap-3 mb-4">
+                                    <div class="w-10 h-10 bg-white border-[3px] border-on-background flex items-center justify-center shrink-0">
+                                        <span class="material-symbols-outlined text-secondary">priority_high</span>
+                                    </div>
+                                    <p class="font-bold text-sm text-on-secondary-container">Pendaftaran Beasiswa Unggulan Semester Ganjil</p>
+                                </div>
+                                <button class="mt-auto w-full py-2 border-[3px] border-on-background bg-white text-on-background font-label-mono text-xs uppercase hover:bg-on-background hover:text-white transition-colors">Remove Spotlight</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== RUNNING TEXT MONITOR ========== -->
+                <div class="space-y-6">
+                    <h3 class="font-headline-lg text-3xl uppercase">Running Text Monitor</h3>
+                    <div class="bg-white border-[3px] border-on-background p-4 md:p-6 brutalist-shadow">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                            <h4 class="font-label-mono font-bold uppercase flex items-center gap-2 text-sm">
+                                <span class="material-symbols-outlined text-secondary" style="font-variation-settings: &quot;FILL&quot; 1;">campaign</span> TICKER ENTRIES
+                            </h4>
+                            <button class="bg-primary text-white px-4 py-2 text-xs font-bold uppercase border-[3px] border-on-background brutalist-shadow-active hover:bg-primary-container transition-colors">+ ADD NEW</button>
+                        </div>
+                        <div class="space-y-3">
+                            <!-- Entry 1 -->
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-surface-container-low border-[3px] border-on-background p-3">
+                                <span class="font-label-mono font-bold text-sm text-on-background/40 shrink-0 text-center sm:text-left">01</span>
+                                <button class="w-10 h-10 flex items-center justify-center bg-white border-[3px] border-on-background brutalist-shadow-active hover:bg-surface-container transition-colors shrink-0 self-center sm:self-auto">
+                                    <span class="material-symbols-outlined text-secondary">campaign</span>
+                                </button>
+                                <input class="flex-1 bg-transparent border-none focus:ring-0 font-bold text-sm w-full min-w-0" type="text" value="Penerimaan Mahasiswa Baru Gelombang 2 Segera Dibuka!">
+                                <div class="flex items-center gap-2 self-center sm:self-auto">
+                                    <button class="material-symbols-outlined text-sm hover:text-primary transition-colors p-1">edit</button>
+                                    <button class="material-symbols-outlined text-sm hover:text-error transition-colors p-1">delete</button>
+                                </div>
+                            </div>
+                            <!-- Entry 2 -->
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-surface-container-low border-[3px] border-on-background p-3">
+                                <span class="font-label-mono font-bold text-sm text-on-background/40 shrink-0 text-center sm:text-left">02</span>
+                                <button class="w-10 h-10 flex items-center justify-center bg-white border-[3px] border-on-background brutalist-shadow-active hover:bg-surface-container transition-colors shrink-0 self-center sm:self-auto">
+                                    <span class="material-symbols-outlined text-primary">info</span>
+                                </button>
+                                <input class="flex-1 bg-transparent border-none focus:ring-0 font-bold text-sm w-full min-w-0" type="text" value="Selamat Kepada Tim Robotik Juara 1 Nasional">
+                                <div class="flex items-center gap-2 self-center sm:self-auto">
+                                    <button class="material-symbols-outlined text-sm hover:text-primary transition-colors p-1">edit</button>
+                                    <button class="material-symbols-outlined text-sm hover:text-error transition-colors p-1">delete</button>
+                                </div>
+                            </div>
+                            <!-- Entry 3 -->
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-surface-container-low border-[3px] border-on-background p-3">
+                                <span class="font-label-mono font-bold text-sm text-on-background/40 shrink-0 text-center sm:text-left">03</span>
+                                <button class="w-10 h-10 flex items-center justify-center bg-white border-[3px] border-on-background brutalist-shadow-active hover:bg-surface-container transition-colors shrink-0 self-center sm:self-auto">
+                                    <span class="material-symbols-outlined text-tertiary">warning</span>
+                                </button>
+                                <input class="flex-1 bg-transparent border-none focus:ring-0 font-bold text-sm w-full min-w-0" type="text" value="Workshop Penulisan Jurnal Internasional: Senin, 12 Feb">
+                                <div class="flex items-center gap-2 self-center sm:self-auto">
+                                    <button class="material-symbols-outlined text-sm hover:text-primary transition-colors p-1">edit</button>
+                                    <button class="material-symbols-outlined text-sm hover:text-error transition-colors p-1">delete</button>
+                                </div>
+                            </div>
+                            <!-- Entry 4 -->
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-surface-container-low border-[3px] border-on-background p-3">
+                                <span class="font-label-mono font-bold text-sm text-on-background/40 shrink-0 text-center sm:text-left">04</span>
+                                <button class="w-10 h-10 flex items-center justify-center bg-white border-[3px] border-on-background brutalist-shadow-active hover:bg-surface-container transition-colors shrink-0 self-center sm:self-auto">
+                                    <span class="material-symbols-outlined text-on-background/40">star</span>
+                                </button>
+                                <input class="flex-1 bg-transparent border-none focus:ring-0 font-bold text-sm italic w-full min-w-0" placeholder="Add entry text..." type="text">
+                                <div class="flex items-center gap-2 self-center sm:self-auto hidden">
+                                    <button class="material-symbols-outlined text-sm hover:text-primary transition-colors p-1">edit</button>
+                                    <button class="material-symbols-outlined text-sm hover:text-error transition-colors p-1">delete</button>
+                                </div>
+                            </div>
+                            <!-- Entry 5 -->
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 bg-surface-container-low border-[3px] border-on-background p-3">
+                                <span class="font-label-mono font-bold text-sm text-on-background/40 shrink-0 text-center sm:text-left">05</span>
+                                <button class="w-10 h-10 flex items-center justify-center bg-white border-[3px] border-on-background brutalist-shadow-active hover:bg-surface-container transition-colors shrink-0 self-center sm:self-auto">
+                                    <span class="material-symbols-outlined text-on-background/40">notifications</span>
+                                </button>
+                                <input class="flex-1 bg-transparent border-none focus:ring-0 font-bold text-sm italic w-full min-w-0" placeholder="Add entry text..." type="text">
+                                <div class="flex items-center gap-2 self-center sm:self-auto hidden">
+                                    <button class="material-symbols-outlined text-sm hover:text-primary transition-colors p-1">edit</button>
+                                    <button class="material-symbols-outlined text-sm hover:text-error transition-colors p-1">delete</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <button class="w-full bg-on-background text-white p-3 font-headline-lg text-xl uppercase brutalist-shadow-active hover:bg-secondary transition-colors">SAVE CHANGES</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Toggle sidebar untuk mobile
+        const hamburger = document.getElementById('hamburger');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function openSidebar() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            overlay.classList.remove('hidden');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        hamburger.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // Tutup sidebar saat resize ke desktop (untuk mencegah kebingungan)
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.remove('-translate-x-full');
+                sidebar.classList.add('translate-x-0');
+                overlay.classList.add('hidden');
+            } else {
+                // Pastikan sidebar tertutup di mobile jika tidak terbuka
+                if (!sidebar.classList.contains('translate-x-0')) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            }
+        });
+
+        // Micro-interactions for neo-brutalist buttons
+        document.querySelectorAll('.brutalist-shadow-hover').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'translate(4px, 4px)';
+                button.style.boxShadow = '0px 0px 0px 0px rgba(0,0,0,1)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'translate(-2px, -2px)';
+                button.style.boxShadow = '6px 6px 0px 0px rgba(0,0,0,1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = '';
+                button.style.boxShadow = '4px 4px 0px 0px rgba(0,0,0,1)';
+            });
+        });
+
+        // Horizontal scroll handling for tables on small screens
+        const tableContainers = document.querySelectorAll('.overflow-auto');
+        tableContainers.forEach(container => {
+            container.addEventListener('wheel', (evt) => {
+                if (evt.deltaX !== 0) {
+                    // native horizontal scroll
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

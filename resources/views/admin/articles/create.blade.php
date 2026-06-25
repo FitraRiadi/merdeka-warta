@@ -1,86 +1,162 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
-@section('title', 'Buat Artikel')
-@section('subtitle', 'Tulis artikel berita baru')
+@section('title', 'Tulis Artikel - Panel Admin')
+@section('page_title', 'Tulis Artikel')
+@section('breadcrumb')
+    <a href="{{ route('admin.articles.index') }}" class="hover:text-primary transition-colors">Artikel</a>
+    <span class="material-symbols-outlined text-sm">chevron_right</span>
+    <span class="text-on-surface">Tulis Baru</span>
+@endsection
 
 @section('content')
-
     <form action="{{ route('admin.articles.store') }}" method="POST" enctype="multipart/form-data" class="max-w-4xl">
         @csrf
 
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
-
-            {{-- Title --}}
-            <div>
-                <label class="form-label">Judul Artikel</label>
-                <input type="text" name="title" value="{{ old('title') }}" class="form-input" placeholder="Masukkan judul artikel" required>
-                @error('title') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            {{-- Slug --}}
-            <div>
-                <label class="form-label">Slug <span class="text-slate-400 font-normal">(kosongkan untuk generate otomatis)</span></label>
-                <input type="text" name="slug" value="{{ old('slug') }}" class="form-input" placeholder="judul-artikel">
-                @error('slug') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            {{-- Category & Author --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="admin-card p-6">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b-3 border-on-background">
+                <span class="w-8 h-8 bg-gradient-to-br from-primary to-primary-fixed-dim border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span class="material-symbols-outlined text-on-primary text-sm">edit_note</span>
+                </span>
                 <div>
-                    <label class="form-label">Kategori</label>
-                    <input type="text" name="category" value="{{ old('category') }}" class="form-input" placeholder="cth: Pendidikan, Prestasi">
-                    @error('category') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
+                    <h2 class="font-headline-lg text-lg uppercase tracking-tight">Informasi Artikel</h2>
+                    <p class="font-label-mono text-[10px] text-on-surface-variant uppercase">Lengkapi detail artikel di bawah ini</p>
                 </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Judul Artikel <span class="text-error">*</span></label>
+                    <input type="text" name="title" value="{{ old('title') }}" required
+                        class="admin-input" placeholder="Masukkan judul artikel...">
+                    @error('title') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Slug (biarkan kosong untuk otomatis)</label>
+                    <input type="text" name="slug" value="{{ old('slug') }}"
+                        class="admin-input" placeholder="judul-artikel">
+                    @error('slug') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kategori</label>
+                    <input type="text" name="category" list="category-list" value="{{ old('category') }}"
+                        class="admin-input" placeholder="Pilih atau ketik kategori baru...">
+                    <datalist id="category-list">
+                        <option value="Prestasi">
+                        <option value="Kegiatan">
+                        <option value="Akademik">
+                        <option value="Kesiswaan">
+                        <option value="Alumni">
+                        <option value="Informasi">
+                        <option value="Pengumuman">
+                        <option value="Olahraga">
+                        <option value="Seni Budaya">
+                        <option value="Teknologi">
+                        <option value="Ekstrakurikuler">
+                        <option value="Liputan">
+                    </datalist>
+                    @error('category') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
+
                 @if(Auth::user()->isSuperAdmin())
                     <div>
-                        <label class="form-label">Penulis</label>
-                        <select name="user_id" class="form-select">
-                            <option value="">Pilih penulis</option>
+                        <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Penulis</label>
+                        <select name="user_id" class="admin-input">
+                            <option value="">Pilih Penulis...</option>
                             @foreach($authors as $author)
-                                <option value="{{ $author->id }}" @selected(old('user_id') == $author->id)>{{ $author->name }}</option>
+                                <option value="{{ $author->id }}" {{ old('user_id') == $author->id ? 'selected' : '' }}>
+                                    {{ $author->name }} ({{ $author->email }})
+                                </option>
                             @endforeach
                         </select>
-                        @error('user_id') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
+                        @error('user_id') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                     </div>
                 @endif
-            </div>
 
-            {{-- Content --}}
-            <div>
-                <label class="form-label">Konten (JSON Editor.js)</label>
-                <textarea name="content" rows="12" class="form-input font-mono text-sm" placeholder='{"blocks":[{"type":"paragraph","data":{"text":"..."}}]}' required>{{ old('content') }}</textarea>
-                @error('content') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            {{-- Image --}}
-            <div>
-                <label class="form-label">Gambar Sampul</label>
-                <input type="file" name="image" accept="image/*" class="form-input file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                <p class="text-xs text-slate-400 font-medium mt-1.5">Maksimal 5MB. Format: JPG, PNG, WebP.</p>
-                @error('image') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            {{-- Published At --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="form-label">Tanggal Terbit</label>
-                    <input type="date" name="published_at" value="{{ old('published_at', now()->format('Y-m-d')) }}" class="form-input">
-                    @error('published_at') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Tanggal Terbit</label>
+                    <input type="datetime-local" name="published_at" value="{{ old('published_at') }}"
+                        class="admin-input">
+                    @error('published_at') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
-                <div class="flex items-end">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" name="is_published" value="1" @checked(old('is_published', true)) class="w-5 h-5 rounded-lg border-2 border-slate-300 text-blue-600 focus:ring-blue-500">
-                        <span class="font-semibold text-sm text-slate-700">Publikasikan sekarang</span>
+
+                <div class="md:col-span-2" x-data="{ source: 'upload', previewUrl: '{{ old('image_url') }}', previewFile: null, imageError: false }">
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Gambar Sampul</label>
+
+                    <div class="flex gap-2 mb-3">
+                        <button type="button" @click="source='upload'"
+                            :class="source==='upload' ? 'admin-btn-primary admin-btn-sm' : 'admin-btn-secondary admin-btn-sm'">
+                            <span class="material-symbols-outlined text-sm">upload</span> Upload
+                        </button>
+                        <button type="button" @click="source='url'"
+                            :class="source==='url' ? 'admin-btn-primary admin-btn-sm' : 'admin-btn-secondary admin-btn-sm'">
+                            <span class="material-symbols-outlined text-sm">link</span> URL
+                        </button>
+                    </div>
+
+                    <div x-show="source==='upload'" x-cloak>
+                        <input type="file" name="image" accept="image/*"
+                            @change="previewFile = $event.target.files[0] || null; imageError = false"
+                            class="admin-input custom-file-input py-2">
+                        <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Maks. 5MB. Format: JPG, PNG, WebP</p>
+                    </div>
+
+                    <div x-show="source==='url'" x-cloak>
+                        <input type="url" name="image_url" x-model="previewUrl"
+                            @input="imageError = false"
+                            class="admin-input" placeholder="https://contoh.com/gambar.jpg">
+                    </div>
+
+                    @error('image') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                    @error('image_url') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+
+                    <div class="mt-3 border-3 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,0.1)] overflow-hidden">
+                        <template x-if="(previewFile || previewUrl) && !imageError">
+                            <img :src="previewFile ? URL.createObjectURL(previewFile) : previewUrl"
+                                @@error="imageError = true"
+                                class="w-full h-48 object-cover">
+                        </template>
+                        <div x-show="(!previewFile && !previewUrl) || imageError"
+                            class="w-full h-48 flex items-center justify-center bg-surface-container-highest">
+                            <div class="text-center">
+                                <span class="material-symbols-outlined text-5xl text-on-surface-variant">image</span>
+                                <p class="font-label-mono text-xs text-on-surface-variant mt-2">Tidak ada gambar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Konten <span class="text-error">*</span></label>
+                    <textarea name="content" rows="15" required
+                        class="admin-input font-mono text-sm" placeholder="Tulis konten artikel di sini... (JSON Editor.js atau teks biasa)">{{ old('content') }}</textarea>
+                    @error('content') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                    <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">
+                        Gunakan format JSON Editor.js atau teks biasa. Untuk JSON, struktur: {"blocks": [...]}
+                    </p>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors">
+                        <input type="checkbox" name="is_published" value="1" {{ old('is_published') ? 'checked' : '' }}
+                            class="w-5 h-5 border-3 border-on-background bg-surface text-primary focus:ring-0 focus:outline-none rounded-none
+                                   checked:bg-primary checked:border-on-background transition-colors">
+                        <span class="font-label-mono text-xs uppercase group-hover:text-primary transition-colors">Terbitkan langsung</span>
                     </label>
                 </div>
             </div>
+        </div>
 
-            {{-- Actions --}}
-            <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
-                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Simpan Artikel</button>
-                <a href="{{ route('admin.articles.index') }}" class="btn-secondary"><i class="fas fa-times"></i> Batal</a>
-            </div>
+        <div class="flex items-center gap-3 mt-6">
+            <button type="submit" class="admin-btn-primary">
+                <span class="material-symbols-outlined text-sm">save</span>
+                Simpan Artikel
+            </button>
+            <a href="{{ route('admin.articles.index') }}" class="admin-btn-secondary">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Batal
+            </a>
         </div>
     </form>
-
 @endsection

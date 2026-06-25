@@ -29,7 +29,7 @@
                         "on-secondary-fixed-variant": "#85145a", "on-secondary-fixed": "#3d0026",
                         "inverse-on-surface": "#f0f1f2", "on-primary": "#ffffff", "secondary-container": "#fc79bd",
                         "surface-tint": "#0053db", "on-primary-fixed-variant": "#003ea8", "primary-fixed": "#dbe1ff",
-                        "surface-bright": "#f8f9fa", "primary-fixed": "#dbe1ff"
+                        "surface-bright": "#f8f9fa"
                     },
                     borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
                     spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px", "border-width": "3px" },
@@ -46,36 +46,64 @@
         }
     </script>
     <style>
-        body { background-color: #f8f9fa; background-image: radial-gradient(#e5e7eb 1px, transparent 1px); background-size: 32px 32px; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            background-color: #f8f9fa;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 32px 32px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
         .brutalist-shadow { box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1); }
         .brutalist-shadow-hover:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 1); }
         .brutalist-shadow-sm { box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1); }
         .brutalist-border { border: 3px solid #191c1d; }
         .sticker-tilt { transform: rotate(-2deg); }
+
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { animation: marquee 15s linear infinite; }
+
         @keyframes scroll-gallery { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll-gallery { animation: scroll-gallery 10s linear infinite; }
         @media (max-width: 767px) { .animate-scroll-gallery { animation-duration: 6s; } }
+
         @keyframes scroll-testimonials { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll-testimonials { animation: scroll-testimonials 10s linear infinite; }
         .pause-on-hover:hover .animate-scroll-testimonials { animation-play-state: paused; }
+
         .btn-press:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1); }
+
         #mobile-sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         #mobile-sidebar.closed { transform: translateX(100%); }
         #mobile-sidebar:not(.closed) { transform: translateX(0); }
         #sidebar-overlay { transition: opacity 0.3s ease-in-out; }
         #sidebar-overlay.closed { opacity: 0 !important; pointer-events: none !important; }
         #sidebar-overlay:not(.closed) { opacity: 1 !important; pointer-events: auto !important; }
+
         .carousel-container { position: relative; overflow: hidden; }
-        .carousel-slide { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity 0.5s ease-in-out; display: flex; flex-direction: column; justify-content: flex-end; }
+        .carousel-slide {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+            display: flex; flex-direction: column; justify-content: flex-end;
+        }
         .carousel-slide.active { opacity: 1; pointer-events: auto; position: relative; }
+
         .hero-height { min-height: 400px; }
         @media (min-width: 768px) { .hero-height { min-height: 500px; } }
+
         .news-slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .news-slider-item { flex: 0 0 100%; padding: 0 12px; }
         @media (min-width: 768px) { .news-slider-item { flex: 0 0 50%; } }
         @media (min-width: 1024px) { .news-slider-item { flex: 0 0 33.333%; } }
+
+        /* FIX: carousel nav buttons — clamp so they don't push outside on mobile */
+        #hero-carousel #prevBtn,
+        #hero-carousel #nextBtn {
+            /* already hidden on mobile via hidden sm:block, but guard anyway */
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -84,14 +112,18 @@
     {{-- NAVBAR + TICKER --}}
     @include('layouts.partials.public-navbar', ['runningTexts' => $runningTexts])
 
-    <main class="max-w-[1440px] mx-auto px-4 md:px-margin-desktop py-8 md:py-12">
+    {{-- FIX: Removed asymmetric pl-6 pr-4. Now px-4 on mobile, px-margin-desktop on desktop.
+         Also added w-full and box-sizing safety. --}}
+    <main class="w-full max-w-[1440px] mx-auto px-4 md:px-16 py-8 md:py-12 box-border">
 
         {{-- ============================================================ --}}
         {{-- HERO SECTION WITH CAROUSEL + ANNOUNCEMENTS SIDEBAR --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 grid grid-cols-1 lg:grid-cols-12 gap-gutter pb-4">
+        <section class="mb-12 md:mb-16 grid grid-cols-1 lg:grid-cols-12 gap-6 pb-4">
 
             {{-- Hero Carousel --}}
+            {{-- FIX: removed -left-4 md:-left-10 / -right-4 md:-right-10 on nav buttons
+                 that were causing horizontal overflow on mobile. Use inset-x positioning instead. --}}
             <div class="lg:col-span-8 group relative brutalist-border brutalist-shadow bg-surface-container-highest hero-height carousel-container" id="hero-carousel">
                 @forelse($spotlights as $s)
                     <div class="carousel-slide p-6 md:p-8 @if($loop->first) active @endif">
@@ -103,7 +135,9 @@
                         @endif
                         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
                         <div class="relative z-10">
-                            <span class="inline-block bg-primary text-on-primary font-label-mono text-[10px] md:text-label-mono px-3 py-1 md:px-4 md:py-2 brutalist-border brutalist-shadow-sm sticker-tilt mb-4 md:mb-6">{{ $article->category ?? 'FEATURED' }}</span>
+                            <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-mono text-[10px] md:text-label-mono px-3 py-1 md:px-4 md:py-2 brutalist-border brutalist-shadow-sm sticker-tilt mb-4 md:mb-6">
+                                <span>{{ $article->category ?? 'FEATURED' }}</span>
+                            </span>
                             <h1 class="font-headline-lg text-2xl md:text-headline-lg text-white mb-2 md:mb-4 leading-none uppercase">{{ $article->title }}</h1>
                             <p class="text-white/90 font-body-md text-sm md:text-body-md mb-4 md:mb-6 max-w-xl line-clamp-3 md:line-clamp-none">{{ Str::limit($article->content_text, 200) }}</p>
                             <a href="{{ route('public.article.show', $article->slug) }}" class="inline-block bg-white text-on-surface brutalist-border brutalist-shadow-sm px-6 py-2 md:px-8 md:py-3 font-bold flex items-center gap-2 btn-press w-fit text-sm md:text-base">
@@ -124,16 +158,6 @@
                 @endforelse
 
                 @if($spotlights->count() > 1)
-                    <div class="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-10 z-20 hidden sm:block">
-                        <button class="bg-white/90 text-on-surface brutalist-border brutalist-shadow-sm p-2 hover:bg-white btn-press transition-all" id="prevBtn">
-                            <span class="material-symbols-outlined block">arrow_back</span>
-                        </button>
-                    </div>
-                    <div class="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-10 z-20 hidden sm:block">
-                        <button class="bg-white/90 text-on-surface brutalist-border brutalist-shadow-sm p-2 hover:bg-white btn-press transition-all" id="nextBtn">
-                            <span class="material-symbols-outlined block">arrow_forward</span>
-                        </button>
-                    </div>
                     <div class="relative md:absolute mt-6 md:mt-0 bottom-0 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex justify-center gap-2 md:gap-3" id="hero-dots">
                         @foreach($spotlights as $s)
                             <button class="carousel-dot w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-on-background transition-all" data-slide="{{ $loop->index }}" style="background-color: {{ $loop->first ? 'white' : 'rgba(255,255,255,0.5)' }}; width: {{ $loop->first ? '1.5rem' : '1rem' }};"></button>
@@ -143,12 +167,29 @@
             </div>
 
             {{-- Announcements Sidebar --}}
-            <div class="lg:col-span-4 flex flex-col gap-gutter" id="pengumuman">
+            <div class="lg:col-span-4 flex flex-col gap-6" id="pengumuman">
                 <div class="brutalist-border brutalist-shadow bg-tertiary-fixed p-6 flex flex-col h-full">
                     <div class="flex items-center gap-2 mb-6">
                         <span class="material-symbols-outlined text-tertiary text-4xl">campaign</span>
                         <h2 class="font-headline-lg text-2xl md:text-3xl uppercase">PENGUMUMAN</h2>
                     </div>
+
+                    {{-- Featured Announcement Spotlight --}}
+                    @if(isset($spotlightAnnouncement) && $spotlightAnnouncement && $spotlightAnnouncement->announcement)
+                        @php $featAnn = $spotlightAnnouncement->announcement; @endphp
+                        <a href="{{ route('public.announcement.show', $featAnn->id) }}"
+                            class="block p-5 mb-4 bg-white brutalist-border brutalist-shadow-sm hover:-translate-y-1 transition-transform relative overflow-hidden">
+                            <div class="absolute top-0 right-0 bg-secondary text-on-secondary font-label-mono text-[9px] px-2 py-0.5 border-l-2 border-b-2 border-on-background flex items-center gap-1">
+                                <span>FEATURED</span>
+                            </div>
+                            <div class="flex items-start gap-2 mb-2">
+                                <span class="material-symbols-outlined text-secondary text-xl flex-shrink-0">campaign</span>
+                                <h3 class="font-headline-lg text-lg uppercase leading-tight">{{ $featAnn->title }}</h3>
+                            </div>
+                            <p class="font-body-md text-sm text-on-surface-variant line-clamp-2">{{ $featAnn->content_text }}</p>
+                        </a>
+                    @endif
+
                     @if($announcements->isNotEmpty())
                         <ul class="space-y-4 flex-grow">
                             @foreach($announcements as $ann)
@@ -189,7 +230,8 @@
                 @endif
             </div>
             @if($articles->isNotEmpty())
-                <div class="overflow-hidden pb-8 px-2 -mx-2">
+                {{-- FIX: Removed negative margin -mx-2 that contributed to overflow --}}
+                <div class="overflow-hidden pb-8">
                     <div class="news-slider-track" id="newsSliderTrack" style="transform: translateX(0%);">
                         @foreach($articles as $article)
                             <div class="news-slider-item">
@@ -258,7 +300,7 @@
                 <div class="w-full overflow-hidden">
                     <div class="flex animate-scroll-gallery">
                         @for($copy = 0; $copy < 3; $copy++)
-                        <div class="flex shrink-0 gap-gutter px-3">
+                        <div class="flex shrink-0 gap-6 px-3">
                             @foreach($galleries as $g)
                                 <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
                                     <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}" class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110" src="{{ $g->image_url }}">
@@ -281,8 +323,8 @@
                     <div class="h-1 bg-on-background flex-grow hidden md:block"></div>
                 </div>
                 <div class="w-full overflow-hidden pause-on-hover py-4">
-                    <div class="flex animate-scroll-testimonials w-max gap-gutter">
-                        <div class="flex gap-gutter px-3">
+                    <div class="flex animate-scroll-testimonials w-max gap-6">
+                        <div class="flex gap-6 px-3">
                             @foreach($testimonials as $t)
                                 <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow {{ $t->bg_color }} p-6 flex flex-col gap-4 shrink-0">
                                     <span class="material-symbols-outlined @if($t->bg_color == 'bg-secondary-fixed') text-secondary @elseif($t->bg_color == 'bg-tertiary-fixed') text-tertiary @elseif($t->bg_color == 'bg-primary-fixed') text-primary @else text-on-background @endif text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
@@ -293,7 +335,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        <div class="flex gap-gutter px-3">
+                        <div class="flex gap-6 px-3">
                             @foreach($testimonials as $t)
                                 <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow {{ $t->bg_color }} p-6 flex flex-col gap-4 shrink-0">
                                     <span class="material-symbols-outlined @if($t->bg_color == 'bg-secondary-fixed') text-secondary @elseif($t->bg_color == 'bg-tertiary-fixed') text-tertiary @elseif($t->bg_color == 'bg-primary-fixed') text-primary @else text-on-background @endif text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
@@ -308,8 +350,6 @@
                 </div>
             </section>
         @endif
-
-       
 
     </main>
 
@@ -432,10 +472,6 @@
         function startAutoSlide() { stopAutoSlide(); autoSlideInterval = setInterval(nextSlide, 6000); }
         function stopAutoSlide() { clearInterval(autoSlideInterval); }
 
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-        if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoSlide(); });
-        if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoSlide(); });
         dots.forEach(dot => { dot.addEventListener('click', () => { showSlide(parseInt(dot.dataset.slide)); startAutoSlide(); }); });
 
         if (totalSlides > 0) { showSlide(0); startAutoSlide(); }

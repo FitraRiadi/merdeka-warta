@@ -1,60 +1,81 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
-@section('title', 'Edit Testimoni')
-@section('subtitle', 'Perbarui testimoni/tanggapan')
+@section('title', 'Edit Testimoni - Panel Admin')
+@section('page_title', 'Edit Testimoni')
+@section('breadcrumb')
+    <a href="{{ route('admin.testimonials.index') }}" class="hover:text-primary transition-colors">Testimoni</a>
+    <span class="material-symbols-outlined text-sm">chevron_right</span>
+    <span class="text-on-surface truncate max-w-[200px]">{{ $testimonial->author_name }}</span>
+@endsection
 
 @section('content')
-
     <form action="{{ route('admin.testimonials.update', $testimonial) }}" method="POST" class="max-w-2xl">
         @csrf @method('PATCH')
 
-        <div class="bg-surface border-[3px] border-on-background brutalist-shadow p-6 md:p-8 space-y-6">
-            <div>
-                <label class="form-label">Kutipan</label>
-                <textarea name="quote" rows="3" class="form-input" required>{{ old('quote', $testimonial->quote) }}</textarea>
-                @error('quote') <p class="font-label-mono text-[10px] text-error mt-1">{{ $message }}</p> @enderror
-            </div>
+        <div class="admin-card p-6">
+            <div class="space-y-6">
+                {{-- Quote --}}
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kutipan <span class="text-error">*</span></label>
+                    <textarea name="quote" rows="4" required
+                        class="admin-input" placeholder="Tulis kutipan testimoni...">{{ old('quote', $testimonial->quote) }}</textarea>
+                    @error('quote') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {{-- Author Name --}}
                 <div>
-                    <label class="form-label">Nama</label>
-                    <input type="text" name="author_name" value="{{ old('author_name', $testimonial->author_name) }}" class="form-input" required>
-                    @error('author_name') <p class="font-label-mono text-[10px] text-error mt-1">{{ $message }}</p> @enderror
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Nama Penulis <span class="text-error">*</span></label>
+                    <input type="text" name="author_name" value="{{ old('author_name', $testimonial->author_name) }}" required
+                        class="admin-input" placeholder="Nama lengkap...">
+                    @error('author_name') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
-                <div>
-                    <label class="form-label">Peran</label>
-                    <input type="text" name="author_role" value="{{ old('author_role', $testimonial->author_role) }}" class="form-input" placeholder="Siswa Kelas XI">
-                    @error('author_role') <p class="font-label-mono text-[10px] text-error mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="form-label">Warna Latar</label>
-                    <select name="bg_color" class="form-input">
-                        <option value="bg-secondary-fixed" @selected(old('bg_color', $testimonial->bg_color) == 'bg-secondary-fixed')>Pink</option>
-                        <option value="bg-tertiary-fixed" @selected(old('bg_color', $testimonial->bg_color) == 'bg-tertiary-fixed')>Orange</option>
-                        <option value="bg-primary-fixed" @selected(old('bg_color', $testimonial->bg_color) == 'bg-primary-fixed')>Blue</option>
-                        <option value="bg-surface-container" @selected(old('bg_color', $testimonial->bg_color) == 'bg-surface-container')>Gray</option>
-                    </select>
-                    @error('bg_color') <p class="font-label-mono text-[10px] text-error mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="form-label">Urutan</label>
-                    <input type="number" name="sort_order" value="{{ old('sort_order', $testimonial->sort_order) }}" class="form-input" min="0">
-                    @error('sort_order') <p class="font-label-mono text-[10px] text-error mt-1">{{ $message }}</p> @enderror
-                </div>
-            </div>
 
-            <div class="flex items-center gap-3">
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $testimonial->is_active)) class="w-5 h-5 border-[3px] border-on-background">
-                    <span class="font-label-mono text-xs uppercase">Aktif</span>
-                </label>
-            </div>
+                {{-- Author Role --}}
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Jabatan / Peran</label>
+                    <input type="text" name="author_role" value="{{ old('author_role', $testimonial->author_role) }}"
+                        class="admin-input" placeholder="cth: Kepala Sekolah, Guru, Siswa">
+                    @error('author_role') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
 
-            <div class="flex items-center gap-3 pt-4 border-t-[3px] border-on-background">
-                <button type="submit" class="btn btn-primary">Simpan</button>
-                <a href="{{ route('admin.testimonials.index') }}" class="btn btn-secondary">Batal</a>
+                {{-- Background Color --}}
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Warna Latar (CSS class)</label>
+                    <input type="text" name="bg_color" value="{{ old('bg_color', $testimonial->bg_color) }}"
+                        class="admin-input" placeholder="bg-secondary-fixed">
+                    @error('bg_color') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
+
+                {{-- Is Active --}}
+                <div>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" name="is_active" value="1"
+                            {{ old('is_active', $testimonial->is_active) ? 'checked' : '' }}
+                            class="w-5 h-5 border-3 border-on-background bg-surface text-primary focus:ring-0 focus:outline-none rounded-none
+                                   checked:bg-primary checked:border-on-background transition-colors">
+                        <span class="font-label-mono text-xs uppercase group-hover:text-primary transition-colors">Aktifkan</span>
+                    </label>
+                </div>
             </div>
+        </div>
+
+        <div class="flex items-center gap-3 mt-6">
+            <button type="submit" class="admin-btn-primary">
+                <span class="material-symbols-outlined text-sm">save</span>
+                Perbarui
+            </button>
+            <a href="{{ route('admin.testimonials.index') }}" class="admin-btn-secondary">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Batal
+            </a>
         </div>
     </form>
 
+    <form action="{{ route('admin.testimonials.destroy', $testimonial) }}" method="POST" class="mt-3">
+        @csrf @method('DELETE')
+        <button type="submit" data-confirm-delete data-message="Testimoni ini akan dihapus!" class="admin-btn-danger admin-btn-sm">
+            <span class="material-symbols-outlined text-sm">delete</span>
+            Hapus
+        </button>
+    </form>
 @endsection

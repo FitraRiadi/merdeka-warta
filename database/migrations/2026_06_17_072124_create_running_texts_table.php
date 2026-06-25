@@ -11,7 +11,6 @@ return new class extends Migration
         Schema::create('running_texts', function (Blueprint $table) {
             $table->id();
             $table->text('text');
-            $table->boolean('is_active')->default(true);
             $table->integer('display_order')->default(0);
             $table->string('background_color')->default('#000000');
             $table->string('text_color')->default('#ffffff');

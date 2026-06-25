@@ -14,7 +14,6 @@ class Testimonial extends Model
         'author_name',
         'author_role',
         'bg_color',
-        'sort_order',
         'is_active',
     ];
 
@@ -22,7 +21,6 @@ class Testimonial extends Model
     {
         return [
             'is_active' => 'boolean',
-            'sort_order' => 'integer',
         ];
     }
 }

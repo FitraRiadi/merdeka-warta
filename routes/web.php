@@ -56,8 +56,15 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
         ->middleware('super_admin');
 
     // Spotlight (hanya super_admin)
-    Route::resource('spotlights', SpotlightController::class)
-        ->middleware('super_admin');
+    Route::controller(SpotlightController::class)
+        ->middleware('super_admin')
+        ->prefix('spotlights')
+        ->name('spotlights.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/manage', 'manage')->name('manage');
+            Route::post('/', 'store')->name('store');
+        });
 
     // Gallery (hanya super_admin)
     Route::resource('galleries', GalleryController::class)

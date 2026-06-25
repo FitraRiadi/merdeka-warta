@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Panel Admin') - {{ config('app.name') }}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "tertiary-container": "#aa5700", "surface-variant": "#e1e3e4", "on-background": "#191c1d",
+                        "background": "#f8f9fa", "on-tertiary-container": "#ffede3", "error": "#ba1a1a",
+                        "on-error": "#ffffff", "on-secondary-container": "#76014e", "on-primary-container": "#eeefff",
+                        "secondary": "#a43073", "surface": "#f8f9fa", "error-container": "#ffdad6",
+                        "inverse-primary": "#b4c5ff", "tertiary-fixed-dim": "#ffb783", "tertiary-fixed": "#ffdcc5",
+                        "tertiary": "#864300", "on-secondary": "#ffffff", "surface-container-highest": "#e1e3e4",
+                        "outline-variant": "#c3c6d7", "on-tertiary-fixed": "#301400", "secondary-fixed": "#ffd8e7",
+                        "surface-container-lowest": "#ffffff", "secondary-fixed-dim": "#ffafd3",
+                        "on-error-container": "#93000a", "outline": "#737686", "primary": "#004ac6",
+                        "surface-container": "#edeeef", "surface-container-high": "#e7e8e9", "surface-dim": "#d9dadb",
+                        "inverse-surface": "#2e3132", "on-primary-fixed": "#00174b", "on-tertiary-fixed-variant": "#713700",
+                        "on-tertiary": "#ffffff", "on-surface-variant": "#434655", "primary-container": "#2563eb",
+                        "surface-container-low": "#f3f4f5", "on-surface": "#191c1d", "primary-fixed-dim": "#b4c5ff",
+                        "on-secondary-fixed-variant": "#85145a", "on-secondary-fixed": "#3d0026",
+                        "inverse-on-surface": "#f0f1f2", "on-primary": "#ffffff", "secondary-container": "#fc79bd",
+                        "primary-fixed": "#dbe1ff", "surface-tint": "#0053db", "on-primary-fixed-variant": "#003ea8",
+                        "surface-bright": "#f8f9fa"
+                    },
+                    borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+                    spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px", "border-width": "3px" },
+                    fontFamily: { "headline-lg": ["Anton"], "body-md": ["Plus Jakarta Sans"], "label-mono": ["JetBrains Mono"] },
+                    fontSize: {
+                        "headline-lg": ["36px", { lineHeight: "100%", fontWeight: "400" }],
+                        "label-mono": ["12px", { lineHeight: "1.2", fontWeight: "700" }],
+                        "body-md": ["16px", { lineHeight: "1.6", fontWeight: "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: #edeeef; }
+
+        .brutalist-shadow { box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1); }
+        .brutalist-shadow-sm { box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1); }
+        .brutalist-border { border: 3px solid #191c1d; }
+        .btn-press:active { transform: translate(4px, 4px); box-shadow: none !important; }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.625rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #434655;
+            transition: all 0.15s ease;
+            border: 2px solid transparent;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            background: linear-gradient(to right, #f3f4f5, #ffffff);
+            color: #004ac6;
+            border-left-color: #b4c5ff;
+        }
+        .sidebar-link.active {
+            background: linear-gradient(to right, #004ac6, #2563eb);
+            color: #ffffff;
+            border-left-color: #191c1d;
+            border-color: #191c1d;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .sidebar-link.active .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+            font-size: 1.25rem;
+        }
+        .material-symbols-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        input:focus { outline: none; box-shadow: none; }
+        textarea:focus { outline: none; box-shadow: none; }
+        select:focus { outline: none; box-shadow: none; }
+
+        [x-cloak] { display: none !important; }
+
+        .admin-card {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border: 3px solid #191c1d;
+            box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
+            position: relative;
+        }
+        .admin-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #004ac6, #b4c5ff);
+            opacity: 0.5;
+        }
+        .admin-card-sm {
+            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            border: 3px solid #191c1d;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .admin-input {
+            width: 100%;
+            background-color: #ffffff;
+            border: 3px solid #191c1d;
+            padding: 0.625rem 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.15s ease;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.08);
+        }
+        .admin-input:focus {
+            border-color: #004ac6;
+            box-shadow: 3px 3px 0px 0px rgba(0, 74, 198, 0.15);
+            background-color: #f8faff;
+        }
+        .admin-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #004ac6, #2563eb);
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.625rem 1.25rem;
+            border: 3px solid #191c1d;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+            transition: all 0.15s ease;
+        }
+        .admin-btn-primary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            background: linear-gradient(135deg, #003ea8, #004ac6);
+        }
+        .admin-btn-primary:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+        .admin-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #ffffff, #f3f4f5);
+            color: #191c1d;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.625rem 1.25rem;
+            border: 3px solid #191c1d;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+            transition: all 0.15s ease;
+        }
+        .admin-btn-secondary:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            background: linear-gradient(135deg, #f8faff, #dbe1ff);
+            border-color: #004ac6;
+            color: #004ac6;
+        }
+        .admin-btn-secondary:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+        .admin-btn-danger {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #ba1a1a, #d32f2f);
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.625rem 1.25rem;
+            border: 3px solid #191c1d;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+            transition: all 0.15s ease;
+        }
+        .admin-btn-danger:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            background: linear-gradient(135deg, #93000a, #ba1a1a);
+        }
+        .admin-btn-danger:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+        .admin-btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.7rem;
+        }
+        .admin-btn-success {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.625rem 1.25rem;
+            border: 3px solid #191c1d;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+            transition: all 0.15s ease;
+        }
+        .admin-btn-success:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .admin-btn-success:active {
+            transform: translate(2px, 2px);
+            box-shadow: none;
+        }
+        .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.625rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 2px solid #191c1d;
+        }
+        .admin-badge-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-color: #2e7d32;
+        }
+        .admin-badge-warning {
+            background-color: #fff3e0;
+            color: #e65100;
+            border-color: #e65100;
+        }
+        .admin-badge-info {
+            background-color: #e3f2fd;
+            color: #004ac6;
+            border-color: #004ac6;
+        }
+        .admin-badge-error {
+            background-color: #ffebee;
+            color: #c62828;
+            border-color: #c62828;
+        }
+        .admin-badge-neutral {
+            background-color: #f5f5f5;
+            color: #616161;
+            border-color: #616161;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border: 2px solid #191c1d;
+            background: #ffffff;
+            color: #434655;
+            transition: all 0.15s ease;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .action-btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
+        }
+        .action-btn:active {
+            transform: translate(1px, 1px);
+            box-shadow: none;
+        }
+        .action-btn-edit:hover {
+            background: #dbe1ff;
+            color: #004ac6;
+            border-color: #004ac6;
+        }
+        .action-btn-view:hover {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #2e7d32;
+        }
+        .action-btn-delete:hover {
+            background: #ffebee;
+            color: #c62828;
+            border-color: #c62828;
+        }
+
+        /* Stat card variants */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+        .stat-card-blue::after { background: linear-gradient(90deg, #004ac6, #b4c5ff); }
+        .stat-card-pink::after { background: linear-gradient(90deg, #a43073, #ffafd3); }
+        .stat-card-orange::after { background: linear-gradient(90deg, #864300, #ffb783); }
+        .stat-card-green::after { background: linear-gradient(90deg, #2e7d32, #a5d6a7); }
+        .stat-card-purple::after { background: linear-gradient(90deg, #7b1fa2, #ce93d8); }
+        .stat-card-teal::after { background: linear-gradient(90deg, #00695c, #80cbc4); }
+
+        /* Card header accent colors */
+        .card-header-blue { border-bottom-color: #004ac6 !important; }
+        .card-header-pink { border-bottom-color: #a43073 !important; }
+        .card-header-orange { border-bottom-color: #864300 !important; }
+        .card-header-green { border-bottom-color: #2e7d32 !important; }
+
+        /* Table styling */
+        .admin-table th {
+            background: linear-gradient(135deg, #e3f2fd, #dbe1ff);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #004ac6;
+            padding: 0.75rem;
+            border-bottom: 3px solid #191c1d;
+        }
+        .admin-table td {
+            padding: 0.75rem;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+        }
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+        .admin-table tbody tr {
+            transition: background 0.15s ease;
+        }
+        .admin-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8faff, #eef2ff);
+        }
+
+        /* Custom file input */
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+        }
+        .custom-file-input::before {
+            content: 'Pilih File';
+            display: inline-block;
+            background: linear-gradient(135deg, #004ac6, #2563eb);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.375rem 0.75rem;
+            border: 2px solid #191c1d;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 1);
+        }
+
+        /* Page header accent */
+        .page-header-accent {
+            width: 3rem;
+            height: 4px;
+            background: linear-gradient(90deg, #004ac6, #b4c5ff);
+            margin-top: 0.25rem;
+        }
+
+        /* Empty state styling */
+        .empty-state-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #f3f4f5, #e5e7eb);
+            border: 3px solid #191c1d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section title with accent line */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, #191c1d, transparent);
+        }
+
+        /* Navbar accent */
+        .navbar-brand-icon {
+            background: linear-gradient(135deg, #004ac6, #2563eb);
+            box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
+        }
+    </style>
+    @stack('styles')
+</head>
+<body class="text-on-surface antialiased">
+
+    {{-- Mobile Sidebar Overlay --}}
+    <div x-data="{ sidebarOpen: false }" x-init="$watch('sidebarOpen', val => document.body.classList.toggle('overflow-hidden', val))">
+        <div x-show="sidebarOpen" x-cloak class="fixed inset-0 bg-on-background/50 z-40 lg:hidden" @click="sidebarOpen = false"></div>
+
+        {{-- Mobile Sidebar --}}
+        <div x-show="sidebarOpen" x-cloak x-transition:enter="transition transform duration-200 ease-out" x-transition:enter-start="-translate-x-full" x-transition:leave="transition transform duration-150 ease-in" x-transition:leave-start="translate-x-0" x-transition:leave-end="-translate-x-full" class="fixed top-0 left-0 h-full w-[280px] bg-surface z-50 overflow-y-auto border-r-3 border-on-background shadow-[4px_0px_0px_0px_rgba(0,0,0,1)]">
+            <div class="p-4">
+                <div class="flex items-center justify-between mb-6">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
+                        <div class="w-8 h-8 navbar-brand-icon border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="material-symbols-outlined text-on-primary text-lg">dashboard</span>
+                        </div>
+                        <span class="font-headline-lg text-lg uppercase tracking-tight">Admin</span>
+                    </a>
+                    <button @click="sidebarOpen = false" class="p-1.5 border-2 border-on-background hover:bg-surface-container-highest">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+                @include('layouts.partials.sidebar')
+            </div>
+        </div>
+
+        {{-- DESKTOP SIDEBAR --}}
+        <div class="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-[260px] lg:flex-col">
+            <div class="flex grow flex-col gap-y-4 overflow-y-auto bg-gradient-to-b from-surface to-surface-container-low border-r-3 border-on-background px-4 pb-4 shadow-[4px_0px_0px_0px_rgba(0,0,0,1)]">
+                {{-- Brand --}}
+                <div class="flex items-center gap-3 h-16 shrink-0 border-b-3 border-on-background">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 navbar-brand-icon border-3 border-on-background flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="material-symbols-outlined text-on-primary">dashboard</span>
+                        </div>
+                        <span class="font-headline-lg text-xl uppercase tracking-tight text-on-surface">Admin</span>
+                    </a>
+                </div>
+
+                {{-- Sidebar Navigation --}}
+                <nav class="flex flex-1 flex-col gap-0.5">
+                    @include('layouts.partials.sidebar')
+                </nav>
+
+                {{-- Sidebar footer accent --}}
+                <div class="h-1 bg-gradient-to-r from-primary via-primary-fixed-dim to-transparent opacity-40"></div>
+            </div>
+        </div>
+
+        {{-- MAIN CONTENT AREA --}}
+        <div class="lg:pl-[260px]">
+            {{-- TOP NAVBAR --}}
+            <div class="sticky top-0 z-20 bg-white/95 backdrop-blur-md border-b-3 border-on-background shadow-[0_4px_0px_0px_rgba(0,0,0,1)]">
+                <div class="flex items-center justify-between h-16 px-4 md:px-6">
+                    <div class="flex items-center gap-3">
+                        <button @click="sidebarOpen = true" class="lg:hidden p-2 border-2 border-on-background hover:bg-surface-container-highest">
+                            <span class="material-symbols-outlined">menu</span>
+                        </button>
+                        <div class="hidden md:flex items-center gap-2 font-label-mono text-xs uppercase text-on-surface-variant">
+                            <a href="{{ route('admin.dashboard') }}" class="hover:text-primary transition-colors">Dashboard</a>
+                            @hasSection('breadcrumb')
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                                @yield('breadcrumb')
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3" x-data="{ userMenu: false }">
+                        <div class="hidden sm:flex items-center gap-2 font-label-mono text-xs uppercase text-on-surface-variant">
+                            <span class="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                <span class="material-symbols-outlined text-on-primary text-xs">person</span>
+                            </span>
+                            <span>{{ Auth::user()->name }}</span>
+                        </div>
+                        <div class="relative">
+                            <button @click="userMenu = !userMenu" class="w-9 h-9 bg-gradient-to-br from-primary to-primary-container border-3 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+                                <span class="material-symbols-outlined text-on-primary text-sm">more_vert</span>
+                            </button>
+                            <div x-show="userMenu" x-cloak @click.outside="userMenu = false" x-transition class="absolute right-0 mt-2 w-48 bg-white border-3 border-on-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] z-50">
+                                <div class="p-1">
+                                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase hover:bg-gradient-to-r hover:from-surface-container-low hover:to-surface-container transition-colors rounded">
+                                        <span class="material-symbols-outlined text-sm">settings</span>
+                                        Pengaturan
+                                    </a>
+                                    <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase hover:bg-gradient-to-r hover:from-surface-container-low hover:to-surface-container transition-colors rounded">
+                                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+                                        Lihat Website
+                                    </a>
+                                    <hr class="border-on-background/20 my-1">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase text-error hover:bg-gradient-to-r hover:from-error-container hover:to-red-50 transition-colors rounded">
+                                            <span class="material-symbols-outlined text-sm">logout</span>
+                                            Keluar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ALERTS --}}
+            @if(session('success'))
+                <div class="mx-4 md:mx-6 mt-4" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
+                    <div class="bg-gradient-to-r from-secondary-fixed to-pink-50 border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-secondary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                <span class="material-symbols-outlined text-on-secondary text-sm">check_circle</span>
+                            </span>
+                            <p class="font-body-md text-sm font-bold">{{ session('success') }}</p>
+                        </div>
+                        <button @click="show = false" class="p-1 hover:bg-surface-container-highest border-2 border-on-background">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                        </button>
+                    </div>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mx-4 md:mx-6 mt-4" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
+                    <div class="bg-gradient-to-r from-error-container to-red-50 border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-error border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                <span class="material-symbols-outlined text-on-error text-sm">error</span>
+                            </span>
+                            <p class="font-body-md text-sm font-bold">{{ session('error') }}</p>
+                        </div>
+                        <button @click="show = false" class="p-1 hover:bg-surface-container-highest border-2 border-on-background">
+                            <span class="material-symbols-outlined text-sm">close</span>
+                        </button>
+                    </div>
+                </div>
+            @endif
+
+            {{-- PAGE HEADER --}}
+            @hasSection('page_title')
+                <div class="px-4 md:px-6 pt-6 pb-2">
+                    <h1 class="font-headline-lg text-2xl md:text-3xl uppercase tracking-tight">
+                        @yield('page_title')
+                    </h1>
+                    <div class="page-header-accent"></div>
+                    @hasSection('page_description')
+                        <p class="font-body-md text-sm text-on-surface-variant mt-3">@yield('page_description')</p>
+                    @endif
+                </div>
+            @endif
+
+            {{-- MAIN CONTENT --}}
+            <main class="px-4 md:px-6 py-6">
+                @yield('content')
+            </main>
+
+            {{-- FOOTER --}}
+            <div class="border-t-3 border-on-background px-4 md:px-6 py-4 bg-gradient-to-r from-surface-container-low to-surface-container">
+                <div class="flex items-center justify-between font-label-mono text-xs uppercase text-on-surface-variant">
+                    <span>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</span>
+                    <span>SMK Merdeka Bandung</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('[data-confirm-delete]')) {
+                e.preventDefault();
+                const btn = e.target.closest('[data-confirm-delete]');
+                const form = btn.closest('form');
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: btn.dataset.message || 'Data yang dihapus tidak dapat dikembalikan!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ba1a1a',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true,
+                    customClass: {
+                        popup: 'brutalist-border shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-none',
+                        confirmButton: 'admin-btn-danger admin-btn-sm',
+                        cancelButton: 'admin-btn-secondary admin-btn-sm',
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+    </script>
+    @stack('scripts')
+</body>
+</html>

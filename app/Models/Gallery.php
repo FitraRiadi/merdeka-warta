@@ -12,15 +12,5 @@ class Gallery extends Model
     protected $fillable = [
         'image_url',
         'caption',
-        'sort_order',
-        'is_active',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_active' => 'boolean',
-            'sort_order' => 'integer',
-        ];
-    }
 }

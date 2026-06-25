@@ -1,48 +1,58 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
-@section('title', $announcement->title)
-@section('subtitle', 'Detail pengumuman')
+@section('title', $announcement->title . ' - Panel Admin')
+@section('page_title', 'Detail Pengumuman')
+@section('breadcrumb')
+    <a href="{{ route('admin.announcements.index') }}" class="hover:text-primary transition-colors">Pengumuman</a>
+    <span class="material-symbols-outlined text-sm">chevron_right</span>
+    <span class="text-on-surface truncate max-w-[200px]">{{ $announcement->title }}</span>
+@endsection
 
 @section('content')
-
-    <div class="max-w-2xl">
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-            <div class="flex flex-wrap items-center gap-3 mb-4">
-                <span class="badge
-                    @if($announcement->type === 'important') bg-red-100 text-red-700
-                    @elseif($announcement->type === 'warning') bg-amber-100 text-amber-700
-                    @else bg-blue-100 text-blue-700 @endif">
-                    {{ ucfirst($announcement->type) }}
-                </span>
-                @if($announcement->is_active)
-                    <span class="badge bg-emerald-100 text-emerald-700">Aktif</span>
+    <div class="max-w-3xl">
+        <div class="admin-card p-6 md:p-8">
+            <div class="flex flex-wrap items-center gap-3 mb-4 font-label-mono text-xs uppercase text-on-surface-variant">
+                @if($announcement->type === 'important')
+                    <span class="admin-badge bg-error-container text-error">Penting</span>
+                @elseif($announcement->type === 'warning')
+                    <span class="admin-badge bg-tertiary-fixed text-tertiary">Peringatan</span>
                 @else
-                    <span class="badge bg-slate-100 text-slate-500">Nonaktif</span>
+                    <span class="admin-badge bg-primary-fixed-dim text-primary">Info</span>
                 @endif
-            </div>
-
-            <h1 class="text-2xl font-black text-slate-900 mb-3">{{ $announcement->title }}</h1>
-
-            <div class="flex items-center gap-4 text-sm text-slate-400 font-medium mb-6">
-                <span><i class="far fa-calendar-alt mr-1.5"></i>{{ $announcement->created_at->format('d F Y') }}</span>
+                @if($announcement->is_active)
+                    <span class="admin-badge bg-green-100 text-green-700 border-green-700 text-[10px]">Terbit</span>
+                @else
+                    <span class="admin-badge bg-gray-100 text-gray-600 border-gray-400 text-[10px]">Draft</span>
+                @endif
+                <span>{{ $announcement->created_at->format('d M Y H:i') }}</span>
                 @if($announcement->expired_at)
-                    <span><i class="far fa-clock mr-1.5"></i>Kadaluarsa: {{ $announcement->expired_at->format('d M Y') }}</span>
+                    <span class="text-error">Kedaluwarsa: {{ $announcement->expired_at->format('d M Y') }}</span>
                 @endif
             </div>
 
-            <div class="border-t border-slate-100 pt-6">
-                <p class="text-slate-700 leading-relaxed">{{ $announcement->content }}</p>
+            <h1 class="font-headline-lg text-2xl md:text-3xl uppercase tracking-tight mb-6">{{ $announcement->title }}</h1>
+
+            <div class="prose prose-sm max-w-none">
+                {!! $announcement->renderContent() !!}
             </div>
         </div>
 
         <div class="flex items-center gap-3 mt-6">
-            <a href="{{ route('admin.announcements.edit', $announcement) }}" class="btn-primary"><i class="fas fa-edit"></i> Edit</a>
-            <a href="{{ route('admin.announcements.index') }}" class="btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
-            <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" onsubmit="return confirm('Hapus pengumuman ini?')" class="ml-auto">
+            <a href="{{ route('admin.announcements.edit', $announcement) }}" class="admin-btn-primary">
+                <span class="material-symbols-outlined text-sm">edit</span>
+                Edit
+            </a>
+            <a href="{{ route('admin.announcements.index') }}" class="admin-btn-secondary">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Kembali
+            </a>
+            <form action="{{ route('admin.announcements.destroy', $announcement) }}" method="POST" class="ml-auto">
                 @csrf @method('DELETE')
-                <button type="submit" class="btn-danger"><i class="fas fa-trash"></i> Hapus</button>
+                <button type="submit" data-confirm-delete data-message='Pengumuman {{ $announcement->title }} akan dihapus!' class="admin-btn-danger admin-btn-sm">
+                    <span class="material-symbols-outlined text-sm">delete</span>
+                    Hapus
+                </button>
             </form>
         </div>
     </div>
-
 @endsection

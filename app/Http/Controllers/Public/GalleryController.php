@@ -10,12 +10,9 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        $galleries = Gallery::where('is_active', true)
-            ->orderBy('sort_order')
-            ->paginate(12);
+        $galleries = Gallery::paginate(12);
 
-        $runningTexts = RunningText::where('is_active', true)
-            ->orderBy('display_order')
+        $runningTexts = RunningText::orderBy('display_order')
             ->get();
 
         return view('public.gallery-list', compact('galleries', 'runningTexts'));

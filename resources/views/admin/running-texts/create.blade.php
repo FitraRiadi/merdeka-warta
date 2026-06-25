@@ -1,49 +1,92 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
-@section('title', 'Tambah Running Text')
-@section('subtitle', 'Tambah teks berjalan baru')
+@section('title', 'Tambah Running Text - Panel Admin')
+@section('page_title', 'Tambah Running Text')
+@section('breadcrumb')
+    <a href="{{ route('admin.running-texts.index') }}" class="hover:text-primary transition-colors">Running Text</a>
+    <span class="material-symbols-outlined text-sm">chevron_right</span>
+    <span class="text-on-surface">Tambah Baru</span>
+@endsection
 
 @section('content')
-
     <form action="{{ route('admin.running-texts.store') }}" method="POST" class="max-w-2xl">
         @csrf
 
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8 space-y-6">
-            <div>
-                <label class="form-label">Teks</label>
-                <textarea name="text" rows="3" class="form-input" required>{{ old('text') }}</textarea>
-                @error('text') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="admin-card p-6">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b-3 border-on-background">
+                <span class="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-300 border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span class="material-symbols-outlined text-white text-sm">format_list_bulleted</span>
+                </span>
                 <div>
-                    <label class="form-label">Urutan Tampil</label>
-                    <input type="number" name="display_order" value="{{ old('display_order', 0) }}" class="form-input" min="0">
-                    @error('display_order') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="form-label">Warna Latar</label>
-                    <input type="text" name="background_color" value="{{ old('background_color') }}" class="form-input" placeholder="#000000">
-                    @error('background_color') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div>
-                    <label class="form-label">Warna Teks</label>
-                    <input type="text" name="text_color" value="{{ old('text_color') }}" class="form-input" placeholder="#ffffff">
-                    @error('text_color') <p class="text-xs text-red-500 font-medium mt-1">{{ $message }}</p> @enderror
-                </div>
-                <div class="flex items-end">
-                    <label class="flex items-center gap-3 cursor-pointer">
-                        <input type="checkbox" name="is_active" value="1" @checked(old('is_active', true)) class="w-5 h-5 rounded-lg border-2 border-slate-300 text-blue-600 focus:ring-blue-500">
-                        <span class="font-semibold text-sm text-slate-700">Aktif</span>
-                    </label>
+                    <h2 class="font-headline-lg text-lg uppercase tracking-tight">Informasi Running Text</h2>
+                    <p class="font-label-mono text-[10px] text-on-surface-variant uppercase">Tambah teks berjalan baru</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
-                <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Simpan</button>
-                <a href="{{ route('admin.running-texts.index') }}" class="btn-secondary"><i class="fas fa-times"></i> Batal</a>
+            <div class="space-y-6">
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Teks <span class="text-error">*</span></label>
+                    <textarea name="text" rows="3" required
+                        class="admin-input" placeholder="Masukkan teks running...">{{ old('text') }}</textarea>
+                    @error('text') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
+
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Urutan Tampil</label>
+                    <input type="number" name="display_order" value="{{ old('display_order', 0) }}" min="0"
+                        class="admin-input w-32">
+                    @error('display_order') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Warna Latar</label>
+                        <div class="flex items-center gap-2">
+                            <input type="color" name="background_color" value="{{ old('background_color', '#000000') }}"
+                                class="w-10 h-10 border-3 border-on-background p-0.5 cursor-pointer">
+                            <input type="text" name="background_color_text"
+                                value="{{ old('background_color', '#000000') }}"
+                                class="admin-input flex-1 font-mono text-xs">
+                        </div>
+                        @error('background_color') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Warna Teks</label>
+                        <div class="flex items-center gap-2">
+                            <input type="color" name="text_color" value="{{ old('text_color', '#ffffff') }}"
+                                class="w-10 h-10 border-3 border-on-background p-0.5 cursor-pointer">
+                            <input type="text" name="text_color_text"
+                                value="{{ old('text_color', '#ffffff') }}"
+                                class="admin-input flex-1 font-mono text-xs">
+                        </div>
+                        @error('text_color') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
             </div>
+        </div>
+
+        <div class="flex items-center gap-3 mt-6">
+            <button type="submit" class="admin-btn-primary">
+                <span class="material-symbols-outlined text-sm">save</span>
+                Simpan
+            </button>
+            <a href="{{ route('admin.running-texts.index') }}" class="admin-btn-secondary">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Batal
+            </a>
         </div>
     </form>
 
+    @push('scripts')
+    <script>
+        document.querySelectorAll('input[type="color"]').forEach(colorInput => {
+            const textInput = colorInput.parentElement.querySelector('input[type="text"]');
+            if (textInput) {
+                colorInput.addEventListener('input', () => { textInput.value = colorInput.value; });
+                textInput.addEventListener('input', () => { colorInput.value = textInput.value; });
+            }
+        });
+    </script>
+    @endpush
 @endsection

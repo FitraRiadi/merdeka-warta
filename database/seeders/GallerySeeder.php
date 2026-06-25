@@ -20,8 +20,6 @@ class GallerySeeder extends Seeder
             Gallery::create([
                 'image_url' => $url,
                 'caption' => 'Momen SMK Merdeka ' . ($i + 1),
-                'sort_order' => $i,
-                'is_active' => true,
             ]);
         }
     }

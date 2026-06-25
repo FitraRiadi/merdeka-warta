@@ -11,22 +11,28 @@ class Spotlight extends Model
     use HasFactory;
 
     protected $fillable = [
+        'type',
         'article_id',
-        'badge_label',
-        'sort_order',
-        'is_active',
+        'announcement_id',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_active' => 'boolean',
-            'sort_order' => 'integer',
-        ];
-    }
 
     public function article(): BelongsTo
     {
         return $this->belongsTo(Article::class);
+    }
+
+    public function announcement(): BelongsTo
+    {
+        return $this->belongsTo(Announcement::class);
+    }
+
+    public function scopeArticleSpotlights($query)
+    {
+        return $query->where('type', 'article');
+    }
+
+    public function scopeAnnouncementSpotlights($query)
+    {
+        return $query->where('type', 'announcement');
     }
 }

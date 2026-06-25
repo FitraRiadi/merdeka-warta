@@ -4,18 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gallery;
+use App\Services\CdnService;
 use Illuminate\Http\Request;
 
 class GalleryController extends Controller
 {
-    public function __construct()
+    protected CdnService $cdn;
+
+    public function __construct(CdnService $cdn)
     {
         $this->middleware('super_admin');
+        $this->cdn = $cdn;
     }
 
     public function index()
     {
-        $galleries = Gallery::orderBy('sort_order')->paginate(10);
+        $galleries = Gallery::latest()->paginate(10);
         return view('admin.galleries.index', compact('galleries'));
     }
 
@@ -27,12 +31,29 @@ class GalleryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'image_url' => 'required|string|max:500',
+            'image' => 'nullable|image|max:5120',
+            'image_url' => 'nullable|string|max:500',
             'caption' => 'nullable|string|max:200',
-            'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        $validated['is_active'] = $request->has('is_active');
+        if ($request->hasFile('image')) {
+            $result = $this->cdn->upload($request->file('image'));
+            if ($result && $result['success']) {
+                $validated['image_url'] = $result['url'];
+            } else {
+                return back()->withErrors([
+                    'image' => $result['error'] ?? 'Gagal upload gambar ke CDN.'
+                ])->withInput();
+            }
+        }
+
+        if (empty($validated['image_url'])) {
+            return back()->withErrors([
+                'image_url' => 'URL gambar atau file upload harus diisi.'
+            ])->withInput();
+        }
+
+        unset($validated['image']);
 
         Gallery::create($validated);
 
@@ -48,12 +69,27 @@ class GalleryController extends Controller
     public function update(Request $request, Gallery $gallery)
     {
         $validated = $request->validate([
-            'image_url' => 'required|string|max:500',
+            'image' => 'nullable|image|max:5120',
+            'image_url' => 'nullable|string|max:500',
             'caption' => 'nullable|string|max:200',
-            'sort_order' => 'nullable|integer|min:0',
         ]);
 
-        $validated['is_active'] = $request->has('is_active');
+        if ($request->hasFile('image')) {
+            $result = $this->cdn->upload($request->file('image'));
+            if ($result && $result['success']) {
+                $validated['image_url'] = $result['url'];
+            } else {
+                return back()->withErrors([
+                    'image' => $result['error'] ?? 'Gagal upload gambar ke CDN.'
+                ])->withInput();
+            }
+        }
+
+        if (empty($validated['image_url'])) {
+            $validated['image_url'] = $gallery->image_url;
+        }
+
+        unset($validated['image']);
 
         $gallery->update($validated);
 

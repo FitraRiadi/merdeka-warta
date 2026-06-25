@@ -1,59 +1,68 @@
 {{-- Dashboard --}}
-<a href="{{ route('admin.dashboard') }}" class="sidebar-link @if(Route::currentRouteNamed('admin.dashboard')) active @endif">
-    <span class="material-symbols-outlined">dashboard</span>
+<a href="{{ route('admin.dashboard') }}"
+   class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+    <span class="material-symbols-outlined {{ request()->routeIs('admin.dashboard') ? 'material-symbols-filled' : '' }}">dashboard</span>
     <span>DASHBOARD</span>
 </a>
 
 {{-- Articles (all roles) --}}
-<a href="{{ route('admin.articles.index') }}" class="sidebar-link @if(request()->routeIs('admin.articles.*')) active @endif">
-    <span class="material-symbols-outlined">description</span>
+<a href="{{ route('admin.articles.index') }}"
+   class="sidebar-link {{ request()->routeIs('admin.articles.*') ? 'active' : '' }}">
+    <span class="material-symbols-outlined {{ request()->routeIs('admin.articles.*') ? 'material-symbols-filled' : '' }}">description</span>
     <span>ARTICLES</span>
 </a>
 
 {{-- Super Admin only --}}
 @if(Auth::user()->isSuperAdmin())
-    <div class="pt-4 pb-1 px-3">
+    <div class="pt-5 pb-1 px-3">
         <p class="font-label-mono text-[10px] uppercase tracking-wider opacity-40">Management</p>
     </div>
 
-    <a href="{{ route('admin.announcements.index') }}" class="sidebar-link @if(request()->routeIs('admin.announcements.*')) active @endif">
-        <span class="material-symbols-outlined">campaign</span>
+    <a href="{{ route('admin.announcements.index') }}"
+       class="sidebar-link {{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
+        <span class="material-symbols-outlined {{ request()->routeIs('admin.announcements.*') ? 'material-symbols-filled' : '' }}">campaign</span>
         <span>ANNOUNCEMENTS</span>
     </a>
 
-    <a href="{{ route('admin.running-texts.index') }}" class="sidebar-link @if(request()->routeIs('admin.running-texts.*')) active @endif">
-        <span class="material-symbols-outlined">format_list_bulleted</span>
+    <a href="{{ route('admin.running-texts.index') }}"
+       class="sidebar-link {{ request()->routeIs('admin.running-texts.*') ? 'active' : '' }}">
+        <span class="material-symbols-outlined {{ request()->routeIs('admin.running-texts.*') ? 'material-symbols-filled' : '' }}">format_list_bulleted</span>
         <span>RUNNING TEXT</span>
     </a>
 
-    <a href="{{ route('admin.galleries.index') }}" class="sidebar-link @if(request()->routeIs('admin.galleries.*')) active @endif">
-        <span class="material-symbols-outlined">imagesmode</span>
+    <a href="{{ route('admin.galleries.index') }}"
+       class="sidebar-link {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
+        <span class="material-symbols-outlined {{ request()->routeIs('admin.galleries.*') ? 'material-symbols-filled' : '' }}">imagesmode</span>
         <span>GALLERY</span>
     </a>
 
-    <a href="{{ route('admin.spotlights.index') }}" class="sidebar-link @if(request()->routeIs('admin.spotlights.*')) active @endif">
-        <span class="material-symbols-outlined">stars</span>
+    <a href="{{ route('admin.spotlights.index') }}"
+       class="sidebar-link {{ request()->routeIs('admin.spotlights.*') ? 'active' : '' }}">
+        <span class="material-symbols-outlined {{ request()->routeIs('admin.spotlights.*') ? 'material-symbols-filled' : '' }}">stars</span>
         <span>SOROTAN</span>
     </a>
 
-    <a href="{{ route('admin.testimonials.index') }}" class="sidebar-link @if(request()->routeIs('admin.testimonials.*')) active @endif">
-        <span class="material-symbols-outlined">format_quote</span>
+    <a href="{{ route('admin.testimonials.index') }}"
+       class="sidebar-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+        <span class="material-symbols-outlined {{ request()->routeIs('admin.testimonials.*') ? 'material-symbols-filled' : '' }}">format_quote</span>
         <span>TESIMONI</span>
     </a>
 
-    <a href="{{ route('admin.users.index') }}" class="sidebar-link @if(request()->routeIs('admin.users.*')) active @endif">
-        <span class="material-symbols-outlined">group</span>
+    <a href="{{ route('admin.users.index') }}"
+       class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+        <span class="material-symbols-outlined {{ request()->routeIs('admin.users.*') ? 'material-symbols-filled' : '' }}">group</span>
         <span>KONTRIBUTOR</span>
     </a>
 @endif
 
-<div class="pt-4 pb-1 px-3">
+<div class="pt-5 pb-1 px-3">
     <p class="font-label-mono text-[10px] uppercase tracking-wider opacity-40">Others</p>
 </div>
 
 {{-- Profile / Settings --}}
-<a href="{{ route('profile.edit') }}" class="sidebar-link @if(request()->routeIs('profile.edit')) active @endif">
-    <span class="material-symbols-outlined">settings</span>
+<a href="{{ route('profile.edit') }}"
+   class="sidebar-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+    <span class="material-symbols-outlined {{ request()->routeIs('profile.edit') ? 'material-symbols-filled' : '' }}">settings</span>
     <span>SETTINGS</span>
 </a>
 

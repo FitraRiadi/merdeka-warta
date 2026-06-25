@@ -1,82 +1,128 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
-@section('title', 'Sorotan')
-@section('subtitle', 'Atur artikel sorotan di halaman utama')
+@section('title', 'Sorotan - Panel Admin')
+@section('page_title', 'Sorotan')
+@section('page_description', 'Kelola sorotan artikel (maks. 3) dan sorotan pemberitahuan (maks. 1)')
 
 @section('content')
-
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-primary-container border-[3px] border-on-background flex items-center justify-center">
-                <span class="material-symbols-outlined text-on-primary">stars</span>
-            </div>
-            <div>
-                <h2 class="font-headline-lg text-2xl uppercase">Sorotan</h2>
-                <p class="font-label-mono text-[10px] uppercase opacity-60">Total {{ $spotlights->total() }} sorotan</p>
-            </div>
+    <div class="flex items-center justify-between mb-6">
+        <div class="font-label-mono text-xs uppercase text-on-surface-variant">
+            Artikel: <span class="font-bold text-on-surface">{{ $articleSpotlights->total() }}</span>/3 &middot;
+            Pemberitahuan: <span class="font-bold text-on-surface">{{ $announcementSpotlights->count() }}</span>/1
         </div>
-        <a href="{{ route('admin.spotlights.create') }}" class="btn btn-primary">+ Tambah Sorotan</a>
+        <a href="{{ route('admin.spotlights.manage') }}" class="admin-btn-primary admin-btn-sm">
+            <span class="material-symbols-outlined text-sm">tune</span>
+            Kelola Sorotan
+        </a>
     </div>
 
-    @if($spotlights->isNotEmpty())
-        <div class="bg-surface border-[3px] border-on-background brutalist-shadow overflow-hidden">
-            <table class="w-full text-left">
+    {{-- Article Spotlights --}}
+    <div class="admin-card overflow-hidden mb-8">
+        <div class="px-6 py-4 bg-gradient-to-r from-primary-fixed-dim/20 to-transparent border-b-3 border-on-background">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">stars</span>
+                <h3 class="font-label-mono text-sm uppercase font-bold">Sorotan Artikel</h3>
+                <span class="font-label-mono text-[10px] text-on-surface-variant">({{ $articleSpotlights->total() }}/3)</span>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full admin-table">
                 <thead>
-                    <tr class="bg-surface-container-low border-b-[3px] border-on-background">
-                        <th class="table-th">Artikel</th>
-                        <th class="table-th hidden md:table-cell">Badge</th>
-                        <th class="table-th hidden sm:table-cell">Urutan</th>
-                        <th class="table-th hidden sm:table-cell">Status</th>
-                        <th class="table-th text-right">Aksi</th>
+                    <tr>
+                        <th class="text-left">Artikel</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y-[3px] divide-on-background/10">
-                    @foreach($spotlights as $s)
-                        <tr class="table-tr">
-                            <td class="table-td">
-                                <span class="font-bold text-sm">{{ $s->article->title ?? 'N/A' }}</span>
-                            </td>
-                            <td class="table-td hidden md:table-cell">
-                                <span class="badge bg-primary-container text-on-primary-container">{{ $s->badge_label ?? '—' }}</span>
-                            </td>
-                            <td class="table-td hidden sm:table-cell font-label-mono text-sm">{{ $s->sort_order }}</td>
-                            <td class="table-td hidden sm:table-cell">
-                                @if($s->is_active)
-                                    <span class="badge bg-primary-container text-on-primary-container">Aktif</span>
-                                @else
-                                    <span class="badge bg-surface-container text-on-surface">Nonaktif</span>
-                                @endif
-                            </td>
-                            <td class="table-td text-right">
-                                <div class="flex items-center justify-end gap-1">
-                                    <a href="{{ route('admin.spotlights.edit', $s) }}" class="p-2 hover:bg-surface-container transition-colors">
-                                        <span class="material-symbols-outlined text-sm">edit</span>
-                                    </a>
-                                    <form action="{{ route('admin.spotlights.destroy', $s) }}" method="POST" onsubmit="return confirm('Hapus sorotan ini?')" class="inline">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" class="p-2 hover:bg-error-container transition-colors cursor-pointer">
-                                            <span class="material-symbols-outlined text-sm text-error">delete</span>
-                                        </button>
-                                    </form>
+                <tbody>
+                    @forelse($articleSpotlights as $spotlight)
+                        <tr>
+                            <td>
+                                <div class="flex items-center gap-3 min-w-0">
+                                    @if($spotlight->article?->image)
+                                        <img src="{{ $spotlight->article->image }}" alt=""
+                                            class="w-12 h-9 object-cover border-2 border-on-background flex-shrink-0 hidden sm:block">
+                                    @else
+                                        <div class="w-12 h-9 bg-gradient-to-br from-primary to-secondary border-2 border-on-background flex-shrink-0 hidden sm:flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-white text-sm">image</span>
+                                        </div>
+                                    @endif
+                                    <div class="min-w-0">
+                                        <p class="font-body-md text-sm font-bold truncate">
+                                            {{ $spotlight->article?->title ?? '(Artikel tidak ditemukan)' }}
+                                        </p>
+                                        <p class="font-label-mono text-[10px] text-on-surface-variant mt-0.5">
+                                            {{ $spotlight->article?->published_at?->format('d M Y') ?? '-' }}
+                                        </p>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="1">
+                                <div class="py-12 text-center">
+                                    <div class="empty-state-icon">
+                                        <span class="material-symbols-outlined text-2xl text-on-surface-variant">stars</span>
+                                    </div>
+                                    <p class="font-body-md text-sm text-on-surface-variant">Belum ada sorotan artikel.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
-            @if($spotlights->hasPages())
-                <div class="p-4 border-t-[3px] border-on-background">{{ $spotlights->onEachSide(1)->links('vendor.pagination.tailwind') }}</div>
-            @endif
         </div>
-    @else
-        <div class="text-center py-16 bg-surface border-[3px] border-on-background brutalist-shadow">
-            <div class="w-16 h-16 bg-surface-container border-[3px] border-on-background flex items-center justify-center mx-auto mb-4">
-                <span class="material-symbols-outlined text-3xl">stars</span>
-            </div>
-            <p class="font-label-mono text-sm uppercase mb-1">Belum ada sorotan</p>
-            <p class="font-body-md text-sm opacity-60 mb-6">Atur artikel sorotan untuk tampil di hero carousel.</p>
-            <a href="{{ route('admin.spotlights.create') }}" class="btn btn-primary">+ Tambah Sorotan</a>
+    </div>
+
+    @if($articleSpotlights->hasPages())
+        <div class="mt-6 pagination">
+            {{ $articleSpotlights->links() }}
         </div>
     @endif
 
+    {{-- Announcement Spotlights --}}
+    <div class="admin-card overflow-hidden">
+        <div class="px-6 py-4 bg-gradient-to-r from-secondary-fixed/20 to-transparent border-b-3 border-on-background">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary">campaign</span>
+                <h3 class="font-label-mono text-sm uppercase font-bold">Sorotan Pemberitahuan</h3>
+                <span class="font-label-mono text-[10px] text-on-surface-variant">({{ $announcementSpotlights->count() }}/1)</span>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full admin-table">
+                <thead>
+                    <tr>
+                        <th class="text-left">Pemberitahuan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($announcementSpotlights as $spotlight)
+                        <tr>
+                            <td>
+                                <div class="min-w-0">
+                                    <p class="font-body-md text-sm font-bold truncate">
+                                        {{ $spotlight->announcement?->title ?? '(Pemberitahuan tidak ditemukan)' }}
+                                    </p>
+                                    <p class="font-label-mono text-[10px] text-on-surface-variant mt-0.5">
+                                        {{ $spotlight->announcement?->created_at?->format('d M Y') ?? '-' }}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="1">
+                                <div class="py-12 text-center">
+                                    <div class="empty-state-icon">
+                                        <span class="material-symbols-outlined text-2xl text-on-surface-variant">campaign</span>
+                                    </div>
+                                    <p class="font-body-md text-sm text-on-surface-variant">Belum ada sorotan pemberitahuan.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Announcement;
 use App\Models\Article;
 use App\Models\Spotlight;
 use Illuminate\Database\Seeder;
@@ -10,16 +11,22 @@ class SpotlightSeeder extends Seeder
 {
     public function run(): void
     {
+        // Article spotlights (max 3)
         $articles = Article::where('is_published', true)->take(3)->get();
 
-        $badges = ['LATEST NEWS', 'HIGHLIGHT', 'SUCCESS STORY'];
-
-        foreach ($articles as $i => $article) {
+        foreach ($articles as $article) {
             Spotlight::create([
+                'type' => 'article',
                 'article_id' => $article->id,
-                'badge_label' => $badges[$i] ?? 'FEATURED',
-                'sort_order' => $i,
-                'is_active' => true,
+            ]);
+        }
+
+        // Announcement spotlight (max 1)
+        $announcement = Announcement::where('is_active', true)->first();
+        if ($announcement) {
+            Spotlight::create([
+                'type' => 'announcement',
+                'announcement_id' => $announcement->id,
             ]);
         }
     }

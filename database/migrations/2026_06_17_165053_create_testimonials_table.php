@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string('author_name');
             $table->string('author_role')->nullable();
             $table->string('bg_color')->default('bg-secondary-fixed');
-            $table->integer('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

@@ -67,6 +67,7 @@ class ArticleController extends Controller
             'slug' => 'nullable|string|max:255|unique:articles,slug',
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
+            'image_url' => 'nullable|url|max:500',
             'published_at' => 'nullable|date',
             'is_published' => 'nullable|boolean',
             'category' => 'nullable|string|max:100',
@@ -82,7 +83,7 @@ class ArticleController extends Controller
             }
         }
 
-        // Upload gambar ke CDN
+        // Upload gambar ke CDN atau gunakan URL langsung
         if ($request->hasFile('image')) {
             $result = $this->cdn->upload($request->file('image'));
             if ($result && $result['success']) {
@@ -92,7 +93,11 @@ class ArticleController extends Controller
                     'image' => $result['error'] ?? 'Gagal upload gambar ke CDN.'
                 ])->withInput();
             }
+        } elseif ($request->filled('image_url')) {
+            $validated['image'] = $validated['image_url'];
         }
+
+        unset($validated['image_url']);
 
         // Assign user_id
         if (!Auth::user()->isSuperAdmin()) {
@@ -148,6 +153,7 @@ class ArticleController extends Controller
             'slug' => 'nullable|string|max:255|unique:articles,slug,' . $article->id,
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
+            'image_url' => 'nullable|url|max:500',
             'published_at' => 'nullable|date',
             'is_published' => 'nullable|boolean',
             'category' => 'nullable|string|max:100',
@@ -176,7 +182,11 @@ class ArticleController extends Controller
                     'image' => $result['error'] ?? 'Gagal upload gambar ke CDN.'
                 ])->withInput();
             }
+        } elseif ($request->filled('image_url')) {
+            $validated['image'] = $validated['image_url'];
         }
+
+        unset($validated['image_url']);
 
         if (!Auth::user()->isSuperAdmin()) {
             unset($validated['user_id']);

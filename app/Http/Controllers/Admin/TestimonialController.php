@@ -15,7 +15,7 @@ class TestimonialController extends Controller
 
     public function index()
     {
-        $testimonials = Testimonial::orderBy('sort_order')->paginate(10);
+        $testimonials = Testimonial::latest()->paginate(10);
         return view('admin.testimonials.index', compact('testimonials'));
     }
 
@@ -31,7 +31,6 @@ class TestimonialController extends Controller
             'author_name' => 'required|string|max:100',
             'author_role' => 'nullable|string|max:200',
             'bg_color' => 'nullable|string|max:50',
-            'sort_order' => 'nullable|integer|min:0',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
@@ -54,7 +53,6 @@ class TestimonialController extends Controller
             'author_name' => 'required|string|max:100',
             'author_role' => 'nullable|string|max:200',
             'bg_color' => 'nullable|string|max:50',
-            'sort_order' => 'nullable|integer|min:0',
         ]);
 
         $validated['is_active'] = $request->has('is_active');

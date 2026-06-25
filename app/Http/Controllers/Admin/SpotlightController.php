@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Announcement;
 use App\Models\Article;
 use App\Models\Spotlight;
 use Illuminate\Http\Request;
@@ -16,58 +17,83 @@ class SpotlightController extends Controller
 
     public function index()
     {
-        $spotlights = Spotlight::with('article')->orderBy('sort_order')->paginate(10);
-        return view('admin.spotlights.index', compact('spotlights'));
+        $articleSpotlights = Spotlight::with('article')
+            ->where('type', 'article')
+            ->paginate(10);
+
+        $announcementSpotlights = Spotlight::with('announcement')
+            ->where('type', 'announcement')
+            ->get();
+
+        return view('admin.spotlights.index', compact('articleSpotlights', 'announcementSpotlights'));
     }
 
-    public function create()
+    public function manage()
     {
         $articles = Article::where('is_published', true)->latest('published_at')->get();
-        return view('admin.spotlights.create', compact('articles'));
+        $announcements = Announcement::latest()->get();
+        $currentArticleSpotlights = Spotlight::with('article')
+            ->where('type', 'article')
+            ->get();
+        $currentAnnouncementSpotlight = Spotlight::with('announcement')
+            ->where('type', 'announcement')
+            ->first();
+
+        return view('admin.spotlights.manage', compact(
+            'articles', 'announcements',
+            'currentArticleSpotlights', 'currentAnnouncementSpotlight'
+        ));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'article_id' => 'required|exists:articles,id',
-            'badge_label' => 'nullable|string|max:50',
-            'sort_order' => 'nullable|integer|min:0',
-        ]);
+        $articleIds = $request->input('article_ids', []);
 
-        $validated['is_active'] = $request->has('is_active');
+        if (count($articleIds) > 3) {
+            return back()->withErrors(['article_ids' => 'Maksimal 3 sorotan artikel.'])->withInput();
+        }
 
-        Spotlight::create($validated);
+        $currentArticleSpotlights = Spotlight::where('type', 'article')->get();
 
-        return redirect()->route('admin.spotlights.index')
-            ->with('success', 'Sorotan berhasil ditambahkan.');
-    }
+        foreach ($currentArticleSpotlights as $spotlight) {
+            if (!in_array($spotlight->article_id, $articleIds)) {
+                $spotlight->delete();
+            }
+        }
 
-    public function edit(Spotlight $spotlight)
-    {
-        $articles = Article::where('is_published', true)->latest('published_at')->get();
-        return view('admin.spotlights.edit', compact('spotlight', 'articles'));
-    }
+        foreach ($articleIds as $i => $articleId) {
+            $spotlight = Spotlight::where('type', 'article')->where('article_id', $articleId)->first();
+            if ($spotlight) {
+                $spotlight->update([
 
-    public function update(Request $request, Spotlight $spotlight)
-    {
-        $validated = $request->validate([
-            'article_id' => 'required|exists:articles,id',
-            'badge_label' => 'nullable|string|max:50',
-            'sort_order' => 'nullable|integer|min:0',
-        ]);
+                ]);
+            } else {
+                Spotlight::create([
+                    'type' => 'article',
+                    'article_id' => $articleId,
+                ]);
+            }
+        }
 
-        $validated['is_active'] = $request->has('is_active');
+        $announcementId = $request->input('announcement_id');
+        $currentAnnouncement = Spotlight::where('type', 'announcement')->first();
 
-        $spotlight->update($validated);
+        if ($announcementId) {
+            if ($currentAnnouncement) {
+                $currentAnnouncement->update([
+                    'announcement_id' => $announcementId,
+                ]);
+            } else {
+                Spotlight::create([
+                    'type' => 'announcement',
+                    'announcement_id' => $announcementId,
+                ]);
+            }
+        } elseif ($currentAnnouncement) {
+            $currentAnnouncement->delete();
+        }
 
         return redirect()->route('admin.spotlights.index')
             ->with('success', 'Sorotan berhasil diperbarui.');
-    }
-
-    public function destroy(Spotlight $spotlight)
-    {
-        $spotlight->delete();
-        return redirect()->route('admin.spotlights.index')
-            ->with('success', 'Sorotan berhasil dihapus.');
     }
 }

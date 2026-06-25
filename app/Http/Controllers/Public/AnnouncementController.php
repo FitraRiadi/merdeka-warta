@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use App\Models\RunningText;
+use App\Models\Spotlight;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -42,13 +43,11 @@ class AnnouncementController extends Controller
             ->orderBy('total', 'desc')
             ->get();
 
-        // Featured announcement (latest)
-        $featured = Announcement::where('is_active', true)
-            ->where(function ($q) {
-                $q->whereNull('expired_at')->orWhere('expired_at', '>', now());
-            })
-            ->latest()
+        // Featured announcement (dari spotlight)
+        $spotlightAnnouncement = Spotlight::with('announcement')
+            ->announcementSpotlights()
             ->first();
+        $featured = $spotlightAnnouncement?->announcement;
 
         // Latest announcements (2 after featured)
         $latestAnnouncements = Announcement::where('is_active', true)
@@ -62,8 +61,7 @@ class AnnouncementController extends Controller
             ->limit(2)
             ->get();
 
-        $runningTexts = RunningText::where('is_active', true)
-            ->orderBy('display_order')
+        $runningTexts = RunningText::orderBy('display_order')
             ->get();
 
         return view('public.announcement-list', compact(
@@ -91,8 +89,7 @@ class AnnouncementController extends Controller
             ->get();
 
         // Running texts untuk navbar
-        $runningTexts = RunningText::where('is_active', true)
-            ->orderBy('display_order')
+        $runningTexts = RunningText::orderBy('display_order')
             ->get();
 
         return view('public.announcement-show', compact(

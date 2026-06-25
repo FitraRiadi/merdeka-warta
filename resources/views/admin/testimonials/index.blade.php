@@ -1,80 +1,88 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
-@section('title', 'Testimoni')
-@section('subtitle', 'Atur testimoni/tanggapan di halaman utama')
+@section('title', 'Testimoni - Panel Admin')
+@section('page_title', 'Testimoni')
+@section('page_description', 'Kelola testimoni dan quotes')
 
 @section('content')
-
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-primary-container border-[3px] border-on-background flex items-center justify-center">
-                <span class="material-symbols-outlined text-on-primary">format_quote</span>
-            </div>
-            <div>
-                <h2 class="font-headline-lg text-2xl uppercase">Testimoni</h2>
-                <p class="font-label-mono text-[10px] uppercase opacity-60">Total {{ $testimonials->total() }} testimoni</p>
-            </div>
+    <div class="flex items-center justify-between mb-6">
+        <div class="font-label-mono text-xs uppercase text-on-surface-variant">
+            Total: <span class="font-bold text-on-surface">{{ $testimonials->total() }}</span> testimoni
         </div>
-        <a href="{{ route('admin.testimonials.create') }}" class="btn btn-primary">+ Tambah Testimoni</a>
+        <a href="{{ route('admin.testimonials.create') }}" class="admin-btn-primary admin-btn-sm">
+            <span class="material-symbols-outlined text-sm">add</span>
+            Tambah Testimoni
+        </a>
     </div>
 
-    @if($testimonials->isNotEmpty())
-        <div class="bg-surface border-[3px] border-on-background brutalist-shadow overflow-hidden">
-            <table class="w-full text-left">
+    <div class="admin-card overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full admin-table">
                 <thead>
-                    <tr class="bg-surface-container-low border-b-[3px] border-on-background">
-                        <th class="table-th">Kutipan</th>
-                        <th class="table-th hidden sm:table-cell">Nama</th>
-                        <th class="table-th hidden md:table-cell">Peran</th>
-                        <th class="table-th hidden sm:table-cell">Urutan</th>
-                        <th class="table-th hidden sm:table-cell">Status</th>
-                        <th class="table-th text-right">Aksi</th>
+                    <tr>
+                        <th class="text-left">Kutipan</th>
+                        <th class="text-left hidden sm:table-cell">Penulis</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y-[3px] divide-on-background/10">
-                    @foreach($testimonials as $t)
-                        <tr class="table-tr">
-                            <td class="table-td text-sm font-bold max-w-xs truncate">{{ $t->quote }}</td>
-                            <td class="table-td hidden sm:table-cell font-label-mono text-sm">{{ $t->author_name }}</td>
-                            <td class="table-td hidden md:table-cell text-sm">{{ $t->author_role ?? '—' }}</td>
-                            <td class="table-td hidden sm:table-cell font-label-mono text-sm">{{ $t->sort_order }}</td>
-                            <td class="table-td hidden sm:table-cell">
-                                @if($t->is_active)
-                                    <span class="badge bg-primary-container text-on-primary-container">Aktif</span>
+                <tbody>
+                    @forelse($testimonials as $testimonial)
+                        <tr>
+                            <td>
+                                <div class="flex items-start gap-3">
+                                    <span class="material-symbols-outlined text-secondary shrink-0 mt-0.5">format_quote</span>
+                                    <div class="min-w-0">
+                                        <p class="font-body-md text-sm italic truncate">{{ $testimonial->quote }}</p>
+                                        <p class="font-label-mono text-[10px] text-on-surface-variant mt-0.5">{{ $testimonial->author_name }} {{ $testimonial->author_role ? '- ' . $testimonial->author_role : '' }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="hidden sm:table-cell">
+                                <span class="font-body-md text-sm">{{ $testimonial->author_name }}</span>
+                            </td>
+                            <td class="text-center">
+                                @if($testimonial->is_active)
+                                    <span class="admin-badge bg-green-100 text-green-700 border-green-700">Aktif</span>
                                 @else
-                                    <span class="badge bg-surface-container text-on-surface">Nonaktif</span>
+                                    <span class="admin-badge bg-gray-100 text-gray-600 border-gray-400">Nonaktif</span>
                                 @endif
                             </td>
-                            <td class="table-td text-right">
-                                <div class="flex items-center justify-end gap-1">
-                                    <a href="{{ route('admin.testimonials.edit', $t) }}" class="p-2 hover:bg-surface-container transition-colors">
+                            <td>
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <a href="{{ route('admin.testimonials.edit', $testimonial) }}" class="action-btn action-btn-edit" title="Edit">
                                         <span class="material-symbols-outlined text-sm">edit</span>
                                     </a>
-                                    <form action="{{ route('admin.testimonials.destroy', $t) }}" method="POST" onsubmit="return confirm('Hapus testimoni ini?')" class="inline">
+                                    <form action="{{ route('admin.testimonials.destroy', $testimonial) }}" method="POST" class="inline">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="p-2 hover:bg-error-container transition-colors cursor-pointer">
-                                            <span class="material-symbols-outlined text-sm text-error">delete</span>
+                                        <button type="submit" data-confirm-delete data-message="Testimoni ini akan dihapus!" class="action-btn action-btn-delete" title="Hapus">
+                                            <span class="material-symbols-outlined text-sm">delete</span>
                                         </button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="4">
+                                <div class="py-12 text-center">
+                                    <div class="empty-state-icon">
+                                        <span class="material-symbols-outlined text-2xl text-on-surface-variant">format_quote</span>
+                                    </div>
+                                    <p class="font-body-md text-sm text-on-surface-variant">Belum ada testimoni.</p>
+                                    <a href="{{ route('admin.testimonials.create') }}" class="admin-btn-primary admin-btn-sm mt-4 inline-flex">Tambah Testimoni</a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
-            @if($testimonials->hasPages())
-                <div class="p-4 border-t-[3px] border-on-background">{{ $testimonials->onEachSide(1)->links('vendor.pagination.tailwind') }}</div>
-            @endif
         </div>
-    @else
-        <div class="text-center py-16 bg-surface border-[3px] border-on-background brutalist-shadow">
-            <div class="w-16 h-16 bg-surface-container border-[3px] border-on-background flex items-center justify-center mx-auto mb-4">
-                <span class="material-symbols-outlined text-3xl">format_quote</span>
-            </div>
-            <p class="font-label-mono text-sm uppercase mb-1">Belum ada testimoni</p>
-            <p class="font-body-md text-sm opacity-60 mb-6">Tambahkan testimoni/tanggapan untuk halaman utama.</p>
-            <a href="{{ route('admin.testimonials.create') }}" class="btn btn-primary">+ Tambah Testimoni</a>
+    </div>
+
+    @if($testimonials->hasPages())
+        <div class="mt-6 pagination">
+            {{ $testimonials->links() }}
         </div>
     @endif
-
 @endsection

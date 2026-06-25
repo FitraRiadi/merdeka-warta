@@ -17,9 +17,13 @@ class ArticleController extends Controller
     public function index()
     {
         $spotlights = Spotlight::with('article')
-            ->where('is_active', true)
-            ->orderBy('sort_order')
+            ->articleSpotlights()
+            ->take(3)
             ->get();
+
+        $spotlightAnnouncement = Spotlight::with('announcement')
+            ->announcementSpotlights()
+            ->first();
 
         $articles = Article::where('is_published', true)
             ->with('author')
@@ -27,8 +31,7 @@ class ArticleController extends Controller
             ->take(9)
             ->get();
 
-        $runningTexts = RunningText::where('is_active', true)
-            ->orderBy('display_order')
+        $runningTexts = RunningText::orderBy('display_order')
             ->get();
 
         $announcements = Announcement::where('is_active', true)
@@ -39,16 +42,13 @@ class ArticleController extends Controller
             ->limit(3)
             ->get();
 
-        $galleries = Gallery::where('is_active', true)
-            ->orderBy('sort_order')
-            ->get();
+        $galleries = Gallery::get();
 
         $testimonials = Testimonial::where('is_active', true)
-            ->orderBy('sort_order')
             ->get();
 
         return view('public.index', compact(
-            'spotlights', 'articles', 'runningTexts',
+            'spotlights', 'spotlightAnnouncement', 'articles', 'runningTexts',
             'announcements', 'galleries', 'testimonials'
         ));
     }
@@ -80,15 +80,13 @@ class ArticleController extends Controller
             ->orderBy('total', 'desc')
             ->get();
 
-        // Spotlights for hero carousel (ambil 5)
+        // Spotlights for hero carousel (max 3)
         $spotlights = Spotlight::with('article')
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->take(5)
+            ->articleSpotlights()
+            ->take(3)
             ->get();
 
-        $runningTexts = RunningText::where('is_active', true)
-            ->orderBy('display_order')
+        $runningTexts = RunningText::orderBy('display_order')
             ->get();
 
         return view('public.article-list', compact(
@@ -125,8 +123,7 @@ class ArticleController extends Controller
             ->get();
 
         // Running texts untuk navbar
-        $runningTexts = RunningText::where('is_active', true)
-            ->orderBy('display_order')
+        $runningTexts = RunningText::orderBy('display_order')
             ->get();
 
         return view('public.article-show', compact(

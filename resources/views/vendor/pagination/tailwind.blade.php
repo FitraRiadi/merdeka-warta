@@ -4,22 +4,22 @@
         {{-- Mobile --}}
         <div class="flex sm:hidden gap-2 w-full">
             @if ($paginator->onFirstPage())
-                <span class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-400 bg-slate-50 rounded-xl border border-slate-200 cursor-not-allowed">
-                    <i class="fas fa-chevron-left text-xs"></i> Sebelumnya
+                <span class="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-slate-500 bg-slate-100 border-2 border-slate-300 cursor-not-allowed font-['JetBrains_Mono']">
+                    <i class="fas fa-chevron-left"></i> Sebelumnya
                 </span>
             @else
-                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-white rounded-xl border border-slate-200 hover:border-blue-200 hover:text-blue-700 hover:bg-blue-50 transition-all shadow-sm">
-                    <i class="fas fa-chevron-left text-xs"></i> Sebelumnya
+                <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-[#004ac6] bg-white border-2 border-[#004ac6] hover:bg-blue-50 active:bg-blue-100 transition-all shadow-[2px_2px_0px_0px_rgba(0,74,198,0.3)] font-['JetBrains_Mono']">
+                    <i class="fas fa-chevron-left"></i> Sebelumnya
                 </a>
             @endif
 
             @if ($paginator->hasMorePages())
-                <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-700 bg-white rounded-xl border border-slate-200 hover:border-blue-200 hover:text-blue-700 hover:bg-blue-50 transition-all shadow-sm">
-                    Selanjutnya <i class="fas fa-chevron-right text-xs"></i>
+                <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-[#004ac6] bg-white border-2 border-[#004ac6] hover:bg-blue-50 active:bg-blue-100 transition-all shadow-[2px_2px_0px_0px_rgba(0,74,198,0.3)] font-['JetBrains_Mono']">
+                    Selanjutnya <i class="fas fa-chevron-right"></i>
                 </a>
             @else
-                <span class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-slate-400 bg-slate-50 rounded-xl border border-slate-200 cursor-not-allowed">
-                    Selanjutnya <i class="fas fa-chevron-right text-xs"></i>
+                <span class="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold text-slate-500 bg-slate-100 border-2 border-slate-300 cursor-not-allowed font-['JetBrains_Mono']">
+                    Selanjutnya <i class="fas fa-chevron-right"></i>
                 </span>
             @endif
         </div>
@@ -27,13 +27,13 @@
         {{-- Desktop --}}
         <div class="hidden sm:flex sm:items-center sm:justify-between w-full">
             <div>
-                <p class="text-sm text-slate-500 font-medium">
+                <p class="text-sm text-slate-500 font-bold font-['JetBrains_Mono']">
                     Menampilkan
-                    <span class="font-semibold text-slate-700">{{ $paginator->firstItem() }}</span>
+                    <span class="font-bold text-slate-700 font-['Plus_Jakarta_Sans']">{{ $paginator->firstItem() }}</span>
                     -
-                    <span class="font-semibold text-slate-700">{{ $paginator->lastItem() }}</span>
+                    <span class="font-bold text-slate-700 font-['Plus_Jakarta_Sans']">{{ $paginator->lastItem() }}</span>
                     dari
-                    <span class="font-semibold text-slate-700">{{ $paginator->total() }}</span>
+                    <span class="font-bold text-slate-700 font-['Plus_Jakarta_Sans']">{{ $paginator->total() }}</span>
                     hasil
                 </p>
             </div>
@@ -41,19 +41,19 @@
             <div class="flex items-center gap-1.5">
                 {{-- Previous --}}
                 @if ($paginator->onFirstPage())
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-slate-300 bg-slate-50 border border-slate-200 cursor-not-allowed">
-                        <i class="fas fa-chevron-left text-xs"></i>
+                    <span class="inline-flex items-center justify-center w-10 h-10 text-slate-400 bg-slate-100 border-2 border-slate-300 cursor-not-allowed font-['JetBrains_Mono']">
+                        <i class="fas fa-chevron-left"></i>
                     </span>
                 @else
-                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-slate-600 bg-white border border-slate-200 hover:border-blue-200 hover:text-blue-700 hover:bg-blue-50 transition-all shadow-sm">
-                        <i class="fas fa-chevron-left text-xs"></i>
+                    <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="inline-flex items-center justify-center w-10 h-10 text-[#004ac6] bg-white border-2 border-[#004ac6] hover:bg-blue-50 active:bg-blue-100 transition-all shadow-[2px_2px_0px_0px_rgba(0,74,198,0.25)] font-['JetBrains_Mono']">
+                        <i class="fas fa-chevron-left"></i>
                     </a>
                 @endif
 
                 {{-- Elements --}}
                 @foreach ($elements as $element)
                     @if (is_string($element))
-                        <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-slate-400 text-sm font-semibold bg-transparent">
+                        <span class="inline-flex items-center justify-center w-10 h-10 text-slate-400 text-sm font-bold bg-transparent font-['JetBrains_Mono']">
                             {{ $element }}
                         </span>
                     @endif
@@ -61,11 +61,11 @@
                     @if (is_array($element))
                         @foreach ($element as $page => $url)
                             @if ($page == $paginator->currentPage())
-                                <span aria-current="page" class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-sm font-bold text-white bg-gradient-to-br from-blue-600 to-blue-700 shadow-lg shadow-blue-200">
+                                <span aria-current="page" class="inline-flex items-center justify-center w-10 h-10 text-sm font-bold text-white bg-[#004ac6] border-2 border-[#191c1d] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] font-['JetBrains_Mono']">
                                     {{ $page }}
                                 </span>
                             @else
-                                <a href="{{ $url }}" class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-sm font-semibold text-slate-600 bg-white border border-slate-200 hover:border-blue-200 hover:text-blue-700 hover:bg-blue-50 transition-all shadow-sm" aria-label="Ke halaman {{ $page }}">
+                                <a href="{{ $url }}" class="inline-flex items-center justify-center w-10 h-10 text-sm font-bold text-slate-600 bg-white border-2 border-[#191c1d] hover:border-[#004ac6] hover:text-[#004ac6] hover:bg-blue-50 transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)] font-['JetBrains_Mono']" aria-label="Ke halaman {{ $page }}">
                                     {{ $page }}
                                 </a>
                             @endif
@@ -75,12 +75,12 @@
 
                 {{-- Next --}}
                 @if ($paginator->hasMorePages())
-                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-slate-600 bg-white border border-slate-200 hover:border-blue-200 hover:text-blue-700 hover:bg-blue-50 transition-all shadow-sm">
-                        <i class="fas fa-chevron-right text-xs"></i>
+                    <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="inline-flex items-center justify-center w-10 h-10 text-[#004ac6] bg-white border-2 border-[#004ac6] hover:bg-blue-50 active:bg-blue-100 transition-all shadow-[2px_2px_0px_0px_rgba(0,74,198,0.25)] font-['JetBrains_Mono']">
+                        <i class="fas fa-chevron-right"></i>
                     </a>
                 @else
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl text-slate-300 bg-slate-50 border border-slate-200 cursor-not-allowed">
-                        <i class="fas fa-chevron-right text-xs"></i>
+                    <span class="inline-flex items-center justify-center w-10 h-10 text-slate-400 bg-slate-100 border-2 border-slate-300 cursor-not-allowed font-['JetBrains_Mono']">
+                        <i class="fas fa-chevron-right"></i>
                     </span>
                 @endif
             </div>

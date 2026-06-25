@@ -28,13 +28,10 @@ class RunningTextController extends Controller
     {
         $validated = $request->validate([
             'text' => 'required|string',
-            'is_active' => 'nullable|boolean',
             'display_order' => 'nullable|integer|min:0',
             'background_color' => 'nullable|string|max:20',
             'text_color' => 'nullable|string|max:20',
         ]);
-
-        $validated['is_active'] = $request->has('is_active');
 
         RunningText::create($validated);
 
@@ -51,13 +48,10 @@ class RunningTextController extends Controller
     {
         $validated = $request->validate([
             'text' => 'required|string',
-            'is_active' => 'nullable|boolean',
             'display_order' => 'nullable|integer|min:0',
             'background_color' => 'nullable|string|max:20',
             'text_color' => 'nullable|string|max:20',
         ]);
-
-        $validated['is_active'] = $request->has('is_active');
 
         $runningText->update($validated);
 
