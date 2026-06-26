@@ -48,9 +48,9 @@
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; background-color: #f8f9fa; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; max-width: 100%; }
-        .bento-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.1); }
-        .bento-shadow-hover:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); transform: translateY(-2px); }
-        .bento-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-shadow { box-shadow: 3px 3px 0px 0px #000; }
+        .bento-shadow-hover:hover { box-shadow: 5px 5px 0px 0px #000; transform: translateY(-2px); }
+        .bento-card { border: 2px solid #000; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .bento-grid-article { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
         @media (min-width: 768px) { .bento-grid-article { gap: 16px; grid-template-columns: repeat(3, 1fr); } }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
@@ -79,18 +79,18 @@
         {{-- TITLE SECTION --}}
         <div class="mb-10 md:mb-12 text-center">
             <div class="flex items-center justify-center gap-3 mb-3">
-                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded-full"></span>
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
                 <h1 class="font-headline-lg text-3xl sm:text-4xl md:text-5xl uppercase tracking-tighter">Merdeka Article</h1>
-                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded-full"></span>
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
             </div>
-            <div class="h-1 w-20 md:w-24 bg-primary rounded-full mx-auto"></div>
+            <div class="h-1 w-20 md:w-24 bg-primary rounded mx-auto"></div>
         </div>
 
         {{-- HERO CAROUSEL --}}
         @if($spotlights->isNotEmpty())
         <section class="mb-12 md:mb-16 relative">
             <div class="relative" id="hero-carousel">
-                <div class="bg-white rounded-2xl bento-shadow overflow-hidden min-h-[360px] md:min-h-[400px]">
+                <div class="bg-white rounded-xl bento-shadow overflow-hidden min-h-[360px] md:min-h-[400px] border-2 border-black">
                     @foreach($spotlights as $s)
                         @php $art = $s->article; @endphp
                         @if(!$art) @continue @endif
@@ -101,7 +101,7 @@
                                 @endif
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                                 <div class="absolute bottom-6 left-6 right-6 slide-content">
-                                    <div class="inline-block bg-primary text-on-primary px-3 py-1 font-label-mono text-[10px] md:text-xs rounded-lg mb-3 uppercase">{{ $art->category ?? 'HIGHLIGHT' }}</div>
+                                    <div class="inline-block bg-primary text-on-primary px-3 py-1 font-label-mono text-[10px] md:text-xs rounded mb-3 uppercase">{{ $art->category ?? 'HIGHLIGHT' }}</div>
                                     <h1 class="text-white font-headline-lg text-2xl md:text-4xl uppercase leading-none">{{ $art->title }}</h1>
                                 </div>
                             </div>
@@ -138,13 +138,13 @@
                         <button class="w-11 h-11 md:w-12 md:h-12 bg-white bento-shadow rounded-xl flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all bento-card" id="categoryToggle">
                             <span class="material-symbols-outlined text-2xl">menu</span>
                         </button>
-                        <div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-2xl bento-shadow z-50 hidden" id="categoryDropdown">
+                        <div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl bento-shadow z-50 hidden" id="categoryDropdown">
                             <div class="p-4">
                                 <h4 class="font-label-mono text-xs uppercase mb-3 text-on-surface-variant">Kategori</h4>
                                 <div class="space-y-1">
-                                    <a href="{{ route('public.article.list') }}#articles-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded-lg transition-colors text-sm">Semua Artikel</a>
+                                    <a href="{{ route('public.article.list') }}#articles-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded transition-colors text-sm">Semua Artikel</a>
                                     @foreach($categories as $cat)
-                                    <a href="{{ route('public.article.list', array_merge(request()->query(), ['category' => $cat->category, 'page' => null])) }}#articles-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded-lg transition-colors text-sm">{{ $cat->category }} ({{ $cat->total }})</a>
+                                    <a href="{{ route('public.article.list', array_merge(request()->query(), ['category' => $cat->category, 'page' => null])) }}#articles-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded transition-colors text-sm">{{ $cat->category }} ({{ $cat->total }})</a>
                                     @endforeach
                                 </div>
                             </div>
@@ -212,14 +212,14 @@
             @if($articles->isNotEmpty())
             <div class="bento-grid-article">
                 @foreach($articles as $index => $article)
-                    <article class="bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden group">
+                    <article class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden group">
                         <div class="aspect-video relative overflow-hidden">
                             @if($article->image)
                             <img alt="{{ $article->title }}" class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105" src="{{ $article->image }}">
                             @else
-                            <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20"></div>
+                            <div class="w-full h-full bg-surface-variant"></div>
                             @endif
-                            <div class="absolute top-3 left-3 bg-white/90 text-on-background px-2.5 py-1 text-[10px] font-label-mono uppercase rounded-lg bento-shadow">{{ $article->category ?? 'BERITA' }}</div>
+                            <div class="absolute top-3 left-3 bg-white/90 text-on-background px-2.5 py-1 text-[10px] font-label-mono uppercase rounded bento-shadow">{{ $article->category ?? 'BERITA' }}</div>
                         </div>
                         <div class="p-3 md:p-4 flex flex-col flex-grow">
                             <div class="font-label-mono text-primary text-[10px] uppercase mb-1">{{ $article->published_at->format('d M Y') }}</div>

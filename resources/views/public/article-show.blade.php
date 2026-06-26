@@ -48,9 +48,9 @@
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; background-color: #f8f9fa; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; max-width: 100%; }
-        .bento-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.1); }
-        .bento-shadow-hover:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); transform: translateY(-2px); }
-        .bento-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-shadow { box-shadow: 3px 3px 0px 0px #000; }
+        .bento-shadow-hover:hover { box-shadow: 5px 5px 0px 0px #000; transform: translateY(-2px); }
+        .bento-card { border: 2px solid #000; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { animation: marquee 30s linear infinite; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
@@ -61,7 +61,7 @@
         .prose h2 { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 1.5rem; line-height: 1.1; margin-top: 2rem; margin-bottom: 0.75rem; }
         .prose h3 { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 1.25rem; line-height: 1.1; margin-top: 1.5rem; margin-bottom: 0.5rem; }
         .prose p { margin-bottom: 1rem; line-height: 1.7; }
-        .prose img { border-radius: 0.75rem; margin: 1.5rem 0; }
+        .prose img { border-radius: 0.25rem; margin: 1.5rem 0; }
         .prose ul, .prose ol { margin-bottom: 1rem; padding-left: 1.5rem; }
         .prose li { margin-bottom: 0.25rem; }
         .prose blockquote { border-left: 3px solid #004ac6; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; color: #434655; }
@@ -83,7 +83,7 @@
 
                 {{-- Breadcrumbs & Category --}}
                 <div class="flex items-center gap-3 flex-wrap">
-                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-lg font-label-mono text-[10px] uppercase">
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded font-label-mono text-[10px] uppercase">
                         {{ $article->category ?? 'NEWS' }}
                     </span>
                     <div class="flex items-center text-on-surface-variant font-label-mono text-[10px] uppercase gap-1.5">
@@ -112,7 +112,7 @@
 
                 {{-- Featured Image --}}
                 @if($article->image)
-                <div class="relative w-full rounded-2xl overflow-hidden bento-shadow">
+                <div class="relative w-full rounded-xl overflow-hidden bento-shadow">
                     <img class="w-full aspect-video object-cover" src="{{ $article->image }}" alt="{{ $article->title }}">
                 </div>
                 @endif
@@ -127,7 +127,7 @@
                 @if(count($tags) > 0)
                 <div class="flex flex-wrap gap-2 pt-6 border-t border-outline-variant">
                     @foreach($tags as $tag)
-                    <a class="bg-surface-container-high rounded-lg px-3 py-1 font-label-mono text-[10px] hover:bg-primary hover:text-on-primary transition-all bento-shadow" href="#">{{ $tag }}</a>
+                    <a class="bg-surface-container-high rounded px-3 py-1 font-label-mono text-[10px] hover:bg-primary hover:text-on-primary transition-all bento-shadow" href="#">{{ $tag }}</a>
                     @endforeach
                 </div>
                 @endif
@@ -136,19 +136,19 @@
                 @if($relatedArticles->isNotEmpty())
                 <section class="mt-8 pt-8 border-t border-outline-variant">
                     <div class="flex items-center gap-3 mb-6">
-                        <span class="w-1.5 h-5 bg-primary rounded-full"></span>
+                        <span class="w-1.5 h-5 bg-primary rounded"></span>
                         <h2 class="font-headline-lg text-xl md:text-2xl uppercase">ARTIKEL LAINNYA</h2>
                     </div>
                     <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
                         @foreach($relatedArticles as $related)
-                        <div class="bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden">
+                        <div class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden">
                             <div class="relative">
                                 @if($related->image)
                                 <img alt="{{ $related->title }}" class="w-full aspect-video object-cover" src="{{ $related->image }}">
                                 @else
-                                <div class="w-full aspect-video bg-gradient-to-br from-primary/20 to-secondary/20"></div>
+                                <div class="w-full aspect-video bg-surface-variant"></div>
                                 @endif
-                                <span class="absolute top-2 left-2 bg-white/90 text-on-background px-2 py-0.5 text-[10px] font-label-mono uppercase rounded-lg bento-shadow">{{ $related->category ?? 'BERITA' }}</span>
+                                <span class="absolute top-2 left-2 bg-white/90 text-on-background px-2 py-0.5 text-[10px] font-label-mono uppercase rounded bento-shadow">{{ $related->category ?? 'BERITA' }}</span>
                             </div>
                             <div class="p-4 flex flex-col flex-grow">
                                 <h3 class="font-headline-lg text-base uppercase mb-1.5 leading-tight">{{ $related->title }}</h3>
@@ -169,13 +169,13 @@
 
                 {{-- Berita Populer --}}
                 @if($popularArticles->isNotEmpty())
-                <section class="bg-white rounded-2xl bento-shadow p-5 md:p-6">
+                <section class="bg-white rounded-xl bento-shadow p-5 md:p-6 border-2 border-black">
                     <h3 class="font-headline-lg text-lg md:text-xl uppercase mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-secondary">trending_up</span> Berita Populer
                     </h3>
                     <div class="space-y-4">
                         @foreach($popularArticles as $i => $popular)
-                        <a href="{{ route('public.article.show', $popular->slug) }}" class="group cursor-pointer block bento-card rounded-xl p-2 -mx-2 hover:bg-surface-container-low">
+                        <a href="{{ route('public.article.show', $popular->slug) }}" class="group cursor-pointer block rounded-xl p-2 -mx-2 hover:bg-surface-container-low">
                             <span class="text-[10px] font-label-mono text-secondary uppercase mb-0.5 block">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }} / {{ $popular->category ?? 'NEWS' }}</span>
                             <h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">{{ $popular->title }}</h4>
                         </a>
@@ -186,14 +186,14 @@
 
                 {{-- Kategori --}}
                 @if($categories->isNotEmpty())
-                <section class="bg-white rounded-2xl bento-shadow p-5 md:p-6">
+                <section class="bg-white rounded-xl bento-shadow p-5 md:p-6 border-2 border-black">
                     <h3 class="font-headline-lg text-lg md:text-xl uppercase mb-4">Kategori</h3>
                     <ul class="space-y-1.5">
                         @foreach($categories->take(6) as $cat)
                         <li>
                             <a class="flex justify-between items-center group p-2.5 rounded-xl hover:bg-primary-fixed transition-all" href="{{ route('public.article.list', ['category' => $cat->category]) }}#articles-section">
                                 <span class="font-bold text-sm">{{ $cat->category }}</span>
-                                <span class="bg-surface-container-high px-2 py-0.5 text-[10px] font-label-mono rounded-lg">{{ str_pad($cat->total, 2, '0', STR_PAD_LEFT) }}</span>
+                                <span class="bg-surface-container-high px-2 py-0.5 text-[10px] font-label-mono rounded">{{ str_pad($cat->total, 2, '0', STR_PAD_LEFT) }}</span>
                             </a>
                         </li>
                         @endforeach
@@ -202,7 +202,7 @@
                 @endif
 
                 {{-- CTA Card --}}
-                <section class="bg-gradient-to-br from-tertiary-container to-tertiary/80 text-on-tertiary rounded-2xl bento-shadow p-6 md:p-7 relative overflow-hidden group">
+                <section class="bg-tertiary-container text-on-tertiary rounded-xl bento-shadow p-6 md:p-7 relative overflow-hidden group">
                     <div class="relative z-10">
                         <h3 class="font-headline-lg text-2xl mb-3 leading-none uppercase">Punya Berita Menarik?</h3>
                         <p class="mb-5 font-bold text-sm opacity-90">Kirimkan tulisan, foto, atau video kegiatan sekolahmu ke Redaksi Merdeka Warta!</p>
@@ -279,7 +279,7 @@
                             confirmButtonColor: '#004ac6',
                             confirmButtonText: 'OK',
                             customClass: {
-                                popup: 'rounded-2xl shadow-2xl',
+                                popup: 'rounded-xl shadow-2xl',
                                 title: 'font-headline-lg text-2xl uppercase',
                                 confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
                             }
@@ -296,7 +296,7 @@
                         confirmButtonColor: '#004ac6',
                         confirmButtonText: 'OK',
                         customClass: {
-                            popup: 'rounded-2xl shadow-2xl',
+                            popup: 'rounded-xl shadow-2xl',
                             title: 'font-headline-lg text-2xl uppercase',
                             confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
                         }

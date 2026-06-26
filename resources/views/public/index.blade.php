@@ -55,9 +55,9 @@
             background-color: #f8f9fa;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .bento-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.1); }
-        .bento-shadow-hover:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); transform: translateY(-2px); }
-        .bento-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-shadow { box-shadow: 3px 3px 0px 0px #000; }
+        .bento-shadow-hover:hover { box-shadow: 5px 5px 0px 0px #000; transform: translateY(-2px); }
+        .bento-card { border: 2px solid #000; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .bento-grid { display: grid; gap: 16px; }
         @media (min-width: 768px) { .bento-grid { gap: 20px; } }
         @media (min-width: 1024px) { .bento-grid { gap: 24px; } }
@@ -106,15 +106,15 @@
             {{-- Featured Hero --}}
             @forelse($spotlights->take(1) as $s)
                 @php $article = $s->article; @endphp
-                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-2xl bento-shadow bento-shadow-hover bg-surface-container-highest min-h-[320px] md:min-h-[460px] flex flex-col justify-end group">
+                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover bg-surface-container-highest min-h-[320px] md:min-h-[460px] flex flex-col justify-end group">
                     @if($article->image)
                         <img alt="{{ $article->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $article->image }}">
                     @else
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/90 to-secondary/90"></div>
+                        <div class="absolute inset-0 bg-primary"></div>
                     @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
                     <div class="relative z-10 p-5 md:p-8">
-                        <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-mono text-[10px] md:text-xs px-3 py-1 rounded-lg mb-3 md:mb-4">
+                        <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-mono text-[10px] md:text-xs px-3 py-1 rounded mb-3 md:mb-4">
                             {{ $article->category ?? 'FEATURED' }}
                         </span>
                         <h1 class="font-headline-lg text-xl md:text-3xl lg:text-4xl text-white mb-2 md:mb-3 leading-none uppercase">{{ $article->title }}</h1>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-2xl bento-shadow bg-gradient-to-br from-primary to-secondary min-h-[320px] md:min-h-[460px] flex items-center justify-center">
+                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-xl bento-shadow bg-primary min-h-[320px] md:min-h-[460px] flex items-center justify-center">
                     <div class="text-center text-on-primary p-8">
                         <span class="material-symbols-outlined text-5xl md:text-6xl mb-4">newspaper</span>
                         <h1 class="font-headline-lg text-2xl md:text-4xl uppercase">Selamat Datang</h1>
@@ -139,13 +139,13 @@
             @foreach($secondarySpotlight as $i => $s)
                 @php $art = $s->article; @endphp
                 @if($art)
-                <a href="{{ route('public.article.show', $art->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-5 bento-card relative overflow-hidden rounded-2xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end group {{ $i == 0 ? '' : '' }}">
+                <a href="{{ route('public.article.show', $art->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-5 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end group {{ $i == 0 ? '' : '' }}">
                     @if($art->image)
                         <img alt="{{ $art->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $art->image }}">
                     @else
-                        <div class="absolute inset-0 bg-gradient-to-br from-secondary/90 to-tertiary/90"></div>
+                        <div class="absolute inset-0 bg-secondary"></div>
                     @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent"></div>
                     <div class="relative z-10 p-4 md:p-5">
                         <span class="text-[10px] font-label-mono text-white/80 uppercase">{{ $art->category ?? 'BERITA' }}</span>
                         <h2 class="font-headline-lg text-sm md:text-lg text-white leading-tight uppercase mt-1">{{ $art->title }}</h2>
@@ -155,7 +155,7 @@
             @endforeach
 
             {{-- Announcements bento cards --}}
-            <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-2xl bento-shadow bg-tertiary-fixed p-4 md:p-5 flex flex-col min-h-[200px]">
+            <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-xl bento-shadow bg-tertiary-fixed p-4 md:p-5 flex flex-col min-h-[200px]">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="material-symbols-outlined text-tertiary text-xl">campaign</span>
                     <h2 class="font-headline-lg text-lg md:text-xl uppercase">PENGUMUMAN</h2>
@@ -175,7 +175,7 @@
                 @if($announcements->isNotEmpty())
                     <div class="flex-1 space-y-1.5 overflow-hidden">
                         @foreach($announcements->take(2) as $ann)
-                            <a href="{{ route('public.announcement.show', $ann->id) }}" class="block p-2.5 bg-white/60 rounded-lg hover:bg-white/90 transition-all text-xs">
+                            <a href="{{ route('public.announcement.show', $ann->id) }}" class="block p-2.5 bg-white/60 rounded hover:bg-white/90 transition-all text-xs">
                                 <span class="font-label-mono text-[10px] text-tertiary">{{ $ann->created_at->format('d F Y') }}</span>
                                 <p class="font-bold truncate">{{ $ann->title }}</p>
                             </a>
@@ -188,14 +188,14 @@
             {{-- Gallery stack: 3 photos tumpuk (desktop), 1 foto (mobile) --}}
             @php $galleryStack = $galleries->take(3); @endphp
             @if($galleryStack->isNotEmpty())
-            <a href="{{ route('public.gallery.list') }}" class="col-span-2 md:col-span-3 lg:col-span-4 bento-card rounded-2xl bento-shadow overflow-hidden md:min-h-[160px] block relative">
+            <a href="{{ route('public.gallery.list') }}" class="col-span-2 md:col-span-3 lg:col-span-4 bento-card rounded-xl bento-shadow overflow-hidden md:min-h-[160px] block relative">
                 {{-- Mobile: carousel --}}
                 <div class="w-full h-[140px] md:hidden relative" id="mobileGalleryCarousel">
                     <div class="flex h-full transition-transform duration-500 ease-in-out" id="mobileGalleryTrack" style="transform: translateX(0%);">
                         @foreach($galleryStack as $g)
                         <div class="w-full h-full flex-shrink-0 relative">
                             <img alt="{{ $g->caption ?? 'Galeri Foto' }}" class="w-full h-full object-cover" src="{{ $g->image_url }}" loading="lazy">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-3">
                                 <span class="text-white font-label-mono text-[10px] uppercase">{{ $g->caption ?? 'Galeri Foto' }}</span>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
             @endif
 
             {{-- Category quick links --}}
-            <div class="col-span-2 md:col-span-2 lg:col-span-3 bento-card rounded-2xl bento-shadow bg-primary-container text-on-primary p-4 md:p-5 flex flex-col justify-between">
+            <div class="col-span-2 md:col-span-2 lg:col-span-3 bento-card rounded-xl bento-shadow bg-primary-container text-on-primary p-4 md:p-5 flex flex-col justify-between">
                 <span class="material-symbols-outlined text-2xl">explore</span>
                 <div>
                     <h3 class="font-headline-lg text-lg uppercase leading-tight">Jelajahi</h3>
@@ -239,13 +239,13 @@
             @php $thirdSpotlight = $spotlights->skip(3)->take(1)->first(); @endphp
             @if($thirdSpotlight && $thirdSpotlight->article)
                 @php $art3 = $thirdSpotlight->article; @endphp
-                <a href="{{ route('public.article.show', $art3->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-3 bento-card relative overflow-hidden rounded-2xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end">
+                <a href="{{ route('public.article.show', $art3->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-3 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end">
                     @if($art3->image)
                         <img alt="{{ $art3->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $art3->image }}">
                     @else
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-secondary/80"></div>
+                        <div class="absolute inset-0 bg-primary"></div>
                     @endif
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent"></div>
                     <div class="relative z-10 p-4">
                         <h2 class="font-headline-lg text-base md:text-lg text-white leading-tight uppercase">{{ $art3->title }}</h2>
                     </div>
@@ -260,7 +260,7 @@
         <section class="mb-12 md:mb-16" id="berita">
             <div class="flex items-center justify-between mb-6 md:mb-8 gap-4">
                 <div class="flex items-center gap-3">
-                    <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded-full"></span>
+                    <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
                     <h2 class="font-headline-lg text-xl md:text-3xl uppercase">BERITA TERBARU</h2>
                 </div>
                 <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
@@ -280,17 +280,17 @@
                     <div class="news-slider-track" id="newsSliderTrack" style="transform: translateX(0%);">
                         @foreach($articles as $article)
                             <div class="news-slider-item">
-                                <article class="bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover h-full flex flex-col overflow-hidden">
+                                <article class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover h-full flex flex-col overflow-hidden">
                                     <div class="aspect-video overflow-hidden bg-surface-variant">
                                         @if($article->image)
                                             <img alt="{{ $article->title }}" class="w-full h-full object-cover transition-all duration-500 hover:scale-105" src="{{ $article->image }}">
                                         @else
-                                            <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20"></div>
+                                            <div class="w-full h-full bg-surface-variant"></div>
                                         @endif
                                     </div>
                                     <div class="p-5 flex-grow flex flex-col">
                                         <div class="flex items-center gap-2 mb-3">
-                                            <span class="bg-primary/10 text-primary px-2.5 py-0.5 font-label-mono text-[10px] rounded-lg">{{ $article->category ?? 'BERITA' }}</span>
+                                            <span class="bg-primary/10 text-primary px-2.5 py-0.5 font-label-mono text-[10px] rounded">{{ $article->category ?? 'BERITA' }}</span>
                                             <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $article->published_at->format('d M Y') }}</span>
                                         </div>
                                         <h3 class="font-bold font-headline-lg text-lg md:text-xl leading-tight mb-2 uppercase">{{ $article->title }}</h3>
@@ -308,7 +308,7 @@
                     <button class="w-2.5 h-2.5 rounded-full bg-primary transition-all" style="width: 1.5rem;"></button>
                 </div>
             @else
-                <div class="bg-white rounded-2xl bento-shadow p-12 text-center">
+                <div class="bg-white rounded-xl bento-shadow p-12 text-center">
                     <span class="material-symbols-outlined text-4xl opacity-30 mb-4 block">description</span>
                     <p class="font-label-mono text-sm uppercase opacity-60">Belum ada berita</p>
                 </div>
@@ -318,7 +318,7 @@
         {{-- ============================================================ --}}
         {{-- CTA SECTION --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 bento-card rounded-2xl bento-shadow bg-gradient-to-br from-on-background to-gray-800 text-surface p-8 md:p-12 relative overflow-hidden">
+        <section class="mb-12 md:mb-16 bento-card rounded-xl bento-shadow bg-on-background text-surface p-8 md:p-12 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-40 md:w-60 h-40 md:h-60 bg-secondary/20 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-32 md:w-48 h-32 md:h-48 bg-primary/20 rounded-full blur-3xl"></div>
             <div class="relative z-10 max-w-2xl mx-auto text-center">
@@ -346,7 +346,7 @@
             <section class="mb-12 md:mb-16">
                 <div class="flex items-center justify-between mb-6 gap-4">
                     <div class="flex items-center gap-3">
-                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded-full"></span>
+                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
                         <h2 class="font-headline-lg text-xl md:text-3xl uppercase">MOMEN DI SMK MERDEKA</h2>
                     </div>
                     <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
@@ -356,7 +356,7 @@
                     <div class="flex animate-scroll-gallery gap-4">
                         @for($copy = 0; $copy < 3; $copy++)
                             @foreach($galleries as $g)
-                                <div class="w-56 md:w-72 aspect-[4/3] rounded-2xl bento-shadow overflow-hidden shrink-0 bento-card bento-shadow-hover">
+                                <div class="w-56 md:w-72 aspect-[4/3] rounded-xl bento-shadow overflow-hidden shrink-0 bento-card bento-shadow-hover">
                                     <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}" class="w-full h-full object-cover transition-all duration-500 hover:scale-110" src="{{ $g->image_url }}" loading="lazy">
                                 </div>
                             @endforeach
@@ -373,7 +373,7 @@
             <section class="mb-12 md:mb-16 overflow-hidden">
                 <div class="flex items-center justify-between mb-6 gap-4">
                     <div class="flex items-center gap-3">
-                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-tertiary rounded-full"></span>
+                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-tertiary rounded"></span>
                         <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TANGGAPAN</h2>
                     </div>
                     <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
@@ -381,7 +381,7 @@
                 <div class="w-full overflow-hidden pause-on-hover py-4">
                     <div class="flex animate-scroll-testimonials w-max gap-6">
                         @foreach($testimonials as $t)
-                            <div class="w-[300px] md:w-[350px] bg-white rounded-2xl bento-shadow p-6 flex flex-col gap-4 shrink-0 bento-card">
+                            <div class="w-[300px] md:w-[350px] bg-white rounded-xl bento-shadow p-6 flex flex-col gap-4 shrink-0 bento-card">
                                 <span class="material-symbols-outlined text-primary text-3xl md:text-4xl font-bold leading-none select-none">format_quote</span>
                                 <p class="font-bold font-body-md text-sm md:text-base flex-grow text-on-surface">{{ $t->quote }}</p>
                                 <div class="border-t border-outline-variant pt-4">
@@ -444,7 +444,7 @@
                             confirmButtonColor: '#004ac6',
                             confirmButtonText: 'OK',
                             customClass: {
-                                popup: 'rounded-2xl shadow-2xl',
+                                popup: 'rounded-xl shadow-2xl',
                                 title: 'font-headline-lg text-2xl uppercase',
                                 confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
                             }
@@ -461,7 +461,7 @@
                         confirmButtonColor: '#004ac6',
                         confirmButtonText: 'OK',
                         customClass: {
-                            popup: 'rounded-2xl shadow-2xl',
+                            popup: 'rounded-xl shadow-2xl',
                             title: 'font-headline-lg text-2xl uppercase',
                             confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
                         }

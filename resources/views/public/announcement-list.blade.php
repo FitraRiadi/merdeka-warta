@@ -48,9 +48,9 @@
     <style>
         * { box-sizing: border-box; }
         body { margin: 0; background-color: #f8f9fa; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; max-width: 100%; }
-        .bento-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.1); }
-        .bento-shadow-hover:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); transform: translateY(-2px); }
-        .bento-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-shadow { box-shadow: 3px 3px 0px 0px #000; }
+        .bento-shadow-hover:hover { box-shadow: 5px 5px 0px 0px #000; transform: translateY(-2px); }
+        .bento-card { border: 2px solid #000; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
         #mobile-sidebar { transition: transform 0.3s ease-in-out; transform: translateX(100%); }
         #mobile-sidebar.open { transform: translateX(0); }
@@ -71,11 +71,11 @@
         {{-- PAGE TITLE --}}
         <div class="mb-10 md:mb-12 text-center">
             <div class="flex items-center justify-center gap-3 mb-3">
-                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded-full"></span>
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
                 <h1 class="font-headline-lg text-2xl sm:text-3xl md:text-4xl uppercase tracking-tighter">PEMBERITAHUAN SEKOLAH</h1>
-                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded-full"></span>
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
             </div>
-            <div class="h-1 w-20 md:w-24 bg-primary rounded-full mx-auto"></div>
+            <div class="h-1 w-20 md:w-24 bg-primary rounded mx-auto"></div>
         </div>
 
         {{-- FEATURED + LATEST BENTO SECTION --}}
@@ -85,8 +85,8 @@
             {{-- Featured spotlight (large) --}}
             @if($featured)
             <a href="{{ route('public.announcement.show', $featured->id) }}"
-               class="md:col-span-2 lg:col-span-2 bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover p-5 md:p-7 flex flex-col md:flex-row items-start gap-5 group">
-                <div class="flex-shrink-0 bg-primary/10 p-4 rounded-2xl">
+               class="md:col-span-2 lg:col-span-2 bg-white rounded-xl bento-shadow bento-card bento-shadow-hover p-5 md:p-7 flex flex-col md:flex-row items-start gap-5 group">
+                <div class="flex-shrink-0 bg-primary/10 p-4 rounded-xl">
                     <span class="material-symbols-outlined text-primary text-3xl md:text-4xl">campaign</span>
                 </div>
                 <div class="flex-grow">
@@ -97,7 +97,7 @@
                             $featLabel = $featTypeLabels[$featured->type] ?? 'PENGUMUMAN';
                             $featColor = $featTypeColors[$featured->type] ?? 'bg-secondary/10 text-secondary';
                         @endphp
-                        <span class="{{ $featColor }} px-3 py-1 font-label-mono text-[10px] rounded-lg uppercase font-bold">{{ $featLabel }}</span>
+                        <span class="{{ $featColor }} px-3 py-1 font-label-mono text-[10px] rounded uppercase font-bold">{{ $featLabel }}</span>
                         <span class="font-label-mono text-[10px] text-on-surface-variant uppercase">{{ $featured->created_at->format('d M Y') }}</span>
                     </div>
                     <h2 class="font-headline-lg text-xl md:text-2xl lg:text-3xl uppercase leading-none mb-3 group-hover:text-primary transition-colors">{{ $featured->title }}</h2>
@@ -121,7 +121,7 @@
                     $laLabel = $featTypeLabels[$la->type] ?? 'PENGUMUMAN';
                 @endphp
                 <a href="{{ route('public.announcement.show', $la->id) }}"
-                   class="bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover p-4 md:p-5 flex flex-col group @if($featured && $i == 2) md:col-span-2 lg:col-span-1 @endif">
+                   class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover p-4 md:p-5 flex flex-col group @if($featured && $i == 2) md:col-span-2 lg:col-span-1 @endif">
                     <div class="flex items-start gap-4">
                         <div class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center {{ $p['bg'] }}">
                             <span class="material-symbols-outlined {{ $p['color'] }} text-xl">{{ $p['icon'] }}</span>
@@ -149,17 +149,17 @@
                         <button class="w-11 h-11 md:w-12 md:h-12 bg-white bento-shadow rounded-xl flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all bento-card" id="categoryToggle">
                             <span class="material-symbols-outlined text-2xl">menu</span>
                         </button>
-                        <div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-2xl bento-shadow z-50 hidden" id="categoryDropdown">
+                        <div class="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl bento-shadow z-50 hidden" id="categoryDropdown">
                             <div class="p-4">
                                 <h4 class="font-label-mono text-xs uppercase mb-3 text-on-surface-variant">Tipe Pemberitahuan</h4>
                                 <div class="space-y-1">
-                                    <a href="{{ route('public.announcement.list') }}#announcements-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded-lg transition-colors text-sm">Semua Pemberitahuan</a>
+                                    <a href="{{ route('public.announcement.list') }}#announcements-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded transition-colors text-sm">Semua Pemberitahuan</a>
                                     @foreach($categories as $cat)
                                     @php
                                         $typeLabels = ['important' => 'PENTING', 'warning' => 'PERHATIAN', 'info' => 'INFORMASI'];
                                         $catLabel = $typeLabels[$cat->type] ?? $cat->type;
                                     @endphp
-                                    <a href="{{ route('public.announcement.list', array_merge(request()->query(), ['type' => $cat->type, 'page' => null])) }}#announcements-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded-lg transition-colors text-sm">{{ $catLabel }} ({{ $cat->total }})</a>
+                                    <a href="{{ route('public.announcement.list', array_merge(request()->query(), ['type' => $cat->type, 'page' => null])) }}#announcements-section" class="block px-3 py-2 font-bold hover:bg-primary-fixed rounded transition-colors text-sm">{{ $catLabel }} ({{ $cat->total }})</a>
                                     @endforeach
                                 </div>
                             </div>
@@ -227,7 +227,7 @@
 
             {{-- ALL ANNOUNCEMENTS BENTO GRID --}}
             <div class="flex items-center gap-3 mb-6">
-                <span class="w-1.5 h-5 bg-secondary rounded-full"></span>
+                <span class="w-1.5 h-5 bg-secondary rounded"></span>
                 <h2 class="font-headline-lg text-lg md:text-xl uppercase">Semua Pemberitahuan</h2>
             </div>
 
@@ -249,7 +249,7 @@
                         $isFeaturedGrid = $index == 0;
                     @endphp
                     <a href="{{ route('public.announcement.show', $announcement->id) }}"
-                       class="bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover p-4 md:p-5 flex flex-col group @if($isFeaturedGrid) md:col-span-2 lg:col-span-2 @endif">
+                       class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover p-4 md:p-5 flex flex-col group @if($isFeaturedGrid) md:col-span-2 lg:col-span-2 @endif">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center {{ $iconBg }}">
                                 <span class="material-symbols-outlined {{ $iconColor }} text-xl">{{ $icon }}</span>
