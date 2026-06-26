@@ -2,7 +2,7 @@
 
 {{-- MOBILE SIDEBAR --}}
 <div class="fixed inset-0 bg-on-background/50 z-[60] closed transition-opacity" id="sidebar-overlay" style="opacity: 0; pointer-events: none;"></div>
-<div class="fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-surface z-[70] closed brutalist-border border-y-0 border-r-0 p-8 shadow-[-8px_0px_0px_0px_rgba(0,0,0,1)] flex flex-col" id="mobile-sidebar">
+<div class="fixed top-0 right-0 h-full w-[85%] max-w-[400px] bg-surface z-[70] closed p-8 flex flex-col" id="mobile-sidebar">
     <div class="flex justify-between items-center mb-12">
         <span class="font-headline-lg text-2xl uppercase">Merdeka Warta</span>
         <button class="p-2 brutalist-border brutalist-shadow-sm bg-error text-on-error btn-press" id="close-sidebar">
