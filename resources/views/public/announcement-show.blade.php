@@ -75,11 +75,11 @@
 
     <main class="max-w-[1440px] mx-auto px-4 md:px-margin-desktop py-8 md:py-12">
 
-        {{-- Bento layout: 8 cols content + 4 cols sidebar --}}
-        <div class="bento-grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
+        {{-- Bento layout: 2 columns — content 2fr, sidebar 1fr --}}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
 
             {{-- MAIN CONTENT --}}
-            <article class="lg:col-span-8 flex flex-col gap-6">
+            <article class="lg:col-span-2 flex flex-col gap-6">
 
                 {{-- Breadcrumbs & Type Badge --}}
                 <div class="flex items-center gap-3 flex-wrap">
@@ -142,58 +142,40 @@
                 </div>
                 @endif
 
-                {{-- Other Announcements --}}
+                {{-- Other Announcements (bento) --}}
                 @if($otherAnnouncements->isNotEmpty())
                 <section class="mt-8 pt-8 border-t border-outline-variant">
                     <div class="flex items-center gap-3 mb-6">
                         <span class="w-1.5 h-5 bg-secondary rounded"></span>
                         <h2 class="font-headline-lg text-xl md:text-2xl uppercase">PENGUMUMAN LAINNYA</h2>
                     </div>
-                    <div class="bento-grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5">
                         @foreach($otherAnnouncements as $other)
-                        <a href="{{ route('public.announcement.show', $other->id) }}" class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover p-4 md:p-5 group">
-                            <div class="flex items-center gap-2 mb-2">
-                                @php
-                                    $oColor = $typeColors[$other->type] ?? 'bg-secondary/10 text-secondary';
-                                    $oLabel = $typeLabels[$other->type] ?? 'PENGUMUMAN';
-                                @endphp
-                                <span class="{{ $oColor }} px-2 py-0.5 text-[10px] font-label-mono uppercase rounded">{{ $oLabel }}</span>
-                                <span class="text-[10px] font-label-mono text-on-surface-variant">{{ $other->created_at->format('d F Y') }}</span>
+                        @php
+                            $oColor = $typeColors[$other->type] ?? 'bg-secondary/10 text-secondary';
+                            $oLabel = $typeLabels[$other->type] ?? 'PENGUMUMAN';
+                        @endphp
+                        <div class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <span class="{{ $oColor }} px-2 py-0.5 text-[10px] font-label-mono uppercase rounded self-start mb-2">{{ $oLabel }}</span>
+                                <h3 class="font-headline-lg text-base uppercase mb-1.5 leading-tight">{{ $other->title }}</h3>
+                                <p class="text-xs text-on-surface-variant mb-3 flex-grow line-clamp-2">{{ Str::limit($other->content_text, 100) }}</p>
+                                <a class="font-label-mono text-[10px] uppercase font-bold text-secondary hover:underline flex items-center gap-1" href="{{ route('public.announcement.show', $other->id) }}">
+                                    Baca Selengkapnya <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </a>
                             </div>
-                            <h3 class="font-headline-lg text-base uppercase leading-tight group-hover:text-primary transition-colors">{{ $other->title }}</h3>
-                            <p class="font-body-md text-xs mt-2 text-on-surface-variant line-clamp-2">{{ Str::limit($other->content_text, 120) }}</p>
-                        </a>
+                        </div>
                         @endforeach
                     </div>
                 </section>
                 @endif
+
             </article>
 
             {{-- SIDEBAR --}}
-            <aside class="lg:col-span-4 flex flex-col gap-6">
+            <aside class="lg:col-span-1 flex flex-col gap-6">
 
-                {{-- Info Type --}}
-                <section class="bg-white rounded-xl bento-shadow p-5 md:p-6 border-2 border-black">
-                    <h3 class="font-headline-lg text-lg md:text-xl uppercase mb-4 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-secondary">info</span> Tentang Pengumuman
-                    </h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center gap-2.5">
-                            <span class="material-symbols-outlined text-secondary text-lg">campaign</span>
-                            <span class="font-label-mono text-[10px] uppercase">Tipe: {{ $typeLabel }}</span>
-                        </div>
-                        <div class="flex items-center gap-2.5">
-                            <span class="material-symbols-outlined text-secondary text-lg">calendar_today</span>
-                            <span class="font-label-mono text-[10px] uppercase">Dibuat: {{ $announcement->created_at->format('d F Y') }}</span>
-                        </div>
-                        @if($announcement->expired_at)
-                        <div class="flex items-center gap-2.5">
-                            <span class="material-symbols-outlined text-secondary text-lg">schedule</span>
-                            <span class="font-label-mono text-[10px] uppercase">Berakhir: {{ $announcement->expired_at->format('d F Y') }}</span>
-                        </div>
-                        @endif
-                    </div>
-                </section>
+
 
                 {{-- Pengumuman Terbaru --}}
                 @if($otherAnnouncements->isNotEmpty())
@@ -214,6 +196,27 @@
                         </a>
                         @endforeach
                     </div>
+                </section>
+                @endif
+
+                {{-- Kategori --}}
+                @if($categories->isNotEmpty())
+                <section class="bg-white rounded-xl bento-shadow p-5 md:p-6 border-2 border-black">
+                    <h3 class="font-headline-lg text-lg md:text-xl uppercase mb-4">Kategori</h3>
+                    <ul class="space-y-1.5">
+                        @foreach($categories->take(6) as $cat)
+                        @php
+                            $catLabel = $typeLabels[$cat->type] ?? 'PENGUMUMAN';
+                            $catColor = $typeColors[$cat->type] ?? 'bg-secondary/10 text-secondary';
+                        @endphp
+                        <li>
+                            <a class="flex justify-between items-center group p-2.5 rounded-xl hover:bg-primary-fixed transition-all" href="{{ route('public.announcement.list', ['type' => $cat->type]) }}#announcements-section">
+                                <span class="font-bold text-sm">{{ $catLabel }}</span>
+                                <span class="bg-surface-container-high px-2 py-0.5 text-[10px] font-label-mono rounded">{{ str_pad($cat->total, 2, '0', STR_PAD_LEFT) }}</span>
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
                 </section>
                 @endif
 

@@ -88,12 +88,22 @@ class AnnouncementController extends Controller
             ->limit(5)
             ->get();
 
+        // Categories list (group by type)
+        $categories = Announcement::where('is_active', true)
+            ->where(function ($q) {
+                $q->whereNull('expired_at')->orWhere('expired_at', '>', now());
+            })
+            ->select('type', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+            ->groupBy('type')
+            ->orderBy('total', 'desc')
+            ->get();
+
         // Running texts untuk navbar
         $runningTexts = RunningText::orderBy('display_order')
             ->get();
 
         return view('public.announcement-show', compact(
-            'announcement', 'otherAnnouncements', 'runningTexts'
+            'announcement', 'otherAnnouncements', 'categories', 'runningTexts'
         ));
     }
 }
