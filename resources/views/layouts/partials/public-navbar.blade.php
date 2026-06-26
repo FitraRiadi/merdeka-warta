@@ -28,7 +28,7 @@
 <div class="sticky top-0 z-50">
     {{-- TOP NAVBAR --}}
     <nav class="w-full bg-surface border-b-3 border-on-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <div class="flex justify-between items-center w-full pl-6 pr-4 md:px-margin-desktop py-4 max-w-[1440px] mx-auto">
+        <div class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-4 max-w-[1440px] mx-auto">
             <div class="logo-smkmerdeka flex items-center gap-3">
                 <a href="https://www.smkmerdekabdg.sch.id/" target="_blank"><img width="30" height="30" src="https://cdn.ryzahen.web.id/GQApe.png" alt="smkmerdeka-logo"></a>
                 <a class="font-headline-lg text-[24px] md:text-headline-lg uppercase tracking-tighter text-on-surface" href="{{ route('home') }}">

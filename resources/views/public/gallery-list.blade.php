@@ -31,8 +31,8 @@
                         "primary-fixed": "#dbe1ff", "surface-tint": "#0053db", "on-primary-fixed-variant": "#003ea8",
                         "surface-bright": "#f8f9fa"
                     },
-                    borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
-                    spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px", "border-width": "3px" },
+                    borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.75rem", "2xl": "1rem", full: "0.75rem" },
+                    spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px" },
                     fontFamily: { "headline-lg-mobile": ["Anton"], "label-mono": ["JetBrains Mono"], "headline-lg": ["Anton"], "body-md": ["Plus Jakarta Sans"], "display-xl": ["Anton"] },
                     fontSize: {
                         "headline-lg-mobile": ["36px", { lineHeight: "100%", fontWeight: "400" }],
@@ -46,12 +46,13 @@
         }
     </script>
     <style>
-        body { background-color: #f8f9fa; background-image: radial-gradient(#e5e7eb 1px, transparent 1px); background-size: 32px 32px; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        .brutalist-shadow { box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1); }
-        .brutalist-shadow-sm { box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1); }
-        .brutalist-border { border: 3px solid #191c1d; }
-        .sticker-tilt { transform: rotate(-2deg); }
-        .btn-press:active { transform: translate(4px, 4px); box-shadow: none !important; }
+        * { box-sizing: border-box; }
+        body { margin: 0; background-color: #f8f9fa; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; max-width: 100%; }
+        .bento-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.1); }
+        .bento-shadow-hover:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .bento-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-grid-gallery { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
+        @media (min-width: 768px) { .bento-grid-gallery { gap: 16px; grid-template-columns: repeat(3, 1fr); } }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
         #mobile-sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         #mobile-sidebar.closed { transform: translateX(100%); }
@@ -66,48 +67,39 @@
 </head>
 <body class="font-body-md text-on-surface min-h-screen flex flex-col">
 
-    {{-- NAVBAR --}}
     @include('layouts.partials.public-navbar', ['runningTexts' => $runningTexts])
 
-    <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 md:px-margin-desktop py-12">
+    <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 md:px-margin-desktop py-8 md:py-12">
 
         {{-- PAGE TITLE --}}
-        <div class="mb-12 text-center">
-            <div class="relative inline-flex items-center justify-center gap-2 md:gap-8">
-                <div class="flex gap-2 md:gap-3 items-center">
-                    <div class="w-4 h-4 md:w-8 md:h-8 bg-primary-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sticker-tilt"></div>
-                    <div class="w-3 h-3 md:w-6 md:h-6 rounded-full bg-secondary-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"></div>
-                </div>
-                <h1 class="font-headline-lg text-3xl sm:text-5xl md:text-6xl uppercase tracking-tighter text-on-surface relative z-10">
-                    GALERI SMK MERDEKA
-                </h1>
-                <div class="flex gap-2 md:gap-3 items-center">
-                    <div class="w-3 h-3 md:w-6 md:h-6 rounded-full bg-secondary-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sticker-tilt"></div>
-                    <div class="w-4 h-4 md:w-8 md:h-8 bg-primary-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"></div>
-                </div>
+        <div class="mb-10 md:mb-12 text-center">
+            <div class="flex items-center justify-center gap-3 mb-3">
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded-full"></span>
+                <h1 class="font-headline-lg text-3xl sm:text-4xl md:text-5xl uppercase tracking-tighter">GALERI SMK MERDEKA</h1>
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded-full"></span>
             </div>
-            <div class="h-2 w-32 bg-primary mx-auto mt-4 border-2 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"></div>
+            <div class="h-1 w-20 md:w-24 bg-primary rounded-full mx-auto"></div>
         </div>
 
-        {{-- GALLERY GRID --}}
+        {{-- BENTO GALLERY GRID --}}
         @if($galleries->isNotEmpty())
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="bento-grid-gallery">
             @foreach($galleries as $g)
-            <div class="brutalist-border brutalist-shadow bg-surface-container-lowest overflow-hidden group cursor-pointer open-preview"
-                 data-image="{{ $g->image_url }}"
-                 data-caption="{{ $g->caption ?? 'Momen SMK Merdeka' }}"
-                 data-date="{{ $g->created_at->format('d F Y') }}">
-                <div class="aspect-square overflow-hidden">
-                    <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}"
-                         class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
-                         src="{{ $g->image_url }}"
-                         loading="lazy">
+                <div class="bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover overflow-hidden group cursor-pointer open-preview"
+                     data-image="{{ $g->image_url }}"
+                     data-caption="{{ $g->caption ?? 'Momen SMK Merdeka' }}"
+                     data-date="{{ $g->created_at->format('d F Y') }}">
+                    <div class="aspect-[4/3] overflow-hidden">
+                        <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}"
+                             class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                             src="{{ $g->image_url }}"
+                             loading="lazy">
+                    </div>
+                    <div class="p-3 md:p-4 border-t border-outline-variant">
+                        <h3 class="font-headline-lg text-sm md:text-base uppercase leading-tight truncate">{{ $g->caption ?? 'Momen SMK Merdeka' }}</h3>
+                        <span class="font-label-mono text-[10px] text-on-surface-variant uppercase">{{ $g->created_at->format('d F Y') }}</span>
+                    </div>
                 </div>
-                <div class="p-4 border-t-3 border-on-background">
-                    <h3 class="font-headline-lg text-lg uppercase leading-tight truncate">{{ $g->caption ?? 'Momen SMK Merdeka' }}</h3>
-                    <span class="font-label-mono text-[10px] text-on-surface-variant uppercase">{{ $g->created_at->format('d F Y') }}</span>
-                </div>
-            </div>
             @endforeach
         </div>
 
@@ -121,31 +113,31 @@
             else { $start = max(1, min($currentPage, $lastPage - $window + 1)); $end = min($lastPage, $start + $window - 1); }
             $pageRange = range($start, $end);
         @endphp
-        <nav class="flex justify-center items-center mt-16 gap-3">
+        <nav class="flex justify-center items-center mt-10 gap-2">
             @if($galleries->onFirstPage())
-                <span class="w-12 h-12 flex items-center justify-center border-3 border-on-background bg-surface-variant shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] opacity-50">
+                <span class="w-10 h-10 flex items-center justify-center bg-surface-container-high rounded-xl opacity-50">
                     <span class="material-symbols-outlined">chevron_left</span>
                 </span>
             @else
-                <a href="{{ $galleries->previousPageUrl() }}" class="w-12 h-12 flex items-center justify-center border-3 border-on-background bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all btn-press">
+                <a href="{{ $galleries->previousPageUrl() }}" class="w-10 h-10 flex items-center justify-center bg-white rounded-xl bento-shadow hover:bg-primary hover:text-on-primary transition-all bento-card">
                     <span class="material-symbols-outlined">chevron_left</span>
                 </a>
             @endif
-            <div class="flex gap-2">
+            <div class="flex gap-1.5">
                 @foreach($pageRange as $page)
                     @if($page == $currentPage)
-                        <span class="w-12 h-12 flex items-center justify-center border-3 border-on-background bg-primary text-on-primary font-label-mono shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">{{ $page }}</span>
+                        <span class="w-10 h-10 flex items-center justify-center bg-primary text-on-primary font-label-mono rounded-xl bento-shadow">{{ $page }}</span>
                     @else
-                        <a href="{{ $galleries->url($page) }}" class="w-12 h-12 flex items-center justify-center border-3 border-on-background bg-white font-label-mono hover:bg-surface-variant transition-colors">{{ $page }}</a>
+                        <a href="{{ $galleries->url($page) }}" class="w-10 h-10 flex items-center justify-center bg-white font-label-mono rounded-xl hover:bg-surface-container-high transition-colors bento-shadow">{{ $page }}</a>
                     @endif
                 @endforeach
             </div>
             @if($galleries->hasMorePages())
-                <a href="{{ $galleries->nextPageUrl() }}" class="w-12 h-12 flex items-center justify-center border-3 border-on-background bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all btn-press">
+                <a href="{{ $galleries->nextPageUrl() }}" class="w-10 h-10 flex items-center justify-center bg-white rounded-xl bento-shadow hover:bg-primary hover:text-on-primary transition-all bento-card">
                     <span class="material-symbols-outlined">chevron_right</span>
                 </a>
             @else
-                <span class="w-12 h-12 flex items-center justify-center border-3 border-on-background bg-surface-variant shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] opacity-50">
+                <span class="w-10 h-10 flex items-center justify-center bg-surface-container-high rounded-xl opacity-50">
                     <span class="material-symbols-outlined">chevron_right</span>
                 </span>
             @endif
@@ -153,9 +145,9 @@
         @endif
 
         @else
-        <div class="text-center py-20">
-            <span class="material-symbols-outlined text-6xl text-on-surface-variant mb-4">photo_library</span>
-            <p class="font-headline-lg text-3xl uppercase text-on-surface-variant">Belum ada galeri</p>
+        <div class="text-center py-16">
+            <span class="material-symbols-outlined text-5xl text-on-surface-variant mb-4">photo_library</span>
+            <p class="font-headline-lg text-2xl uppercase text-on-surface-variant">Belum ada galeri</p>
         </div>
         @endif
     </main>
@@ -164,18 +156,18 @@
     <div class="fixed inset-0 z-[100] items-center justify-center hidden" id="previewModal">
         <div class="fixed inset-0 bg-on-background/80 backdrop-blur-sm" id="previewOverlay"></div>
         <div class="relative z-10 w-[92%] max-w-4xl max-h-[90vh] flex flex-col">
-            <button class="absolute -top-4 -right-4 z-20 w-12 h-12 flex items-center justify-center bg-error text-on-error border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all btn-press" id="closePreview">
+            <button class="absolute -top-3 -right-3 z-20 w-10 h-10 flex items-center justify-center bg-error text-on-error rounded-xl bento-shadow hover:bg-error/90 transition-all bento-card" id="closePreview">
                 <span class="material-symbols-outlined">close</span>
             </button>
-            <div class="bg-surface border-4 border-on-background shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col md:flex-row">
-                <div class="md:w-3/4 bg-on-background flex items-center justify-center min-h-[300px]">
+            <div class="bg-white rounded-2xl bento-shadow overflow-hidden flex flex-col md:flex-row">
+                <div class="md:w-3/4 bg-on-background flex items-center justify-center min-h-[280px]">
                     <img id="previewImage" class="w-full h-full object-contain max-h-[70vh]" src="" alt="">
                 </div>
-                <div class="md:w-1/4 p-6 border-t-4 md:border-t-0 md:border-l-4 border-on-background flex flex-col justify-center gap-4">
-                    <span class="material-symbols-outlined text-5xl text-primary">photo</span>
-                    <h3 id="previewCaption" class="font-headline-lg text-2xl uppercase leading-tight"></h3>
-                    <div class="flex items-center gap-2 font-label-mono text-xs text-on-surface-variant uppercase">
-                        <span class="material-symbols-outlined text-sm">calendar_today</span>
+                <div class="md:w-1/4 p-5 md:p-6 border-t md:border-t-0 md:border-l border-outline-variant flex flex-col justify-center gap-3">
+                    <span class="material-symbols-outlined text-4xl text-primary">photo</span>
+                    <h3 id="previewCaption" class="font-headline-lg text-xl uppercase leading-tight"></h3>
+                    <div class="flex items-center gap-1.5 font-label-mono text-[10px] text-on-surface-variant uppercase">
+                        <span class="material-symbols-outlined text-xs">calendar_today</span>
                         <span id="previewDate"></span>
                     </div>
                 </div>
@@ -183,11 +175,9 @@
         </div>
     </div>
 
-    {{-- FOOTER --}}
     @include('layouts.partials.public-footer')
 
     <script>
-        // Sidebar
         document.addEventListener('DOMContentLoaded', function() {
             const openBtn = document.getElementById('open-sidebar');
             const closeBtn = document.getElementById('close-sidebar');
@@ -227,11 +217,7 @@
 
             previewTriggers.forEach(function(el) {
                 el.addEventListener('click', function() {
-                    openPreview(
-                        el.dataset.image,
-                        el.dataset.caption,
-                        el.dataset.date
-                    );
+                    openPreview(el.dataset.image, el.dataset.caption, el.dataset.date);
                 });
             });
 
@@ -239,22 +225,6 @@
             previewOverlay.addEventListener('click', closePreviewModal);
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && !previewModal.classList.contains('hidden')) closePreviewModal();
-            });
-
-            // Brutalist button interactions
-            document.querySelectorAll('.btn-press').forEach(function(button) {
-                button.addEventListener('mousedown', function() {
-                    this.style.transform = 'translate(4px, 4px)';
-                    if (!this.classList.contains('dot')) this.style.boxShadow = 'none';
-                });
-                button.addEventListener('mouseup', function() {
-                    this.style.transform = '';
-                    this.style.boxShadow = '';
-                });
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = '';
-                    this.style.boxShadow = '';
-                });
             });
         });
     </script>

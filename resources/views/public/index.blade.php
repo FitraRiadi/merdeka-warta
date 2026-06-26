@@ -28,11 +28,11 @@
                         "surface-container-low": "#f3f4f5", "on-surface": "#191c1d", "primary-fixed-dim": "#b4c5ff",
                         "on-secondary-fixed-variant": "#85145a", "on-secondary-fixed": "#3d0026",
                         "inverse-on-surface": "#f0f1f2", "on-primary": "#ffffff", "secondary-container": "#fc79bd",
-                        "surface-tint": "#0053db", "on-primary-fixed-variant": "#003ea8", "primary-fixed": "#dbe1ff",
+                        "primary-fixed": "#dbe1ff", "surface-tint": "#0053db", "on-primary-fixed-variant": "#003ea8",
                         "surface-bright": "#f8f9fa"
                     },
-                    borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
-                    spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px", "border-width": "3px" },
+                    borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.75rem", "2xl": "1rem", full: "0.75rem" },
+                    spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px" },
                     fontFamily: { "headline-lg-mobile": ["Anton"], "label-mono": ["JetBrains Mono"], "headline-lg": ["Anton"], "body-md": ["Plus Jakarta Sans"], "display-xl": ["Anton"] },
                     fontSize: {
                         "headline-lg-mobile": ["36px", { lineHeight: "100%", fontWeight: "400" }],
@@ -46,210 +46,257 @@
         }
     </script>
     <style>
+        * { box-sizing: border-box; }
         body {
+            margin: 0;
             overflow-x: hidden;
             width: 100%;
             max-width: 100%;
             background-color: #f8f9fa;
-            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-            background-size: 32px 32px;
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
-
-        .brutalist-shadow { box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1); }
-        .brutalist-shadow-hover:hover { transform: translate(-2px, -2px); box-shadow: 10px 10px 0px 0px rgba(0, 0, 0, 1); }
-        .brutalist-shadow-sm { box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1); }
-        .brutalist-border { border: 3px solid #191c1d; }
-        .sticker-tilt { transform: rotate(-2deg); }
-
+        .bento-shadow { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.1); }
+        .bento-shadow-hover:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .bento-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-grid { display: grid; gap: 16px; }
+        @media (min-width: 768px) { .bento-grid { gap: 20px; } }
+        @media (min-width: 1024px) { .bento-grid { gap: 24px; } }
+        .gallery-stack-wrapper { position: relative; width: 100%; height: 100%; }
+        .gallery-stack { position: absolute; inset: 0; display: flex; overflow: hidden; border-radius: inherit; }
+        .gallery-stack-item { flex: 1; min-width: 0; overflow: hidden; position: relative; cursor: pointer; transition: flex 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gallery-stack-item:not(:first-child) { margin-left: -10%; }
+        .gallery-stack-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; pointer-events: none; }
+        .gallery-stack-item .overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65), transparent); display: flex; align-items: flex-end; padding: 10px; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
+        .gallery-stack:hover .gallery-stack-item { flex: 0.3; }
+        .gallery-stack:hover .gallery-stack-item:hover { flex: 2.4; }
+        .gallery-stack:hover .gallery-stack-item:hover .overlay { opacity: 1; }
+        .gallery-stack-item:hover img { transform: scale(1.05); }
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { animation: marquee 15s linear infinite; }
-
         @keyframes scroll-gallery { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll-gallery { animation: scroll-gallery 10s linear infinite; }
         @media (max-width: 767px) { .animate-scroll-gallery { animation-duration: 6s; } }
-
         @keyframes scroll-testimonials { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll-testimonials { animation: scroll-testimonials 10s linear infinite; }
         .pause-on-hover:hover .animate-scroll-testimonials { animation-play-state: paused; }
-
-        .btn-press:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1); }
-
         #mobile-sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         #mobile-sidebar.closed { transform: translateX(100%); }
         #mobile-sidebar:not(.closed) { transform: translateX(0); }
         #sidebar-overlay { transition: opacity 0.3s ease-in-out; }
         #sidebar-overlay.closed { opacity: 0 !important; pointer-events: none !important; }
         #sidebar-overlay:not(.closed) { opacity: 1 !important; pointer-events: auto !important; }
-
-        .carousel-container { position: relative; overflow: hidden; }
-        .carousel-slide {
-            position: absolute; inset: 0; width: 100%; height: 100%;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.5s ease-in-out;
-            display: flex; flex-direction: column; justify-content: flex-end;
-        }
-        .carousel-slide.active { opacity: 1; pointer-events: auto; position: relative; }
-
-        .hero-height { min-height: 400px; }
-        @media (min-width: 768px) { .hero-height { min-height: 500px; } }
-
         .news-slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .news-slider-item { flex: 0 0 100%; padding: 0 12px; }
+        .news-slider-item { flex: 0 0 100%; padding: 0 8px; }
         @media (min-width: 768px) { .news-slider-item { flex: 0 0 50%; } }
         @media (min-width: 1024px) { .news-slider-item { flex: 0 0 33.333%; } }
-
-        /* FIX: carousel nav buttons — clamp so they don't push outside on mobile */
-        #hero-carousel #prevBtn,
-        #hero-carousel #nextBtn {
-            /* already hidden on mobile via hidden sm:block, but guard anyway */
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="text-on-surface">
+<body class="text-on-surface font-body-md">
 
-    {{-- NAVBAR + TICKER --}}
     @include('layouts.partials.public-navbar', ['runningTexts' => $runningTexts])
 
-    {{-- FIX: Removed asymmetric pl-6 pr-4. Now px-4 on mobile, px-margin-desktop on desktop.
-         Also added w-full and box-sizing safety. --}}
     <main class="w-full max-w-[1440px] mx-auto px-4 md:px-16 py-8 md:py-12 box-border">
 
         {{-- ============================================================ --}}
-        {{-- HERO SECTION WITH CAROUSEL + ANNOUNCEMENTS SIDEBAR --}}
+        {{-- BENTO HERO + SPOTLIGHT + ANNOUNCEMENTS --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 grid grid-cols-1 lg:grid-cols-12 gap-6 pb-4">
+        <section class="mb-12 md:mb-16 bento-grid grid-cols-2 md:grid-cols-6 lg:grid-cols-12 auto-rows-auto">
 
-            {{-- Hero Carousel --}}
-            {{-- FIX: removed -left-4 md:-left-10 / -right-4 md:-right-10 on nav buttons
-                 that were causing horizontal overflow on mobile. Use inset-x positioning instead. --}}
-            <div class="lg:col-span-8 group relative brutalist-border brutalist-shadow bg-surface-container-highest hero-height carousel-container" id="hero-carousel">
-                @forelse($spotlights as $s)
-                    <div class="carousel-slide p-6 md:p-8 @if($loop->first) active @endif">
-                        @php $article = $s->article; @endphp
-                        @if($article->image)
-                            <img alt="{{ $article->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $article->image }}">
-                        @else
-                            <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary"></div>
-                        @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                        <div class="relative z-10">
-                            <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-mono text-[10px] md:text-label-mono px-3 py-1 md:px-4 md:py-2 brutalist-border brutalist-shadow-sm sticker-tilt mb-4 md:mb-6">
-                                <span>{{ $article->category ?? 'FEATURED' }}</span>
-                            </span>
-                            <h1 class="font-headline-lg text-2xl md:text-headline-lg text-white mb-2 md:mb-4 leading-none uppercase">{{ $article->title }}</h1>
-                            <p class="text-white/90 font-body-md text-sm md:text-body-md mb-4 md:mb-6 max-w-xl line-clamp-3 md:line-clamp-none">{{ Str::limit($article->content_text, 200) }}</p>
-                            <a href="{{ route('public.article.show', $article->slug) }}" class="inline-block bg-white text-on-surface brutalist-border brutalist-shadow-sm px-6 py-2 md:px-8 md:py-3 font-bold flex items-center gap-2 btn-press w-fit text-sm md:text-base">
-                                BACA SELENGKAPNYA <span class="material-symbols-outlined">arrow_forward</span>
-                            </a>
-                        </div>
+            {{-- Featured Hero --}}
+            @forelse($spotlights->take(1) as $s)
+                @php $article = $s->article; @endphp
+                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-2xl bento-shadow bento-shadow-hover bg-surface-container-highest min-h-[320px] md:min-h-[460px] flex flex-col justify-end group">
+                    @if($article->image)
+                        <img alt="{{ $article->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $article->image }}">
+                    @else
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary/90 to-secondary/90"></div>
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <div class="relative z-10 p-5 md:p-8">
+                        <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-mono text-[10px] md:text-xs px-3 py-1 rounded-lg mb-3 md:mb-4">
+                            {{ $article->category ?? 'FEATURED' }}
+                        </span>
+                        <h1 class="font-headline-lg text-xl md:text-3xl lg:text-4xl text-white mb-2 md:mb-3 leading-none uppercase">{{ $article->title }}</h1>
+                        <p class="text-white/80 font-body-md text-xs md:text-sm mb-3 md:mb-4 max-w-xl line-clamp-2 md:line-clamp-3">{{ Str::limit($article->content_text, 200) }}</p>
+                        <a href="{{ route('public.article.show', $article->slug) }}" class="inline-flex items-center gap-1.5 bg-white/90 text-on-background px-5 py-2 md:px-6 md:py-2.5 font-bold rounded-xl text-xs md:text-sm hover:bg-white transition-all">
+                            BACA SELENGKAPNYA <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </a>
                     </div>
-                @empty
-                    <div class="carousel-slide p-6 md:p-8 active">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                            <div class="text-center text-on-primary">
-                                <span class="material-symbols-outlined text-6xl mb-4">newspaper</span>
-                                <h1 class="font-headline-lg text-3xl md:text-5xl uppercase">Selamat Datang</h1>
-                                <p class="font-body-md text-lg mt-2">Portal Berita SMK Merdeka</p>
+                </div>
+            @empty
+                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-2xl bento-shadow bg-gradient-to-br from-primary to-secondary min-h-[320px] md:min-h-[460px] flex items-center justify-center">
+                    <div class="text-center text-on-primary p-8">
+                        <span class="material-symbols-outlined text-5xl md:text-6xl mb-4">newspaper</span>
+                        <h1 class="font-headline-lg text-2xl md:text-4xl uppercase">Selamat Datang</h1>
+                        <p class="font-body-md text-sm md:text-base mt-2">Portal Berita SMK Merdeka</p>
+                    </div>
+                </div>
+            @endforelse
+
+            {{-- Spotlight secondary --}}
+            @php $secondarySpotlight = $spotlights->skip(1)->take(2); @endphp
+            @foreach($secondarySpotlight as $i => $s)
+                @php $art = $s->article; @endphp
+                @if($art)
+                <a href="{{ route('public.article.show', $art->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-5 bento-card relative overflow-hidden rounded-2xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end group {{ $i == 0 ? '' : '' }}">
+                    @if($art->image)
+                        <img alt="{{ $art->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $art->image }}">
+                    @else
+                        <div class="absolute inset-0 bg-gradient-to-br from-secondary/90 to-tertiary/90"></div>
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                    <div class="relative z-10 p-4 md:p-5">
+                        <span class="text-[10px] font-label-mono text-white/80 uppercase">{{ $art->category ?? 'BERITA' }}</span>
+                        <h2 class="font-headline-lg text-sm md:text-lg text-white leading-tight uppercase mt-1">{{ $art->title }}</h2>
+                    </div>
+                </a>
+                @endif
+            @endforeach
+
+            {{-- Announcements bento cards --}}
+            <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-2xl bento-shadow bg-tertiary-fixed p-4 md:p-5 flex flex-col min-h-[200px]">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="material-symbols-outlined text-tertiary text-xl">campaign</span>
+                    <h2 class="font-headline-lg text-lg md:text-xl uppercase">PENGUMUMAN</h2>
+                </div>
+                @if(isset($spotlightAnnouncement) && $spotlightAnnouncement && $spotlightAnnouncement->announcement)
+                    @php $featAnn = $spotlightAnnouncement->announcement; @endphp
+                    <a href="{{ route('public.announcement.show', $featAnn->id) }}" class="block p-3 bg-white/80 rounded-xl hover:bg-white transition-all mb-2 bento-shadow">
+                        <div class="flex items-start gap-2">
+                            <span class="material-symbols-outlined text-secondary text-lg flex-shrink-0">star</span>
+                            <div>
+                                <h3 class="font-headline-lg text-sm uppercase leading-tight">{{ $featAnn->title }}</h3>
+                                <p class="font-body-md text-xs text-on-surface-variant line-clamp-1 mt-0.5">{{ $featAnn->content_text }}</p>
                             </div>
                         </div>
-                    </div>
-                @endforelse
-
-                @if($spotlights->count() > 1)
-                    <div class="relative md:absolute mt-6 md:mt-0 bottom-0 md:bottom-6 left-1/2 -translate-x-1/2 z-20 flex justify-center gap-2 md:gap-3" id="hero-dots">
-                        @foreach($spotlights as $s)
-                            <button class="carousel-dot w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-on-background transition-all" data-slide="{{ $loop->index }}" style="background-color: {{ $loop->first ? 'white' : 'rgba(255,255,255,0.5)' }}; width: {{ $loop->first ? '1.5rem' : '1rem' }};"></button>
+                    </a>
+                @endif
+                @if($announcements->isNotEmpty())
+                    <div class="flex-1 space-y-1.5 overflow-hidden">
+                        @foreach($announcements->take(2) as $ann)
+                            <a href="{{ route('public.announcement.show', $ann->id) }}" class="block p-2.5 bg-white/60 rounded-lg hover:bg-white/90 transition-all text-xs">
+                                <span class="font-label-mono text-[10px] text-tertiary">{{ $ann->created_at->format('d F Y') }}</span>
+                                <p class="font-bold truncate">{{ $ann->title }}</p>
+                            </a>
                         @endforeach
                     </div>
                 @endif
+                <a href="{{ route('public.announcement.list') }}" class="mt-auto text-xs font-label-mono text-primary hover:underline pt-2">Lihat semua &rarr;</a>
             </div>
 
-            {{-- Announcements Sidebar --}}
-            <div class="lg:col-span-4 flex flex-col gap-6" id="pengumuman">
-                <div class="brutalist-border brutalist-shadow bg-tertiary-fixed p-6 flex flex-col h-full">
-                    <div class="flex items-center gap-2 mb-6">
-                        <span class="material-symbols-outlined text-tertiary text-4xl">campaign</span>
-                        <h2 class="font-headline-lg text-2xl md:text-3xl uppercase">PENGUMUMAN</h2>
-                    </div>
-
-                    {{-- Featured Announcement Spotlight --}}
-                    @if(isset($spotlightAnnouncement) && $spotlightAnnouncement && $spotlightAnnouncement->announcement)
-                        @php $featAnn = $spotlightAnnouncement->announcement; @endphp
-                        <a href="{{ route('public.announcement.show', $featAnn->id) }}"
-                            class="block p-5 mb-4 bg-white brutalist-border brutalist-shadow-sm hover:-translate-y-1 transition-transform relative overflow-hidden">
-                            <div class="absolute top-0 right-0 bg-secondary text-on-secondary font-label-mono text-[9px] px-2 py-0.5 border-l-2 border-b-2 border-on-background flex items-center gap-1">
-                                <span>FEATURED</span>
+            {{-- Gallery stack: 3 photos tumpuk (desktop), 1 foto (mobile) --}}
+            @php $galleryStack = $galleries->take(3); @endphp
+            @if($galleryStack->isNotEmpty())
+            <a href="{{ route('public.gallery.list') }}" class="col-span-2 md:col-span-3 lg:col-span-4 bento-card rounded-2xl bento-shadow overflow-hidden md:min-h-[160px] block relative">
+                {{-- Mobile: carousel --}}
+                <div class="w-full h-[140px] md:hidden relative" id="mobileGalleryCarousel">
+                    <div class="flex h-full transition-transform duration-500 ease-in-out" id="mobileGalleryTrack" style="transform: translateX(0%);">
+                        @foreach($galleryStack as $g)
+                        <div class="w-full h-full flex-shrink-0 relative">
+                            <img alt="{{ $g->caption ?? 'Galeri Foto' }}" class="w-full h-full object-cover" src="{{ $g->image_url }}" loading="lazy">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                                <span class="text-white font-label-mono text-[10px] uppercase">{{ $g->caption ?? 'Galeri Foto' }}</span>
                             </div>
-                            <div class="flex items-start gap-2 mb-2">
-                                <span class="material-symbols-outlined text-secondary text-xl flex-shrink-0">campaign</span>
-                                <h3 class="font-headline-lg text-lg uppercase leading-tight">{{ $featAnn->title }}</h3>
-                            </div>
-                            <p class="font-body-md text-sm text-on-surface-variant line-clamp-2">{{ $featAnn->content_text }}</p>
-                        </a>
-                    @endif
-
-                    @if($announcements->isNotEmpty())
-                        <ul class="space-y-4 flex-grow">
-                            @foreach($announcements as $ann)
-                                <li>
-                                    <a href="{{ route('public.announcement.show', $ann->id) }}" class="block p-4 bg-white brutalist-border brutalist-shadow-sm hover:-translate-y-1 transition-transform">
-                                        <span class="material-symbols-outlined text-tertiary font-bold mb-2 block">campaign</span>
-                                        <span class="font-label-mono text-xs text-tertiary">{{ $ann->created_at->format('d F Y') }}</span>
-                                        <p class="font-bold font-body-md text-sm md:text-body-md mt-1">{{ $ann->title }}</p>
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        <div class="flex-grow flex items-center justify-center">
-                            <p class="font-label-mono text-sm uppercase opacity-40">Belum ada pengumuman</p>
                         </div>
+                        @endforeach
+                    </div>
+                    @if($galleryStack->count() > 1)
+                    <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-10" id="mobileGalleryDots">
+                        @foreach($galleryStack as $i => $g)
+                        <button class="w-1.5 h-1.5 rounded-full bg-white/60 transition-all dot-mobile-gallery @if($i === 0) bg-white w-3 @endif" data-index="{{ $i }}"></button>
+                        @endforeach
+                    </div>
                     @endif
                 </div>
+                {{-- Desktop: stack 3 foto --}}
+                <div class="gallery-stack-wrapper hidden md:block">
+                    <div class="gallery-stack">
+                        @foreach($galleryStack as $g)
+                        <div class="gallery-stack-item">
+                            <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}" src="{{ $g->image_url }}" loading="lazy">
+                            <div class="overlay">
+                                <span class="text-white font-label-mono text-[10px] uppercase">{{ $g->caption ?? 'Galeri Foto' }}</span>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </a>
+            @endif
+
+            {{-- Category quick links --}}
+            <div class="col-span-2 md:col-span-2 lg:col-span-3 bento-card rounded-2xl bento-shadow bg-primary-container text-on-primary p-4 md:p-5 flex flex-col justify-between">
+                <span class="material-symbols-outlined text-2xl">explore</span>
+                <div>
+                    <h3 class="font-headline-lg text-lg uppercase leading-tight">Jelajahi</h3>
+                    <p class="text-xs opacity-80 mt-1 font-body-md">Temukan berbagai kategori berita menarik</p>
+                </div>
+                <a href="{{ route('public.article.list') }}" class="text-xs font-label-mono mt-2 hover:underline">Lihat Artikel &rarr;</a>
             </div>
+
+            {{-- Another spotlight if available --}}
+            @php $thirdSpotlight = $spotlights->skip(3)->take(1)->first(); @endphp
+            @if($thirdSpotlight && $thirdSpotlight->article)
+                @php $art3 = $thirdSpotlight->article; @endphp
+                <a href="{{ route('public.article.show', $art3->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-3 bento-card relative overflow-hidden rounded-2xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end">
+                    @if($art3->image)
+                        <img alt="{{ $art3->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $art3->image }}">
+                    @else
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary/80 to-secondary/80"></div>
+                    @endif
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                    <div class="relative z-10 p-4">
+                        <h2 class="font-headline-lg text-base md:text-lg text-white leading-tight uppercase">{{ $art3->title }}</h2>
+                    </div>
+                </a>
+            @endif
+
         </section>
 
         {{-- ============================================================ --}}
         {{-- NEWS SLIDER (BERITA TERBARU) --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 relative" id="berita">
-            <div class="flex items-center justify-between mb-8 gap-4">
-                <h2 class="font-headline-lg text-2xl md:text-headline-lg uppercase whitespace-nowrap">BERITA TERBARU</h2>
-                <div class="h-1 bg-on-background flex-grow hidden md:block"></div>
+        <section class="mb-12 md:mb-16" id="berita">
+            <div class="flex items-center justify-between mb-6 md:mb-8 gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded-full"></span>
+                    <h2 class="font-headline-lg text-xl md:text-3xl uppercase">BERITA TERBARU</h2>
+                </div>
+                <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
                 @if($articles->count() > 3)
-                    <div class="flex gap-2 md:gap-4 shrink-0">
-                        <button class="bg-surface text-on-surface brutalist-border brutalist-shadow-sm p-2 md:p-3 btn-press hover:bg-primary hover:text-on-primary transition-all" id="newsPrevBtn">
-                            <span class="material-symbols-outlined block">arrow_back</span>
+                    <div class="flex gap-2 shrink-0">
+                        <button class="bg-white text-on-surface bento-shadow rounded-xl p-2.5 hover:bg-primary hover:text-on-primary transition-all" id="newsPrevBtn">
+                            <span class="material-symbols-outlined block text-lg">arrow_back</span>
                         </button>
-                        <button class="bg-surface text-on-surface brutalist-border brutalist-shadow-sm p-2 md:p-3 btn-press hover:bg-primary hover:text-on-primary transition-all" id="newsNextBtn">
-                            <span class="material-symbols-outlined block">arrow_forward</span>
+                        <button class="bg-white text-on-surface bento-shadow rounded-xl p-2.5 hover:bg-primary hover:text-on-primary transition-all" id="newsNextBtn">
+                            <span class="material-symbols-outlined block text-lg">arrow_forward</span>
                         </button>
                     </div>
                 @endif
             </div>
             @if($articles->isNotEmpty())
-                {{-- FIX: Removed negative margin -mx-2 that contributed to overflow --}}
                 <div class="overflow-hidden pb-8">
                     <div class="news-slider-track" id="newsSliderTrack" style="transform: translateX(0%);">
                         @foreach($articles as $article)
                             <div class="news-slider-item">
-                                <article class="brutalist-border brutalist-shadow @if($loop->even) bg-tertiary-fixed @else bg-secondary-fixed @endif h-full transition-all flex flex-col"
-                                    style="@if($loop->index == 2 || $loop->index == 5 || $loop->index == 8) background-color: #dbe1ff; @endif">
-                                    <div class="aspect-video brutalist-border m-4 overflow-hidden bg-surface-variant">
+                                <article class="bg-white rounded-2xl bento-shadow bento-card bento-shadow-hover h-full flex flex-col overflow-hidden">
+                                    <div class="aspect-video overflow-hidden bg-surface-variant">
                                         @if($article->image)
-                                            <img alt="{{ $article->title }}" class="w-full h-full object-cover" src="{{ $article->image }}">
+                                            <img alt="{{ $article->title }}" class="w-full h-full object-cover transition-all duration-500 hover:scale-105" src="{{ $article->image }}">
                                         @else
-                                            <div class="w-full h-full bg-gradient-to-br from-tertiary to-secondary-container"></div>
+                                            <div class="w-full h-full bg-gradient-to-br from-primary/20 to-secondary/20"></div>
                                         @endif
                                     </div>
-                                    <div class="p-6 flex-grow flex flex-col">
-                                        <span class="inline-block bg-secondary text-on-secondary px-3 py-1 font-label-mono text-[10px] brutalist-border mb-4 w-fit sticker-tilt">{{ $article->category ?? 'BERITA' }}</span>
-                                        <h3 class="font-bold font-headline-lg text-xl md:text-2xl leading-tight mb-4 uppercase">{{ $article->title }}</h3>
-                                        <p class="font-body-md text-sm md:text-body-md mb-6 flex-grow">{{ Str::limit($article->content_text, 120) }}</p>
-                                        <a class="font-bold flex items-center gap-2 group text-sm md:text-base" href="{{ route('public.article.show', $article->slug) }}">
-                                            BACA BERITA <span class="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_right_alt</span>
+                                    <div class="p-5 flex-grow flex flex-col">
+                                        <div class="flex items-center gap-2 mb-3">
+                                            <span class="bg-primary/10 text-primary px-2.5 py-0.5 font-label-mono text-[10px] rounded-lg">{{ $article->category ?? 'BERITA' }}</span>
+                                            <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $article->published_at->format('d M Y') }}</span>
+                                        </div>
+                                        <h3 class="font-bold font-headline-lg text-lg md:text-xl leading-tight mb-2 uppercase">{{ $article->title }}</h3>
+                                        <p class="font-body-md text-xs md:text-sm text-on-surface-variant mb-4 flex-grow">{{ Str::limit($article->content_text, 120) }}</p>
+                                        <a class="font-bold flex items-center gap-1.5 text-sm text-primary group" href="{{ route('public.article.show', $article->slug) }}">
+                                            BACA BERITA <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
                                         </a>
                                     </div>
                                 </article>
@@ -257,12 +304,12 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="flex justify-center gap-3 mt-4" id="newsSliderDots">
-                    <button class="w-4 h-4 rounded-full border-2 border-on-background transition-all" style="background-color: rgb(0, 74, 198); width: 1.5rem;"></button>
+                <div class="flex justify-center gap-2 mt-4" id="newsSliderDots">
+                    <button class="w-2.5 h-2.5 rounded-full bg-primary transition-all" style="width: 1.5rem;"></button>
                 </div>
             @else
-                <div class="brutalist-border brutalist-shadow bg-surface p-12 text-center">
-                    <span class="material-symbols-outlined text-5xl opacity-30 mb-4 block">description</span>
+                <div class="bg-white rounded-2xl bento-shadow p-12 text-center">
+                    <span class="material-symbols-outlined text-4xl opacity-30 mb-4 block">description</span>
                     <p class="font-label-mono text-sm uppercase opacity-60">Belum ada berita</p>
                 </div>
             @endif
@@ -271,17 +318,22 @@
         {{-- ============================================================ --}}
         {{-- CTA SECTION --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 brutalist-border brutalist-shadow bg-on-background text-surface p-8 md:p-12 relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-24 h-24 md:w-40 md:h-40 bg-secondary rounded-full brutalist-border sticker-tilt opacity-50"></div>
-            <div class="absolute -bottom-10 -left-10 w-20 h-20 md:w-32 md:h-32 bg-primary brutalist-border sticker-tilt opacity-50"></div>
+        <section class="mb-12 md:mb-16 bento-card rounded-2xl bento-shadow bg-gradient-to-br from-on-background to-gray-800 text-surface p-8 md:p-12 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-40 md:w-60 h-40 md:h-60 bg-secondary/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-32 md:w-48 h-32 md:h-48 bg-primary/20 rounded-full blur-3xl"></div>
             <div class="relative z-10 max-w-2xl mx-auto text-center">
-                <h2 class="font-headline-lg text-2xl md:text-headline-lg mb-4 md:mb-6 leading-none">PUNYA BERITA MENARIK? SUARAKAN DISINI!</h2>
-                <p class="font-body-md text-sm md:text-body-md mb-8 text-surface-variant">Ayo, suarakan ide dan ceritamu! Kirimkan tulisanmu sekarang dan jadilah bagian dari Merdeka Warta.</p>
+                <span class="material-symbols-outlined text-4xl md:text-5xl mb-4 text-secondary block">edit_note</span>
+                <h2 class="font-headline-lg text-2xl md:text-4xl mb-4 leading-none">PUNYA BERITA MENARIK? SUARAKAN DISINI!</h2>
+                <p class="font-body-md text-sm md:text-base mb-8 text-white/70">Ayo, suarakan ide dan ceritamu! Kirimkan tulisanmu sekarang dan jadilah bagian dari Merdeka Warta.</p>
                 <div class="flex flex-wrap gap-4 justify-center">
                     @auth
-                        <a href="{{ route('admin.articles.create') }}" class="cursor-pointer bg-primary text-on-primary brutalist-border brutalist-shadow-sm px-8 py-4 font-bold text-base md:text-lg btn-press w-full md:w-auto uppercase inline-block">KIRIM DISINI</a>
+                        <a href="{{ route('admin.articles.create') }}" class="bg-primary text-on-primary rounded-xl px-8 py-3.5 font-bold text-base btn-press hover:bg-primary/90 transition-all inline-flex items-center gap-2 bento-shadow">
+                            <span class="material-symbols-outlined">send</span> KIRIM DISINI
+                        </a>
                     @else
-                        <a class="cursor-pointer open-contributor-modal bg-primary text-on-primary brutalist-border brutalist-shadow-sm px-8 py-4 font-bold text-base md:text-lg btn-press w-full md:w-auto uppercase inline-block">KIRIM DISINI</a>
+                        <a class="cursor-pointer open-contributor-modal bg-primary text-on-primary rounded-xl px-8 py-3.5 font-bold text-base btn-press hover:bg-primary/90 transition-all inline-flex items-center gap-2 bento-shadow">
+                            <span class="material-symbols-outlined">send</span> KIRIM DISINI
+                        </a>
                     @endauth
                 </div>
             </div>
@@ -292,21 +344,22 @@
         {{-- ============================================================ --}}
         @if($galleries->isNotEmpty())
             <section class="mb-12 md:mb-16">
-                <div class="flex items-center justify-between mb-8 gap-4">
-                    <h2 class="font-headline-lg text-2xl md:text-headline-lg uppercase text-on-surface whitespace-nowrap">MOMEN DI SMK MERDEKA</h2>
-                    <div class="h-1 bg-on-background flex-grow hidden md:block"></div>
+                <div class="flex items-center justify-between mb-6 gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded-full"></span>
+                        <h2 class="font-headline-lg text-xl md:text-3xl uppercase">MOMEN DI SMK MERDEKA</h2>
+                    </div>
+                    <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
                     <a href="{{ route('public.gallery.list') }}" class="font-label-mono text-xs uppercase text-primary hover:underline shrink-0 flex items-center gap-1">Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
                 </div>
                 <div class="w-full overflow-hidden">
-                    <div class="flex animate-scroll-gallery">
+                    <div class="flex animate-scroll-gallery gap-4">
                         @for($copy = 0; $copy < 3; $copy++)
-                        <div class="flex shrink-0 gap-6 px-3">
                             @foreach($galleries as $g)
-                                <div class="w-64 md:w-80 aspect-square brutalist-border brutalist-shadow overflow-hidden group shrink-0">
-                                    <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}" class="w-full h-full object-cover transition-all duration-300 group-hover:scale-110" src="{{ $g->image_url }}">
+                                <div class="w-56 md:w-72 aspect-[4/3] rounded-2xl bento-shadow overflow-hidden shrink-0 bento-card bento-shadow-hover">
+                                    <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}" class="w-full h-full object-cover transition-all duration-500 hover:scale-110" src="{{ $g->image_url }}" loading="lazy">
                                 </div>
                             @endforeach
-                        </div>
                         @endfor
                     </div>
                 </div>
@@ -318,34 +371,24 @@
         {{-- ============================================================ --}}
         @if($testimonials->isNotEmpty())
             <section class="mb-12 md:mb-16 overflow-hidden">
-                <div class="flex items-center justify-between mb-8 gap-4">
-                    <h2 class="font-headline-lg text-2xl md:text-headline-lg uppercase text-on-surface whitespace-nowrap">TANGGAPAN</h2>
-                    <div class="h-1 bg-on-background flex-grow hidden md:block"></div>
+                <div class="flex items-center justify-between mb-6 gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-tertiary rounded-full"></span>
+                        <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TANGGAPAN</h2>
+                    </div>
+                    <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
                 </div>
                 <div class="w-full overflow-hidden pause-on-hover py-4">
                     <div class="flex animate-scroll-testimonials w-max gap-6">
-                        <div class="flex gap-6 px-3">
-                            @foreach($testimonials as $t)
-                                <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow {{ $t->bg_color }} p-6 flex flex-col gap-4 shrink-0">
-                                    <span class="material-symbols-outlined @if($t->bg_color == 'bg-secondary-fixed') text-secondary @elseif($t->bg_color == 'bg-tertiary-fixed') text-tertiary @elseif($t->bg_color == 'bg-primary-fixed') text-primary @else text-on-background @endif text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
-                                    <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">{{ $t->quote }}</p>
-                                    <div class="border-t-3 border-on-background pt-4">
-                                        <p class="font-label-mono text-[10px] md:text-xs uppercase">{{ $t->author_name }}{{ $t->author_role ? ', ' . $t->author_role : '' }}</p>
-                                    </div>
+                        @foreach($testimonials as $t)
+                            <div class="w-[300px] md:w-[350px] bg-white rounded-2xl bento-shadow p-6 flex flex-col gap-4 shrink-0 bento-card">
+                                <span class="material-symbols-outlined text-primary text-3xl md:text-4xl font-bold leading-none select-none">format_quote</span>
+                                <p class="font-bold font-body-md text-sm md:text-base flex-grow text-on-surface">{{ $t->quote }}</p>
+                                <div class="border-t border-outline-variant pt-4">
+                                    <p class="font-label-mono text-[10px] md:text-xs uppercase text-on-surface-variant">{{ $t->author_name }}{{ $t->author_role ? ', ' . $t->author_role : '' }}</p>
                                 </div>
-                            @endforeach
-                        </div>
-                        <div class="flex gap-6 px-3">
-                            @foreach($testimonials as $t)
-                                <div class="w-[300px] md:w-[350px] brutalist-border brutalist-shadow {{ $t->bg_color }} p-6 flex flex-col gap-4 shrink-0">
-                                    <span class="material-symbols-outlined @if($t->bg_color == 'bg-secondary-fixed') text-secondary @elseif($t->bg_color == 'bg-tertiary-fixed') text-tertiary @elseif($t->bg_color == 'bg-primary-fixed') text-primary @else text-on-background @endif text-4xl md:text-5xl font-bold leading-none select-none">format_quote</span>
-                                    <p class="font-bold font-body-md text-sm md:text-body-md flex-grow">{{ $t->quote }}</p>
-                                    <div class="border-t-3 border-on-background pt-4">
-                                        <p class="font-label-mono text-[10px] md:text-xs uppercase">{{ $t->author_name }}{{ $t->author_role ? ', ' . $t->author_role : '' }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </section>
@@ -353,10 +396,7 @@
 
     </main>
 
-    {{-- CONTRIBUTOR MODAL --}}
     @include('layouts.partials.contributor-modal')
-
-    {{-- FOOTER --}}
     @include('layouts.partials.public-footer')
 
     <script>
@@ -404,9 +444,9 @@
                             confirmButtonColor: '#004ac6',
                             confirmButtonText: 'OK',
                             customClass: {
-                                popup: 'border-4 border-on-background shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]',
-                                title: 'font-headline-lg text-3xl uppercase',
-                                confirmButton: 'bg-primary text-on-primary font-label-mono border-3 border-on-background px-8 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all'
+                                popup: 'rounded-2xl shadow-2xl',
+                                title: 'font-headline-lg text-2xl uppercase',
+                                confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
                             }
                         });
                         cForm.reset();
@@ -421,9 +461,9 @@
                         confirmButtonColor: '#004ac6',
                         confirmButtonText: 'OK',
                         customClass: {
-                            popup: 'border-4 border-on-background shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]',
-                            title: 'font-headline-lg text-3xl uppercase',
-                            confirmButton: 'bg-primary text-on-primary font-label-mono border-3 border-on-background px-8 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all'
+                            popup: 'rounded-2xl shadow-2xl',
+                            title: 'font-headline-lg text-2xl uppercase',
+                            confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
                         }
                     });
                 })
@@ -449,32 +489,6 @@
                 overlay.addEventListener('click', closeSidebar);
             }
         });
-
-        // Hero Carousel
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-slide');
-        const dots = document.querySelectorAll('.carousel-dot');
-        const totalSlides = slides.length;
-        let autoSlideInterval;
-
-        function showSlide(index) {
-            if (index >= totalSlides) currentSlide = 0;
-            else if (index < 0) currentSlide = totalSlides - 1;
-            else currentSlide = index;
-            slides.forEach((slide, i) => slide.classList.toggle('active', i === currentSlide));
-            dots.forEach((dot, i) => {
-                if (i === currentSlide) { dot.style.backgroundColor = 'white'; dot.style.width = window.innerWidth >= 768 ? '1.5rem' : '1rem'; }
-                else { dot.style.backgroundColor = 'rgba(255, 255, 255, 0.5)'; dot.style.width = window.innerWidth >= 768 ? '1rem' : '0.75rem'; }
-            });
-        }
-        function nextSlide() { showSlide(currentSlide + 1); }
-        function prevSlide() { showSlide(currentSlide - 1); }
-        function startAutoSlide() { stopAutoSlide(); autoSlideInterval = setInterval(nextSlide, 6000); }
-        function stopAutoSlide() { clearInterval(autoSlideInterval); }
-
-        dots.forEach(dot => { dot.addEventListener('click', () => { showSlide(parseInt(dot.dataset.slide)); startAutoSlide(); }); });
-
-        if (totalSlides > 0) { showSlide(0); startAutoSlide(); }
 
         // News Slider
         let newsCurrentIndex = 0;
@@ -526,7 +540,7 @@
             for (var i = 0; i < count; i++) {
                 (function(idx) {
                     var btn = document.createElement('button');
-                    btn.className = 'w-4 h-4 rounded-full border-2 border-on-background transition-all';
+                    btn.className = 'w-2.5 h-2.5 rounded-full bg-surface-variant transition-all';
                     btn.addEventListener('click', function() {
                         newsCurrentIndex = idx;
                         updateNewsSlider();
@@ -567,6 +581,35 @@
         });
 
         if (newsItems.length > 0) { createNewsDots(); updateNewsSlider(); startNewsAutoSlide(); }
+
+        // Mobile Gallery Carousel
+        (function() {
+            var track = document.getElementById('mobileGalleryTrack');
+            var dots = document.querySelectorAll('.dot-mobile-gallery');
+            if (!track || dots.length === 0) return;
+            var current = 0;
+            var total = dots.length;
+            function goTo(index) {
+                if (index < 0) index = total - 1;
+                if (index >= total) index = 0;
+                current = index;
+                track.style.transform = 'translateX(-' + (current * 100) + '%)';
+                dots.forEach(function(d, i) {
+                    d.classList.toggle('bg-white', i === current);
+                    d.classList.toggle('w-3', i === current);
+                    d.classList.toggle('bg-white/60', i !== current);
+                    d.classList.toggle('w-1.5', i !== current);
+                });
+            }
+            dots.forEach(function(dot) {
+                dot.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goTo(parseInt(dot.dataset.index));
+                });
+            });
+            setInterval(function() { goTo(current + 1); }, 4000);
+        })();
     </script>
 
 </body>
