@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ActivityLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,6 +14,7 @@ class Announcement extends Model
     {
         static::retrieved(function ($announcement) {
             if ($announcement->expired_at && $announcement->expired_at->isPast()) {
+                ActivityLog::log('EXPIRED', 'announcement', $announcement->id, "Pengumuman \"{$announcement->title}\" kedaluwarsa dan dihapus otomatis");
                 $announcement->delete();
             }
         });

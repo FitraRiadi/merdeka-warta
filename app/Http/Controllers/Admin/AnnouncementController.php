@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Announcement;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,9 @@ class AnnouncementController extends Controller
 
         $validated['is_active'] = $request->has('is_active');
 
-        Announcement::create($validated);
+        $announcement = Announcement::create($validated);
+
+        ActivityLog::log('CREATED', 'announcement', $announcement->id, "Membuat pengumuman <a href=\"" . route('public.announcement.show', $announcement->id) . "\" class=\"underline hover:text-primary\">" . e($announcement->title) . "</a>");
 
         return redirect()->route('admin.announcements.index')
             ->with('success', 'Pemberitahuan berhasil dibuat.');
@@ -67,13 +70,19 @@ class AnnouncementController extends Controller
 
         $announcement->update($validated);
 
+        ActivityLog::log('UPDATED', 'announcement', $announcement->id, "Memperbarui pengumuman <a href=\"" . route('public.announcement.show', $announcement->id) . "\" class=\"underline hover:text-primary\">" . e($announcement->title) . "</a>");
+
         return redirect()->route('admin.announcements.index')
             ->with('success', 'Pemberitahuan berhasil diperbarui.');
     }
 
     public function destroy(Announcement $announcement)
     {
+        $title = $announcement->title;
         $announcement->delete();
+
+        ActivityLog::log('DELETED', 'announcement', null, "Menghapus pengumuman \"{$title}\"");
+
         return redirect()->route('admin.announcements.index')
             ->with('success', 'Pemberitahuan berhasil dihapus.');
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -38,7 +39,9 @@ class UserController extends Controller
         $validated['role'] = 'author';
         $validated['password'] = Hash::make($validated['password']);
 
-        User::create($validated);
+        $user = User::create($validated);
+
+        ActivityLog::log('CREATED', 'user', $user->id, "Menambahkan kontributor \"{$user->name}\" ({$user->email})");
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Author berhasil ditambahkan.');
@@ -73,6 +76,8 @@ class UserController extends Controller
 
         $user->update($validated);
 
+        ActivityLog::log('UPDATED', 'user', $user->id, "Memperbarui kontributor \"{$user->name}\"");
+
         return redirect()->route('admin.users.index')
             ->with('success', 'Author berhasil diperbarui.');
     }
@@ -88,7 +93,10 @@ class UserController extends Controller
             $user->articles()->update(['user_id' => null]);
         }
 
+        $name = $user->name;
         $user->delete();
+
+        ActivityLog::log('DELETED', 'user', null, "Menghapus kontributor \"{$name}\"");
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Author berhasil dihapus.');

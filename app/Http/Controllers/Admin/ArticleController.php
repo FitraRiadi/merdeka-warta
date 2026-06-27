@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Article;
 use App\Services\CdnService;
 use Illuminate\Http\Request;
@@ -95,7 +96,9 @@ class ArticleController extends Controller
         $validated['published_at'] = now();
         $validated['is_published'] = $request->has('is_published');
 
-        Article::create($validated);
+        $article = Article::create($validated);
+
+        ActivityLog::log('CREATED', 'article', $article->id, "Membuat artikel <a href=\"" . route('public.article.show', $article->slug) . "\" class=\"underline hover:text-primary\">" . e($article->title) . "</a>");
 
         return redirect()->route('admin.articles.index')
             ->with('success', 'Artikel berhasil dibuat.');
@@ -171,6 +174,8 @@ class ArticleController extends Controller
 
         $article->update($validated);
 
+        ActivityLog::log('UPDATED', 'article', $article->id, "Memperbarui artikel <a href=\"" . route('public.article.show', $article->slug) . "\" class=\"underline hover:text-primary\">" . e($article->title) . "</a>");
+
         return redirect()->route('admin.articles.index')
             ->with('success', 'Artikel berhasil diperbarui.');
     }
@@ -186,7 +191,10 @@ class ArticleController extends Controller
             $this->cdn->delete($article->image);
         }
 
+        $title = $article->title;
         $article->delete();
+
+        ActivityLog::log('DELETED', 'article', null, "Menghapus artikel \"" . e($title) . "\"");
 
         return redirect()->route('admin.articles.index')
             ->with('success', 'Artikel berhasil dihapus.');

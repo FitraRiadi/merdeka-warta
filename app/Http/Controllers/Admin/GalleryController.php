@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Gallery;
 use App\Services\CdnService;
 use Illuminate\Http\Request;
@@ -55,7 +56,9 @@ class GalleryController extends Controller
 
         unset($validated['image']);
 
-        Gallery::create($validated);
+        $gallery = Gallery::create($validated);
+
+        ActivityLog::log('CREATED', 'gallery', $gallery->id, "Menambahkan galeri" . ($gallery->caption ? ": \"{$gallery->caption}\"" : ''));
 
         return redirect()->route('admin.galleries.index')
             ->with('success', 'Galeri berhasil ditambahkan.');
@@ -93,13 +96,19 @@ class GalleryController extends Controller
 
         $gallery->update($validated);
 
+        ActivityLog::log('UPDATED', 'gallery', $gallery->id, "Memperbarui galeri" . ($gallery->caption ? ": \"{$gallery->caption}\"" : ''));
+
         return redirect()->route('admin.galleries.index')
             ->with('success', 'Galeri berhasil diperbarui.');
     }
 
     public function destroy(Gallery $gallery)
     {
+        $caption = $gallery->caption;
         $gallery->delete();
+
+        ActivityLog::log('DELETED', 'gallery', null, "Menghapus galeri" . ($caption ? ": \"{$caption}\"" : ''));
+
         return redirect()->route('admin.galleries.index')
             ->with('success', 'Galeri berhasil dihapus.');
     }

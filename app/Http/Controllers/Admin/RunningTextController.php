@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\RunningText;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,9 @@ class RunningTextController extends Controller
             'text' => 'required|string',
         ]);
 
-        RunningText::create($validated);
+        $rt = RunningText::create($validated);
+
+        ActivityLog::log('CREATED', 'running_text', $rt->id, "Menambahkan running text");
 
         return redirect()->route('admin.running-texts.index')
             ->with('success', 'Running text berhasil ditambahkan.');
@@ -49,6 +52,8 @@ class RunningTextController extends Controller
 
         $runningText->update($validated);
 
+        ActivityLog::log('UPDATED', 'running_text', $runningText->id, "Memperbarui running text");
+
         return redirect()->route('admin.running-texts.index')
             ->with('success', 'Running text berhasil diperbarui.');
     }
@@ -56,6 +61,9 @@ class RunningTextController extends Controller
     public function destroy(RunningText $runningText)
     {
         $runningText->delete();
+
+        ActivityLog::log('DELETED', 'running_text', null, "Menghapus running text");
+
         return redirect()->route('admin.running-texts.index')
             ->with('success', 'Running text berhasil dihapus.');
     }
