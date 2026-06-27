@@ -25,12 +25,12 @@ use Illuminate\Support\Facades\Route;
 // 1. ROUTE PUBLIK (FRONTEND)
 // ============================================================
 Route::get('/', [PublicArticleController::class, 'index'])->name('home');
-Route::get('/artikel', [PublicArticleController::class, 'list'])->name('public.article.list');
-Route::get('/article/{slug}', [PublicArticleController::class, 'show'])->name('public.article.show');
-Route::get('/pengumuman', [PublicAnnouncementController::class, 'list'])->name('public.announcement.list');
-Route::get('/pengumuman/{id}', [PublicAnnouncementController::class, 'show'])->name('public.announcement.show');
-Route::get('/galeri', [PublicGalleryController::class, 'index'])->name('public.gallery.list');
-Route::post('/kontributor/perizinan', [ContributorPermissionController::class, 'store'])->name('public.contributor.permission');
+Route::get('/articles', [PublicArticleController::class, 'list'])->name('public.article.list');
+Route::get('/articles/{slug}', [PublicArticleController::class, 'show'])->name('public.article.show');
+Route::get('/announcements', [PublicAnnouncementController::class, 'list'])->name('public.announcement.list');
+Route::get('/announcements/{id}', [PublicAnnouncementController::class, 'show'])->name('public.announcement.show');
+Route::get('/galleries', [PublicGalleryController::class, 'index'])->name('public.gallery.list');
+Route::post('/contributor/permission', [ContributorPermissionController::class, 'store'])->name('public.contributor.permission');
 
 // ============================================================
 // 2. ROUTE ADMIN (harus login)
