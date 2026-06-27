@@ -49,13 +49,17 @@
                 </div>
 
                 {{-- Password --}}
-                <div class="mb-6">
+                <div class="mb-6" x-data="{ show: false }">
                     <label for="password" class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kata Sandi</label>
                     <div class="relative">
                         <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">lock</span>
-                        <input id="password" type="password" name="password" required autocomplete="current-password"
-                            class="w-full bg-surface border-3 border-on-background pl-12 pr-4 py-3 font-body-md focus:border-primary transition-colors"
+                        <input id="password" :type="show ? 'text' : 'password'" name="password" required autocomplete="current-password"
+                            class="w-full bg-surface border-3 border-on-background pl-12 pr-12 py-3 font-body-md focus:border-primary transition-colors"
                             placeholder="Masukkan kata sandi...">
+                        <button type="button" @click="show = !show"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors">
+                            <span class="material-symbols-outlined text-sm" x-text="show ? 'visibility_off' : 'visibility'">visibility</span>
+                        </button>
                     </div>
                     @error('password')
                         <p class="mt-2 font-label-mono text-xs text-error flex items-center gap-1">

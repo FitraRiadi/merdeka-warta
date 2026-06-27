@@ -500,7 +500,7 @@
                     </div>
 
                     <div class="flex items-center gap-3" x-data="{ userMenu: false }">
-                        <div class="hidden sm:flex items-center gap-2 font-label-mono text-xs uppercase text-on-surface-variant">
+                        <div class="flex items-center gap-2 font-label-mono text-xs uppercase text-on-surface-variant truncate max-w-[120px] sm:max-w-none">
                             <span class="w-7 h-7 rounded-full bg-primary flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 <span class="material-symbols-outlined text-on-primary text-xs">person</span>
                             </span>
