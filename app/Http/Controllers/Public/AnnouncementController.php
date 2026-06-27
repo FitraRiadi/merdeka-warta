@@ -61,7 +61,7 @@ class AnnouncementController extends Controller
             ->limit(2)
             ->get();
 
-        $runningTexts = RunningText::orderBy('display_order')
+        $runningTexts = RunningText::latest()
             ->get();
 
         return view('public.announcement-list', compact(
@@ -99,7 +99,7 @@ class AnnouncementController extends Controller
             ->get();
 
         // Running texts untuk navbar
-        $runningTexts = RunningText::orderBy('display_order')
+        $runningTexts = RunningText::latest()
             ->get();
 
         return view('public.announcement-show', compact(

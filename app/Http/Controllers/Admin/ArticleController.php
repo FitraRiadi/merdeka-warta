@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use App\Models\User;
 use App\Services\CdnService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -47,12 +46,7 @@ class ArticleController extends Controller
     {
         $this->authorize('create', Article::class);
 
-        $authors = [];
-        if (Auth::user()->isSuperAdmin()) {
-            $authors = User::where('role', 'author')->get();
-        }
-
-        return view('admin.articles.create', compact('authors'));
+        return view('admin.articles.create');
     }
 
     /**
@@ -67,11 +61,9 @@ class ArticleController extends Controller
             'slug' => 'nullable|string|max:255|unique:articles,slug',
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
-            'image_url' => 'nullable|url|max:500',
-            'published_at' => 'nullable|date',
+            'image_url' => 'nullable|string|max:500',
             'is_published' => 'nullable|boolean',
             'category' => 'nullable|string|max:100',
-            'user_id' => 'nullable|exists:users,id',
         ]);
 
         // Slug
@@ -99,16 +91,8 @@ class ArticleController extends Controller
 
         unset($validated['image_url']);
 
-        // Assign user_id
-        if (!Auth::user()->isSuperAdmin()) {
-            $validated['user_id'] = Auth::id();
-        }
-
-        // Published at
-        if (empty($validated['published_at'])) {
-            $validated['published_at'] = now();
-        }
-
+        $validated['user_id'] = Auth::id();
+        $validated['published_at'] = now();
         $validated['is_published'] = $request->has('is_published');
 
         Article::create($validated);
@@ -133,12 +117,7 @@ class ArticleController extends Controller
     {
         $this->authorize('update', $article);
 
-        $authors = [];
-        if (Auth::user()->isSuperAdmin()) {
-            $authors = User::where('role', 'author')->get();
-        }
-
-        return view('admin.articles.edit', compact('article', 'authors'));
+        return view('admin.articles.edit', compact('article'));
     }
 
     /**
@@ -153,11 +132,9 @@ class ArticleController extends Controller
             'slug' => 'nullable|string|max:255|unique:articles,slug,' . $article->id,
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
-            'image_url' => 'nullable|url|max:500',
-            'published_at' => 'nullable|date',
+            'image_url' => 'nullable|string|max:500',
             'is_published' => 'nullable|boolean',
             'category' => 'nullable|string|max:100',
-            'user_id' => 'nullable|exists:users,id',
         ]);
 
         if (empty($validated['slug'])) {
@@ -188,9 +165,7 @@ class ArticleController extends Controller
 
         unset($validated['image_url']);
 
-        if (!Auth::user()->isSuperAdmin()) {
-            unset($validated['user_id']);
-        }
+        unset($validated['user_id']);
 
         $validated['is_published'] = $request->has('is_published');
 

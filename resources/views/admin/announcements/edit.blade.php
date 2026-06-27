@@ -14,7 +14,7 @@
 
         <div class="admin-card p-6">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b-3 border-on-background">
-                <span class="w-8 h-8 bg-gradient-to-br from-secondary to-secondary-fixed-dim border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <span class="w-8 h-8 bg-secondary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     <span class="material-symbols-outlined text-white text-sm">campaign</span>
                 </span>
                 <div>
@@ -31,13 +31,25 @@
                     @error('title') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
-                <div>
+                <div x-data="{ open: false, selected: '{{ old('type', $announcement->type) }}', options: { info: { label: 'Info', icon: 'campaign', color: 'text-primary' }, warning: { label: 'Peringatan', icon: 'warning_amber', color: 'text-tertiary' }, important: { label: 'Penting', icon: 'error', color: 'text-error' } }, select(val) { this.selected = val; this.open = false; } }" class="relative">
+                    <input type="hidden" name="type" x-model="selected">
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Tipe <span class="text-error">*</span></label>
-                    <select name="type" class="admin-input" required>
-                        <option value="info" {{ old('type', $announcement->type) === 'info' ? 'selected' : '' }}>Info</option>
-                        <option value="warning" {{ old('type', $announcement->type) === 'warning' ? 'selected' : '' }}>Peringatan</option>
-                        <option value="important" {{ old('type', $announcement->type) === 'important' ? 'selected' : '' }}>Penting</option>
-                    </select>
+                    <button type="button" @click="open = !open" class="admin-input flex items-center justify-between w-full cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm" :class="options[selected]?.color || 'text-on-surface-variant'" x-text="options[selected]?.icon || 'campaign'"></span>
+                            <span x-text="options[selected]?.label || 'Pilih tipe...'" class="font-body-md text-sm text-on-surface"></span>
+                        </div>
+                        <span class="material-symbols-outlined text-sm transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" x-cloak class="absolute z-50 mt-1 w-full bg-white border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <template x-for="(val, key) in options" :key="key">
+                            <button type="button" @click="select(key)" class="w-full flex items-center gap-2 px-3 py-2.5 font-body-md text-sm hover:bg-primary-fixed transition-colors border-b-2 border-on-background/10 last:border-b-0" :class="selected === key ? 'bg-primary-fixed font-bold' : 'text-on-surface'">
+                                <span class="material-symbols-outlined text-sm" :class="val.color" x-text="val.icon"></span>
+                                <span x-text="val.label"></span>
+                                <span x-show="selected === key" class="material-symbols-outlined text-sm text-primary ml-auto">check</span>
+                            </button>
+                        </template>
+                    </div>
                     @error('type') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
@@ -52,12 +64,12 @@
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kedaluwarsa Pada</label>
                     <input type="date" name="expired_at"
                         value="{{ old('expired_at', $announcement->expired_at?->format('Y-m-d')) }}"
-                        class="admin-input">
+                        class="admin-input" min="{{ date('Y-m-d') }}">
                     @error('expired_at') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
-                    <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-gradient-to-r hover:from-pink-50 hover:to-transparent transition-colors">
+                    <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-pink-50 transition-colors">
                         <input type="checkbox" name="is_active" value="1"
                             {{ old('is_active', $announcement->is_active) ? 'checked' : '' }}
                             class="w-5 h-5 border-3 border-on-background bg-surface text-primary focus:ring-0 focus:outline-none rounded-none

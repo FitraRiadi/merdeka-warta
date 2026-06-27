@@ -14,7 +14,7 @@
 
         <div class="admin-card p-6">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b-3 border-on-background">
-                <span class="w-8 h-8 bg-gradient-to-br from-primary to-primary-fixed-dim border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <span class="w-8 h-8 bg-primary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     <span class="material-symbols-outlined text-on-primary text-sm">edit</span>
                 </span>
                 <div>
@@ -38,48 +38,32 @@
                     @error('slug') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
-                <div>
+                <div x-data="{ open: false, selected: '{{ old('category', $article->category) }}', options: ['Prestasi', 'Kegiatan', 'Akademik', 'Kesiswaan', 'Alumni', 'Informasi', 'Pengumuman', 'Olahraga', 'Seni Budaya', 'Teknologi', 'Ekstrakurikuler', 'Liputan'], select(val) { this.selected = val; this.open = false; } }" class="relative">
+                    <input type="hidden" name="category" x-model="selected">
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kategori</label>
-                    <input type="text" name="category" list="category-list" value="{{ old('category', $article->category) }}"
-                        class="admin-input" placeholder="Pilih atau ketik kategori baru...">
-                    <datalist id="category-list">
-                        <option value="Prestasi">
-                        <option value="Kegiatan">
-                        <option value="Akademik">
-                        <option value="Kesiswaan">
-                        <option value="Alumni">
-                        <option value="Informasi">
-                        <option value="Pengumuman">
-                        <option value="Olahraga">
-                        <option value="Seni Budaya">
-                        <option value="Teknologi">
-                        <option value="Ekstrakurikuler">
-                        <option value="Liputan">
-                    </datalist>
+                    <button type="button" @click="open = !open" class="admin-input flex items-center justify-between w-full cursor-pointer">
+                        <span x-text="selected || 'Pilih kategori...'" :class="selected ? 'text-on-surface' : 'text-on-surface-variant'" class="font-body-md text-sm"></span>
+                        <span class="material-symbols-outlined text-sm transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
+                    </button>
+                    <div x-show="open" @click.outside="open = false" x-cloak class="absolute z-50 mt-1 w-full bg-white border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-h-48 overflow-y-auto">
+                        <template x-for="opt in options" :key="opt">
+                            <button type="button" @click="select(opt)" class="w-full text-left px-3 py-2.5 font-body-md text-sm hover:bg-primary-fixed transition-colors border-b-2 border-on-background/10 last:border-b-0" :class="selected === opt ? 'bg-primary-fixed font-bold text-primary' : 'text-on-surface'">
+                                <div class="flex items-center gap-2">
+                                    <span x-show="selected === opt" class="material-symbols-outlined text-sm text-primary">check</span>
+                                    <span x-text="opt"></span>
+                                </div>
+                            </button>
+                        </template>
+                    </div>
                     @error('category') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
-                @if(Auth::user()->isSuperAdmin())
-                    <div>
-                        <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Penulis</label>
-                        <select name="user_id" class="admin-input">
-                            <option value="">Pilih Penulis...</option>
-                            @foreach($authors as $author)
-                                <option value="{{ $author->id }}" {{ old('user_id', $article->user_id) == $author->id ? 'selected' : '' }}>
-                                    {{ $author->name }} ({{ $author->email }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('user_id') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
-                    </div>
-                @endif
-
                 <div>
-                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Tanggal Terbit</label>
-                    <input type="datetime-local" name="published_at"
-                        value="{{ old('published_at', $article->published_at?->format('Y-m-d\TH:i')) }}"
-                        class="admin-input">
-                    @error('published_at') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Penulis</label>
+                    <div class="admin-input bg-surface-container-highest flex items-center gap-2 cursor-default">
+                        <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>
+                        <span class="font-body-md text-sm">{{ $article->author?->name ?? 'Tanpa Penulis' }}</span>
+                    </div>
                 </div>
 
                 <div class="md:col-span-2" x-data="{ source: 'upload', previewUrl: '{{ old('image_url', $article->image ?? '') }}', previewFile: null, imageError: false }">
@@ -105,6 +89,7 @@
 
                     <div x-show="source==='url'" x-cloak>
                         <input type="url" name="image_url" x-model="previewUrl"
+                            x-bind:disabled="source !== 'url'"
                             @input="imageError = false"
                             class="admin-input" placeholder="https://contoh.com/gambar.jpg">
                     </div>
@@ -136,7 +121,7 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-gradient-to-r hover:from-blue-50 hover:to-transparent transition-colors">
+                    <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-blue-50 transition-colors">
                         <input type="checkbox" name="is_published" value="1"
                             {{ old('is_published', $article->is_published) ? 'checked' : '' }}
                             class="w-5 h-5 border-3 border-on-background bg-surface text-primary focus:ring-0 focus:outline-none rounded-none

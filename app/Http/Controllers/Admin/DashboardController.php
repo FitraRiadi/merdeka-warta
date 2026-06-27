@@ -26,7 +26,7 @@ class DashboardController extends Controller
             $data['totalAuthors'] = User::where('role', 'author')->count();
             $data['recentArticles'] = Article::with('author')->latest()->take(5)->get();
             $data['recentAnnouncements'] = Announcement::latest()->take(3)->get();
-            $data['runningTexts'] = RunningText::orderBy('display_order')->get();
+            $data['runningTexts'] = RunningText::latest()->get();
         } else {
             $data['totalArticles'] = Article::where('user_id', $user->id)->count();
             $data['totalPublished'] = Article::where('user_id', $user->id)->where('is_published', true)->count();

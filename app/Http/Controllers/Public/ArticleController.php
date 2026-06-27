@@ -31,7 +31,7 @@ class ArticleController extends Controller
             ->take(9)
             ->get();
 
-        $runningTexts = RunningText::orderBy('display_order')
+        $runningTexts = RunningText::latest()
             ->get();
 
         $announcements = Announcement::where('is_active', true)
@@ -86,7 +86,7 @@ class ArticleController extends Controller
             ->take(3)
             ->get();
 
-        $runningTexts = RunningText::orderBy('display_order')
+        $runningTexts = RunningText::latest()
             ->get();
 
         return view('public.article-list', compact(
@@ -123,7 +123,7 @@ class ArticleController extends Controller
             ->get();
 
         // Running texts untuk navbar
-        $runningTexts = RunningText::orderBy('display_order')
+        $runningTexts = RunningText::latest()
             ->get();
 
         return view('public.article-show', compact(

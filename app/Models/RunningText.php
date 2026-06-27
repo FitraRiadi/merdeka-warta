@@ -11,15 +11,5 @@ class RunningText extends Model
 
     protected $fillable = [
         'text',
-        'display_order',
-        'background_color',
-        'text_color',
     ];
-
-    protected function casts(): array
-    {
-        return [
-            'display_order' => 'integer',
-        ];
-    }
 }

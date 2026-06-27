@@ -84,6 +84,11 @@
                 {{-- Breadcrumbs & Type Badge --}}
                 <div class="flex items-center gap-3 flex-wrap">
                     @php
+                        $typeIcons = [
+                            'important' => 'error',
+                            'warning' => 'warning_amber',
+                            'info' => 'campaign',
+                        ];
                         $typeColors = [
                             'important' => 'bg-error/10 text-error',
                             'warning' => 'bg-tertiary/10 text-tertiary',
@@ -94,11 +99,12 @@
                             'warning' => 'PERHATIAN',
                             'info' => 'INFORMASI',
                         ];
+                        $typeIcon = $typeIcons[$announcement->type] ?? 'campaign';
                         $typeColor = $typeColors[$announcement->type] ?? 'bg-secondary/10 text-secondary';
                         $typeLabel = $typeLabels[$announcement->type] ?? 'PENGUMUMAN';
                     @endphp
                     <span class="{{ $typeColor }} px-3 py-1 rounded font-label-mono text-[10px] uppercase flex items-center gap-1.5">
-                        <span class="material-symbols-outlined text-xs">campaign</span>
+                        <span class="material-symbols-outlined text-xs">{{ $typeIcon }}</span>
                         {{ $typeLabel }}
                     </span>
                     <div class="flex items-center text-on-surface-variant font-label-mono text-[10px] uppercase gap-1.5">

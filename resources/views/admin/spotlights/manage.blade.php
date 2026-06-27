@@ -15,7 +15,7 @@
 
         {{-- Sorotan Artikel --}}
         <div class="admin-card overflow-hidden mb-8">
-            <div class="px-6 py-4 bg-gradient-to-r from-primary-fixed-dim/20 to-transparent border-b-3 border-on-background">
+            <div class="px-6 py-4 bg-primary-fixed-dim/20 border-b-3 border-on-background">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-primary">stars</span>
                     <h3 class="font-label-mono text-sm uppercase font-bold">Sorotan Artikel</h3>
@@ -113,7 +113,7 @@
                                         <img src="{{ $article->image }}" alt=""
                                             class="w-16 h-12 object-cover border-2 border-on-background">
                                     @else
-                                        <div class="w-16 h-12 bg-gradient-to-br from-primary to-secondary border-2 border-on-background flex items-center justify-center">
+                                        <div class="w-16 h-12 bg-primary border-2 border-on-background flex items-center justify-center">
                                             <span class="material-symbols-outlined text-white">image</span>
                                         </div>
                                     @endif
@@ -159,7 +159,7 @@
 
         {{-- Sorotan Pemberitahuan --}}
         <div class="admin-card overflow-hidden mb-8">
-            <div class="px-6 py-4 bg-gradient-to-r from-secondary-fixed/20 to-transparent border-b-3 border-on-background">
+            <div class="px-6 py-4 bg-secondary-fixed/20 border-b-3 border-on-background">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined text-secondary">campaign</span>
                     <h3 class="font-label-mono text-sm uppercase font-bold">Sorotan Pemberitahuan</h3>

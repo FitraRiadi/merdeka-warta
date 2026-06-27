@@ -22,7 +22,7 @@
                     <img src="{{ $gallery->image_url }}"
                         alt="{{ $gallery->caption ?? 'Gallery image' }}"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-full bg-gradient-to-br from-gray-100 to-gray-200\'><span class=\'material-symbols-outlined text-4xl text-gray-400\'>broken_image</span></div>'">
+                        onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-full bg-gray-200\'><span class=\'material-symbols-outlined text-4xl text-gray-400\'>broken_image</span></div>'">
                 </div>
                 <div class="p-4 border-t-3 border-on-background">
                     <p class="font-body-md text-sm font-bold truncate">{{ $gallery->caption ?? 'Tanpa Keterangan' }}</p>

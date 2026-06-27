@@ -73,12 +73,12 @@
             border-left: 3px solid transparent;
         }
         .sidebar-link:hover {
-            background: linear-gradient(to right, #f3f4f5, #ffffff);
+            background: #edeeef;
             color: #004ac6;
-            border-left-color: #b4c5ff;
+            border-left-color: #004ac6;
         }
         .sidebar-link.active {
-            background: linear-gradient(to right, #004ac6, #2563eb);
+            background: #004ac6;
             color: #ffffff;
             border-left-color: #191c1d;
             border-color: #191c1d;
@@ -104,7 +104,7 @@
         [x-cloak] { display: none !important; }
 
         .admin-card {
-            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            background: #ffffff;
             border: 3px solid #191c1d;
             box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);
             position: relative;
@@ -116,11 +116,11 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #004ac6, #b4c5ff);
+            background: #004ac6;
             opacity: 0.5;
         }
         .admin-card-sm {
-            background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+            background: #ffffff;
             border: 3px solid #191c1d;
             box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
         }
@@ -143,7 +143,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, #004ac6, #2563eb);
+            background: #004ac6;
             color: #ffffff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
@@ -158,7 +158,7 @@
         .admin-btn-primary:hover {
             transform: translate(-2px, -2px);
             box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
-            background: linear-gradient(135deg, #003ea8, #004ac6);
+            background: #003ea8;
         }
         .admin-btn-primary:active {
             transform: translate(2px, 2px);
@@ -168,7 +168,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, #ffffff, #f3f4f5);
+            background: #ffffff;
             color: #191c1d;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
@@ -183,7 +183,7 @@
         .admin-btn-secondary:hover {
             transform: translate(-2px, -2px);
             box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
-            background: linear-gradient(135deg, #f8faff, #dbe1ff);
+            background: #dbe1ff;
             border-color: #004ac6;
             color: #004ac6;
         }
@@ -195,7 +195,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, #ba1a1a, #d32f2f);
+            background: #ba1a1a;
             color: #ffffff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
@@ -210,7 +210,7 @@
         .admin-btn-danger:hover {
             transform: translate(-2px, -2px);
             box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
-            background: linear-gradient(135deg, #93000a, #ba1a1a);
+            background: #93000a;
         }
         .admin-btn-danger:active {
             transform: translate(2px, 2px);
@@ -224,7 +224,7 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, #2e7d32, #43a047);
+            background: #2e7d32;
             color: #ffffff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.8rem;
@@ -239,6 +239,7 @@
         .admin-btn-success:hover {
             transform: translate(-2px, -2px);
             box-shadow: 6px 6px 0px 0px rgba(0, 0, 0, 1);
+            background: #1b5e20;
         }
         .admin-btn-success:active {
             transform: translate(2px, 2px);
@@ -331,12 +332,12 @@
             right: 0;
             height: 3px;
         }
-        .stat-card-blue::after { background: linear-gradient(90deg, #004ac6, #b4c5ff); }
-        .stat-card-pink::after { background: linear-gradient(90deg, #a43073, #ffafd3); }
-        .stat-card-orange::after { background: linear-gradient(90deg, #864300, #ffb783); }
-        .stat-card-green::after { background: linear-gradient(90deg, #2e7d32, #a5d6a7); }
-        .stat-card-purple::after { background: linear-gradient(90deg, #7b1fa2, #ce93d8); }
-        .stat-card-teal::after { background: linear-gradient(90deg, #00695c, #80cbc4); }
+        .stat-card-blue::after { background: #004ac6; }
+        .stat-card-pink::after { background: #a43073; }
+        .stat-card-orange::after { background: #864300; }
+        .stat-card-green::after { background: #2e7d32; }
+        .stat-card-purple::after { background: #7b1fa2; }
+        .stat-card-teal::after { background: #00695c; }
 
         /* Card header accent colors */
         .card-header-blue { border-bottom-color: #004ac6 !important; }
@@ -346,7 +347,7 @@
 
         /* Table styling */
         .admin-table th {
-            background: linear-gradient(135deg, #e3f2fd, #dbe1ff);
+            background: #dbe1ff;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             font-weight: 700;
@@ -367,7 +368,7 @@
             transition: background 0.15s ease;
         }
         .admin-table tbody tr:hover {
-            background: linear-gradient(135deg, #f8faff, #eef2ff);
+            background: #eef2ff;
         }
 
         /* Custom file input */
@@ -377,7 +378,7 @@
         .custom-file-input::before {
             content: 'Pilih File';
             display: inline-block;
-            background: linear-gradient(135deg, #004ac6, #2563eb);
+            background: #004ac6;
             color: white;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
@@ -394,7 +395,7 @@
         .page-header-accent {
             width: 3rem;
             height: 4px;
-            background: linear-gradient(90deg, #004ac6, #b4c5ff);
+            background: #004ac6;
             margin-top: 0.25rem;
         }
 
@@ -402,7 +403,7 @@
         .empty-state-icon {
             width: 4rem;
             height: 4rem;
-            background: linear-gradient(135deg, #f3f4f5, #e5e7eb);
+            background: #e5e7eb;
             border: 3px solid #191c1d;
             display: flex;
             align-items: center;
@@ -421,12 +422,13 @@
             content: '';
             flex: 1;
             height: 2px;
-            background: linear-gradient(90deg, #191c1d, transparent);
+            background: #191c1d;
+            opacity: 0.3;
         }
 
         /* Navbar accent */
         .navbar-brand-icon {
-            background: linear-gradient(135deg, #004ac6, #2563eb);
+            background: #004ac6;
             box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 1);
         }
     </style>
@@ -458,7 +460,7 @@
 
         {{-- DESKTOP SIDEBAR --}}
         <div class="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-[260px] lg:flex-col">
-            <div class="flex grow flex-col gap-y-4 overflow-y-auto bg-gradient-to-b from-surface to-surface-container-low border-r-3 border-on-background px-4 pb-4 shadow-[4px_0px_0px_0px_rgba(0,0,0,1)]">
+            <div class="flex grow flex-col gap-y-4 overflow-y-auto bg-surface border-r-3 border-on-background px-4 pb-4 shadow-[4px_0px_0px_0px_rgba(0,0,0,1)]">
                 {{-- Brand --}}
                 <div class="flex items-center gap-3 h-16 shrink-0 border-b-3 border-on-background">
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5">
@@ -475,7 +477,7 @@
                 </nav>
 
                 {{-- Sidebar footer accent --}}
-                <div class="h-1 bg-gradient-to-r from-primary via-primary-fixed-dim to-transparent opacity-40"></div>
+                <div class="h-1 bg-primary opacity-20"></div>
             </div>
         </div>
 
@@ -499,29 +501,29 @@
 
                     <div class="flex items-center gap-3" x-data="{ userMenu: false }">
                         <div class="hidden sm:flex items-center gap-2 font-label-mono text-xs uppercase text-on-surface-variant">
-                            <span class="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="w-7 h-7 rounded-full bg-primary flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 <span class="material-symbols-outlined text-on-primary text-xs">person</span>
                             </span>
                             <span>{{ Auth::user()->name }}</span>
                         </div>
                         <div class="relative">
-                            <button @click="userMenu = !userMenu" class="w-9 h-9 bg-gradient-to-br from-primary to-primary-container border-3 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+                            <button @click="userMenu = !userMenu" class="w-9 h-9 bg-primary border-3 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
                                 <span class="material-symbols-outlined text-on-primary text-sm">more_vert</span>
                             </button>
                             <div x-show="userMenu" x-cloak @click.outside="userMenu = false" x-transition class="absolute right-0 mt-2 w-48 bg-white border-3 border-on-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] z-50">
                                 <div class="p-1">
-                                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase hover:bg-gradient-to-r hover:from-surface-container-low hover:to-surface-container transition-colors rounded">
+                                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase hover:bg-surface-container-low transition-colors rounded">
                                         <span class="material-symbols-outlined text-sm">settings</span>
                                         Pengaturan
                                     </a>
-                                    <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase hover:bg-gradient-to-r hover:from-surface-container-low hover:to-surface-container transition-colors rounded">
+                                    <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase hover:bg-surface-container-low transition-colors rounded">
                                         <span class="material-symbols-outlined text-sm">open_in_new</span>
                                         Lihat Website
                                     </a>
                                     <hr class="border-on-background/20 my-1">
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase text-error hover:bg-gradient-to-r hover:from-error-container hover:to-red-50 transition-colors rounded">
+                                        <button type="submit" class="w-full flex items-center gap-2 px-3 py-2 font-label-mono text-xs uppercase text-error hover:bg-error-container transition-colors rounded">
                                             <span class="material-symbols-outlined text-sm">logout</span>
                                             Keluar
                                         </button>
@@ -536,7 +538,7 @@
             {{-- ALERTS --}}
             @if(session('success'))
                 <div class="mx-4 md:mx-6 mt-4" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
-                    <div class="bg-gradient-to-r from-secondary-fixed to-pink-50 border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex items-center justify-between">
+                    <div class="bg-secondary-fixed border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <span class="w-8 h-8 rounded-full bg-secondary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 <span class="material-symbols-outlined text-on-secondary text-sm">check_circle</span>
@@ -552,7 +554,7 @@
 
             @if(session('error'))
                 <div class="mx-4 md:mx-6 mt-4" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)">
-                    <div class="bg-gradient-to-r from-error-container to-red-50 border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex items-center justify-between">
+                    <div class="bg-error-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-4 flex items-center justify-between">
                         <div class="flex items-center gap-3">
                             <span class="w-8 h-8 rounded-full bg-error border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                                 <span class="material-symbols-outlined text-on-error text-sm">error</span>
@@ -585,7 +587,7 @@
             </main>
 
             {{-- FOOTER --}}
-            <div class="border-t-3 border-on-background px-4 md:px-6 py-4 bg-gradient-to-r from-surface-container-low to-surface-container">
+            <div class="border-t-3 border-on-background px-4 md:px-6 py-4 bg-surface-container-low">
                 <div class="flex items-center justify-between font-label-mono text-xs uppercase text-on-surface-variant">
                     <span>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</span>
                     <span>SMK Merdeka Bandung</span>
@@ -624,5 +626,6 @@
         });
     </script>
     @stack('scripts')
+    <x:loading-overlay />
 </body>
 </html>

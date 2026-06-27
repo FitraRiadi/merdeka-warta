@@ -60,7 +60,9 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if($announcement->is_active)
+                                @if($announcement->expired_at && $announcement->expired_at->isPast())
+                                    <span class="admin-badge bg-red-100 text-red-700 border-red-700 text-[10px]">Kedaluwarsa</span>
+                                @elseif($announcement->is_active)
                                     <span class="admin-badge bg-green-100 text-green-700 border-green-700 text-[10px]">Terbit</span>
                                 @else
                                     <span class="admin-badge bg-gray-100 text-gray-600 border-gray-400 text-[10px]">Draft</span>

@@ -9,6 +9,15 @@ class Announcement extends Model
 {
     use HasFactory;
 
+    protected static function booted(): void
+    {
+        static::retrieved(function ($announcement) {
+            if ($announcement->expired_at && $announcement->expired_at->isPast()) {
+                $announcement->delete();
+            }
+        });
+    }
+
     protected $fillable = [
         'title',
         'content',

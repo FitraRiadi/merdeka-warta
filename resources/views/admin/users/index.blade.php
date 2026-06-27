@@ -32,7 +32,7 @@
                         <tr>
                             <td>
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 bg-gradient-to-br from-primary to-primary-fixed-dim border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0">
+                                    <div class="w-9 h-9 bg-primary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] shrink-0">
                                         <span class="material-symbols-outlined text-on-primary text-sm">person</span>
                                     </div>
                                     <div>

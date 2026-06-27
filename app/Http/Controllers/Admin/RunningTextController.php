@@ -15,7 +15,7 @@ class RunningTextController extends Controller
 
     public function index()
     {
-        $runningTexts = RunningText::orderBy('display_order')->paginate(10);
+        $runningTexts = RunningText::latest()->paginate(10);
         return view('admin.running-texts.index', compact('runningTexts'));
     }
 
@@ -28,9 +28,6 @@ class RunningTextController extends Controller
     {
         $validated = $request->validate([
             'text' => 'required|string',
-            'display_order' => 'nullable|integer|min:0',
-            'background_color' => 'nullable|string|max:20',
-            'text_color' => 'nullable|string|max:20',
         ]);
 
         RunningText::create($validated);
@@ -48,9 +45,6 @@ class RunningTextController extends Controller
     {
         $validated = $request->validate([
             'text' => 'required|string',
-            'display_order' => 'nullable|integer|min:0',
-            'background_color' => 'nullable|string|max:20',
-            'text_color' => 'nullable|string|max:20',
         ]);
 
         $runningText->update($validated);

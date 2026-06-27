@@ -12,7 +12,7 @@ class GalleryController extends Controller
     {
         $galleries = Gallery::paginate(12);
 
-        $runningTexts = RunningText::orderBy('display_order')
+        $runningTexts = RunningText::latest()
             ->get();
 
         return view('public.gallery-list', compact('galleries', 'runningTexts'));

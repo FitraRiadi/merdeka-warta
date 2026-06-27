@@ -112,12 +112,12 @@
             {{-- Latest announcements --}}
             @foreach($latestAnnouncements->take(3) as $i => $la)
                 @php
-                    $palettes = [
-                        ['bg' => 'bg-secondary-fixed', 'iconBg' => 'bg-white', 'icon' => 'school', 'color' => 'text-secondary'],
-                        ['bg' => 'bg-tertiary-fixed', 'iconBg' => 'bg-white', 'icon' => 'event', 'color' => 'text-tertiary'],
-                        ['bg' => 'bg-primary-fixed', 'iconBg' => 'bg-white', 'icon' => 'campaign', 'color' => 'text-primary'],
+                    $latestTypeStyles = [
+                        'important' => ['bg' => 'bg-error/10', 'iconBg' => 'bg-white', 'icon' => 'error', 'color' => 'text-error'],
+                        'warning' => ['bg' => 'bg-tertiary/10', 'iconBg' => 'bg-white', 'icon' => 'warning_amber', 'color' => 'text-tertiary'],
+                        'info' => ['bg' => 'bg-secondary/10', 'iconBg' => 'bg-white', 'icon' => 'campaign', 'color' => 'text-secondary'],
                     ];
-                    $p = $palettes[$i] ?? $palettes[0];
+                    $p = $latestTypeStyles[$la->type] ?? $latestTypeStyles['info'];
                     $laLabel = $featTypeLabels[$la->type] ?? 'PENGUMUMAN';
                 @endphp
                 <a href="{{ route('public.announcement.show', $la->id) }}"
@@ -234,29 +234,26 @@
             @if($announcements->isNotEmpty())
             <div class="bento-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 @php
-                    $cardIcons = ['campaign', 'school', 'event', 'sports_basketball', 'account_balance', 'menu_book', 'volunteer_activism', 'groups', 'record_voice_over', 'storefront', 'sports_soccer', 'celebration'];
-                    $iconBgPalette = ['bg-primary/10', 'bg-secondary/10', 'bg-tertiary/10', 'bg-error/10', 'bg-primary/10', 'bg-secondary/10', 'bg-tertiary/10', 'bg-error/10', 'bg-primary/10', 'bg-secondary/10', 'bg-tertiary/10', 'bg-error/10'];
-                    $iconColorPalette = ['text-primary', 'text-secondary', 'text-tertiary', 'text-error', 'text-primary', 'text-secondary', 'text-tertiary', 'text-error', 'text-primary', 'text-secondary', 'text-tertiary', 'text-error'];
-                    $typeLabels = ['important' => 'PENTING', 'warning' => 'PERHATIAN', 'info' => 'INFORMASI'];
+                    $typeStyles = [
+                        'important' => ['icon' => 'error', 'bg' => 'bg-error/10', 'color' => 'text-error', 'label' => 'PENTING'],
+                        'warning' => ['icon' => 'warning_amber', 'bg' => 'bg-tertiary/10', 'color' => 'text-tertiary', 'label' => 'PERHATIAN'],
+                        'info' => ['icon' => 'campaign', 'bg' => 'bg-secondary/10', 'color' => 'text-secondary', 'label' => 'INFORMASI'],
+                    ];
                 @endphp
                 @foreach($announcements as $index => $announcement)
                     @php
-                        $paletteIndex = $index % count($cardIcons);
-                        $icon = $cardIcons[$paletteIndex];
-                        $iconBg = $iconBgPalette[$paletteIndex];
-                        $iconColor = $iconColorPalette[$paletteIndex];
-                        $annLabel = $typeLabels[$announcement->type] ?? 'PENGUMUMAN';
+                        $ts = $typeStyles[$announcement->type] ?? $typeStyles['info'];
                         $isFeaturedGrid = $index == 0;
                     @endphp
                     <a href="{{ route('public.announcement.show', $announcement->id) }}"
                        class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover p-4 md:p-5 flex flex-col group @if($isFeaturedGrid) md:col-span-2 lg:col-span-2 @endif">
                         <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center {{ $iconBg }}">
-                                <span class="material-symbols-outlined {{ $iconColor }} text-xl">{{ $icon }}</span>
+                            <div class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center {{ $ts['bg'] }}">
+                                <span class="material-symbols-outlined {{ $ts['color'] }} text-xl">{{ $ts['icon'] }}</span>
                             </div>
                             <div class="flex-grow min-w-0">
                                 <div class="flex items-center gap-2 mb-1.5">
-                                    <span class="text-[10px] font-label-mono text-on-surface-variant uppercase">{{ $annLabel }}</span>
+                                    <span class="text-[10px] font-label-mono text-on-surface-variant uppercase">{{ $ts['label'] }}</span>
                                     <span class="text-[10px] font-label-mono text-on-surface-variant">/</span>
                                     <span class="text-[10px] font-label-mono text-on-surface-variant">{{ $announcement->created_at->format('d M Y') }}</span>
                                 </div>
