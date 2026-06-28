@@ -31,13 +31,6 @@
                     @error('title') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
-                <div>
-                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Slug</label>
-                    <input type="text" name="slug" value="{{ old('slug', $article->slug) }}"
-                        class="admin-input" placeholder="judul-artikel">
-                    @error('slug') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
-                </div>
-
                 <div x-data="{ open: false, selected: '{{ old('category', $article->category) }}', options: ['Prestasi', 'Kegiatan', 'Akademik', 'Kesiswaan', 'Alumni', 'Informasi', 'Pengumuman', 'Olahraga', 'Seni Budaya', 'Teknologi', 'Ekstrakurikuler', 'Liputan'], select(val) { this.selected = val; this.open = false; } }" class="relative">
                     <input type="hidden" name="category" x-model="selected">
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kategori</label>

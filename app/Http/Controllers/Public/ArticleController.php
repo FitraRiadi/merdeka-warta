@@ -10,6 +10,7 @@ use App\Models\RunningText;
 use App\Models\Spotlight;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
@@ -99,12 +100,14 @@ class ArticleController extends Controller
         $article = Article::where('slug', $slug)
             ->where('is_published', true)
             ->with('author')
+            ->withCount('views')
             ->firstOrFail();
 
-        // Sidebar: artikel populer (3 terbaru, kecuali current)
+        // Sidebar: artikel populer (paling banyak dilihat)
         $popularArticles = Article::where('is_published', true)
-            ->where('id', '!=', $article->id)
-            ->latest('published_at')
+            ->withCount('views')
+            ->orderBy('views_count', 'desc')
+            ->orderBy('published_at', 'desc')
             ->limit(3)
             ->get();
 
@@ -112,7 +115,7 @@ class ArticleController extends Controller
         $relatedArticles = Article::where('is_published', true)
             ->where('id', '!=', $article->id)
             ->inRandomOrder()
-            ->limit(3)
+            ->limit(6)
             ->get();
 
         // Sidebar: kategori dengan jumlah artikel
@@ -125,6 +128,21 @@ class ArticleController extends Controller
         // Running texts untuk navbar
         $runningTexts = RunningText::latest()
             ->get();
+
+        // Catat view — user login via user_id, guest via ip_address
+        if (Auth::check()) {
+            $article->views()->firstOrCreate([
+                'user_id' => Auth::id(),
+                'viewable_type' => Article::class,
+                'viewable_id' => $article->id,
+            ]);
+        } else {
+            $article->views()->firstOrCreate([
+                'ip_address' => request()->ip(),
+                'viewable_type' => Article::class,
+                'viewable_id' => $article->id,
+            ]);
+        }
 
         return view('public.article-show', compact(
             'article', 'popularArticles', 'relatedArticles',

@@ -32,13 +32,6 @@
                 </div>
 
                 <div>
-                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Slug (biarkan kosong untuk otomatis)</label>
-                    <input type="text" name="slug" value="{{ old('slug') }}"
-                        class="admin-input" placeholder="judul-artikel">
-                    @error('slug') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
-                </div>
-
-                <div>
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Penulis</label>
                     <div class="admin-input bg-surface-container-highest flex items-center gap-2 cursor-default">
                         <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>

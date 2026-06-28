@@ -174,6 +174,10 @@
                         Berlaku hingga {{ $announcement->expired_at->format('d F Y') }}
                     </div>
                     @endif
+                    <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">visibility</span>
+                        {{ $announcement->views_count }} PELIHAT
+                    </div>
                 </div>
 
                 {{-- Rich Content --}}
@@ -227,21 +231,21 @@
 
 
                 {{-- Pengumuman Terbaru --}}
-                @if($otherAnnouncements->isNotEmpty())
+                @if($latestAnnouncements->isNotEmpty())
                 <section class="bg-white dark:bg-surface-container rounded-xl bento-shadow p-5 md:p-6 border-2 border-black dark:border-gray-700">
                     <h3 class="font-headline-lg text-lg md:text-xl uppercase mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-secondary">campaign</span> Pengumuman Terbaru
                     </h3>
                     <div class="space-y-4">
-                        @foreach($otherAnnouncements->take(4) as $i => $other)
-                        <a href="{{ route('public.announcement.show', $other->id) }}" class="group cursor-pointer block rounded-xl p-2 -mx-2 hover:bg-surface-container-low">
+                        @foreach($latestAnnouncements as $i => $la)
+                        <a href="{{ route('public.announcement.show', $la->id) }}" class="group cursor-pointer block rounded-xl p-2 -mx-2 hover:bg-surface-container-low">
                             @php
-                                $oColor = $typeColors[$other->type] ?? 'bg-secondary/10 text-secondary';
-                                $oLabel = $typeLabels[$other->type] ?? 'PENGUMUMAN';
+                                $oColor = $typeColors[$la->type] ?? 'bg-secondary/10 text-secondary';
+                                $oLabel = $typeLabels[$la->type] ?? 'PENGUMUMAN';
                             @endphp
                             <span class="text-[10px] font-label-mono {{ $oColor }} px-2 py-0.5 rounded inline-block mb-1">{{ $oLabel }}</span>
-                            <h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">{{ $other->title }}</h4>
-                            <span class="text-[10px] font-label-mono text-on-surface-variant mt-0.5 block">{{ $other->created_at->format('d F Y') }}</span>
+                            <h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">{{ $la->title }}</h4>
+                            <span class="text-[10px] font-label-mono text-on-surface-variant mt-0.5 block">{{ $la->created_at->format('d F Y') }}</span>
                         </a>
                         @endforeach
                     </div>

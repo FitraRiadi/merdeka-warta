@@ -70,6 +70,161 @@
         @endif
     </div>
 
+    {{-- Donut Chart Section --}}
+    @if(Auth::user()->isSuperAdmin())
+        @php
+            $artDeg = $totalViews > 0 ? round($articleViews / $totalViews * 360) : 0;
+            $annDeg = 360 - $artDeg;
+        @endphp
+        <div class="admin-card p-5 md:p-6 mb-6">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="w-8 h-8 bg-primary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span class="material-symbols-outlined text-on-primary text-sm">visibility</span>
+                </span>
+                <h2 class="font-headline-lg text-xl uppercase tracking-tight">Statistik Pelihat</h2>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex flex-col md:flex-row items-center gap-8 lg:w-1/2">
+                    {{-- Donut --}}
+                    <div class="relative w-44 h-44 shrink-0">
+                        <div class="w-full h-full rounded-full border-3 border-on-background overflow-hidden"
+                             style="background: conic-gradient(
+                                 #2563eb 0deg {{ $artDeg }}deg,
+                                 #e11d48 {{ $artDeg }}deg 360deg
+                             );">
+                            <div class="absolute inset-2 bg-surface-container-lowest rounded-full border-2 border-on-background flex flex-col items-center justify-center">
+                                <span class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $totalViews }}</span>
+                                <span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Total Dilihat</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Legend --}}
+                    <div class="flex flex-col gap-3">
+                        <div class="flex items-center gap-3 px-4 py-3 border-2 border-on-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="w-5 h-5 bg-blue-600 border-2 border-on-background shrink-0"></span>
+                            <div>
+                                <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">Artikel Dilihat</p>
+                                <p class="font-headline-lg text-xl tracking-tight">{{ $articleViews }} <span class="font-label-mono text-xs text-on-surface-variant">({{ $totalViews > 0 ? round($articleViews / $totalViews * 100) : 0 }}%)</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 px-4 py-3 border-2 border-on-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="w-5 h-5 bg-pink-600 border-2 border-on-background shrink-0"></span>
+                            <div>
+                                <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">Pengumuman Dilihat</p>
+                                <p class="font-headline-lg text-xl tracking-tight">{{ $announcementViews }} <span class="font-label-mono text-xs text-on-surface-variant">({{ $totalViews > 0 ? round($announcementViews / $totalViews * 100) : 0 }}%)</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- Trending Articles --}}
+                <div class="lg:w-1/2 border-t lg:border-t-0 lg:border-l border-on-background/10 pt-6 lg:pt-0 lg:pl-8">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-sm text-secondary">trending_up</span>
+                        <h3 class="font-label-mono text-[11px] uppercase tracking-wider">Artikel Yang Paling Banyak Dilihat</h3>
+                    </div>
+                    <div class="space-y-3">
+                        @forelse($trendingArticles as $ta)
+                            <a href="{{ route('admin.articles.edit', $ta) }}" class="flex items-center gap-3 p-2.5 border-2 border-on-background hover:bg-primary-fixed-dim/10 transition-all shadow-[1px_1px_0px_0px_rgba(0,0,0,0.1)] group">
+                                <span class="w-7 h-7 flex items-center justify-center font-headline-lg text-sm {{ $loop->iteration <= 3 ? 'text-secondary' : 'text-on-surface-variant' }}">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-body-md text-xs font-bold truncate group-hover:text-primary transition-colors">{{ $ta->title }}</p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="flex items-center gap-0.5 font-label-mono text-[10px] text-on-surface-variant">
+                                            <span class="material-symbols-outlined text-[10px]">visibility</span>
+                                            {{ $ta->views_count }}
+                                        </span>
+                                        <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $ta->author?->name ?? '-' }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @empty
+                            <div class="text-center py-8">
+                                <span class="material-symbols-outlined text-2xl text-on-surface-variant">trending_up</span>
+                                <p class="font-body-md text-sm text-on-surface-variant mt-2">Belum ada artikel yang dilihat.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        @php
+            $authFullDeg = $authorTotalArticles > 0
+                ? min(360, round($authorArticleViews / max($authorTotalArticles, 1) * 360))
+                : 0;
+            $authFullDeg = min(360, $authFullDeg);
+        @endphp
+        <div class="admin-card p-5 md:p-6 mb-6">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="w-8 h-8 bg-green-600 border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                    <span class="material-symbols-outlined text-white text-sm">visibility</span>
+                </span>
+                <h2 class="font-headline-lg text-xl uppercase tracking-tight">Statistik Pelihat Artikel Saya</h2>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="flex flex-col md:flex-row items-center gap-8 lg:w-1/2">
+                    <div class="relative w-44 h-44 shrink-0">
+                        <div class="w-full h-full rounded-full border-3 border-on-background overflow-hidden"
+                             style="background: conic-gradient(
+                                 #16a34a 0deg {{ $authFullDeg }}deg,
+                                 #e5e7eb {{ $authFullDeg }}deg 360deg
+                             );">
+                            <div class="absolute inset-2 bg-surface-container-lowest rounded-full border-2 border-on-background flex flex-col items-center justify-center">
+                                <span class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $authorArticleViews }}</span>
+                                <span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Dilihat</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center gap-3 px-4 py-3 border-2 border-on-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="w-5 h-5 bg-green-600 border-2 border-on-background shrink-0"></span>
+                            <div>
+                                <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">Artikel Saya Dilihat</p>
+                                <p class="font-headline-lg text-xl tracking-tight">{{ $authorArticleViews }} <span class="font-label-mono text-xs text-on-surface-variant">kali</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 px-4 py-3 border-2 border-on-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="w-5 h-5 bg-gray-300 dark:bg-gray-600 border-2 border-on-background shrink-0"></span>
+                            <div>
+                                <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">Total Artikel Saya</p>
+                                <p class="font-headline-lg text-xl tracking-tight">{{ $authorTotalArticles }} <span class="font-label-mono text-xs text-on-surface-variant">artikel</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{-- Trending Articles --}}
+                <div class="lg:w-1/2 border-t lg:border-t-0 lg:border-l border-on-background/10 pt-6 lg:pt-0 lg:pl-8">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-sm text-secondary">trending_up</span>
+                        <h3 class="font-label-mono text-[11px] uppercase tracking-wider">Artikel Saya Yang Paling Banyak Dilihat</h3>
+                    </div>
+                    <div class="space-y-3">
+                        @forelse($trendingArticles as $ta)
+                            <a href="{{ route('admin.articles.edit', $ta) }}" class="flex items-center gap-3 p-2.5 border-2 border-on-background hover:bg-primary-fixed-dim/10 transition-all shadow-[1px_1px_0px_0px_rgba(0,0,0,0.1)] group">
+                                <span class="w-7 h-7 flex items-center justify-center font-headline-lg text-sm {{ $loop->iteration <= 3 ? 'text-secondary' : 'text-on-surface-variant' }}">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-body-md text-xs font-bold truncate group-hover:text-primary transition-colors">{{ $ta->title }}</p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="flex items-center gap-0.5 font-label-mono text-[10px] text-on-surface-variant">
+                                            <span class="material-symbols-outlined text-[10px]">visibility</span>
+                                            {{ $ta->views_count }}
+                                        </span>
+                                        <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $ta->author?->name ?? '-' }}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        @empty
+                            <div class="text-center py-8">
+                                <span class="material-symbols-outlined text-2xl text-on-surface-variant">trending_up</span>
+                                <p class="font-body-md text-sm text-on-surface-variant mt-2">Artikel mu belum ada yang populer.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     @if(Auth::user()->isSuperAdmin())
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {{-- Recent Articles --}}
@@ -101,6 +256,10 @@
                                     <span class="flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">calendar_today</span>
                                         {{ $article->published_at?->format('d M Y') ?? '-' }}
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">visibility</span>
+                                        {{ $article->views_count }}
                                     </span>
                                     @if($article->is_published)
                                         <span class="admin-badge bg-green-100 text-green-700 border-green-700">Terbit</span>
@@ -149,6 +308,10 @@
                                     <span class="flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">calendar_today</span>
                                         {{ $announcement->created_at->format('d M Y') }}
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">visibility</span>
+                                        {{ $announcement->views_count }}
                                     </span>
                                     @if($announcement->type === 'important')
                                         <span class="admin-badge bg-red-100 text-red-700 border-red-700">Penting</span>
@@ -242,6 +405,10 @@
                                     <span class="flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">calendar_today</span>
                                         {{ $article->published_at?->format('d M Y') ?? '-' }}
+                                    </span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">visibility</span>
+                                        {{ $article->views_count }}
                                     </span>
                                     @if($article->is_published)
                                         <span class="admin-badge bg-green-100 text-green-700 border-green-700">Terbit</span>

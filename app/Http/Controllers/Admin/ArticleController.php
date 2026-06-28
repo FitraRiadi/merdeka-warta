@@ -29,10 +29,11 @@ class ArticleController extends Controller
         $user = Auth::user();
 
         if ($user->isSuperAdmin()) {
-            $articles = Article::with('author')->latest()->paginate(10);
+            $articles = Article::with('author')->withCount('views')->latest()->paginate(10);
         } else {
             $articles = Article::where('user_id', $user->id)
                 ->with('author')
+                ->withCount('views')
                 ->latest()
                 ->paginate(10);
         }

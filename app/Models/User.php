@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->hasMany(Article::class, 'user_id');
     }
 
+    public function views(): HasMany
+    {
+        return $this->hasMany(View::class);
+    }
+
     /**
      * Cek apakah user adalah super admin
      */

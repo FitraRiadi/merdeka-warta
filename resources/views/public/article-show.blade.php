@@ -151,6 +151,10 @@
                         <span class="material-symbols-outlined text-sm">person</span>
                         BY {{ $article->author->name ?? 'ADMIN' }}
                     </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">visibility</span>
+                        {{ $article->views_count }} PELIHAT
+                    </div>
                 </div>
 
                 {{-- Featured Image --}}
@@ -219,7 +223,13 @@
                     <div class="space-y-4">
                         @foreach($popularArticles as $i => $popular)
                         <a href="{{ route('public.article.show', $popular->slug) }}" class="group cursor-pointer block rounded-xl p-2 -mx-2 hover:bg-surface-container-low">
-                            <span class="text-[10px] font-label-mono text-secondary uppercase mb-0.5 block">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }} / {{ $popular->category ?? 'NEWS' }}</span>
+                            <span class="text-[10px] font-label-mono text-secondary uppercase mb-0.5 block flex items-center gap-2">
+                                {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }} / {{ $popular->category ?? 'NEWS' }}
+                                <span class="flex items-center gap-0.5 text-on-surface-variant ml-auto">
+                                    <span class="material-symbols-outlined text-[10px]">visibility</span>
+                                    {{ $popular->views_count }}
+                                </span>
+                            </span>
                             <h4 class="font-bold text-sm leading-tight group-hover:text-primary transition-colors">{{ $popular->title }}</h4>
                         </a>
                         @endforeach

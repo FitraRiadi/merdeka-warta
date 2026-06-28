@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\ActivityLog;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Announcement extends Model
@@ -34,6 +35,11 @@ class Announcement extends Model
             'expired_at' => 'datetime',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function views(): MorphMany
+    {
+        return $this->morphMany(View::class, 'viewable');
     }
 
     public function getContentArrayAttribute(): array

@@ -7,6 +7,7 @@ use App\Models\Announcement;
 use App\Models\RunningText;
 use App\Models\Spotlight;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AnnouncementController extends Controller
@@ -76,6 +77,7 @@ class AnnouncementController extends Controller
             ->where(function ($query) {
                 $query->whereNull('expired_at')->orWhere('expired_at', '>', now());
             })
+            ->withCount('views')
             ->findOrFail($id);
 
         // Pengumuman lain secara acak (kecuali pengumuman yang sedang dibuka)
@@ -85,7 +87,17 @@ class AnnouncementController extends Controller
                 $query->whereNull('expired_at')->orWhere('expired_at', '>', now());
             })
             ->inRandomOrder()
-            ->limit(5)
+            ->limit(6)
+            ->get();
+
+        // Pengumuman terbaru untuk sidebar (kecuali yang sedang dibuka)
+        $latestAnnouncements = Announcement::where('is_active', true)
+            ->where('id', '!=', $announcement->id)
+            ->where(function ($query) {
+                $query->whereNull('expired_at')->orWhere('expired_at', '>', now());
+            })
+            ->latest()
+            ->limit(3)
             ->get();
 
         // Categories list (group by type)
@@ -102,8 +114,23 @@ class AnnouncementController extends Controller
         $runningTexts = RunningText::latest()
             ->get();
 
+        // Catat view — user login via user_id, guest via ip_address
+        if (Auth::check()) {
+            $announcement->views()->firstOrCreate([
+                'user_id' => Auth::id(),
+                'viewable_type' => Announcement::class,
+                'viewable_id' => $announcement->id,
+            ]);
+        } else {
+            $announcement->views()->firstOrCreate([
+                'ip_address' => request()->ip(),
+                'viewable_type' => Announcement::class,
+                'viewable_id' => $announcement->id,
+            ]);
+        }
+
         return view('public.announcement-show', compact(
-            'announcement', 'otherAnnouncements', 'categories', 'runningTexts'
+            'announcement', 'otherAnnouncements', 'latestAnnouncements', 'categories', 'runningTexts'
         ));
     }
 }

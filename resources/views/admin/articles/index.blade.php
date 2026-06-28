@@ -25,6 +25,7 @@
                         <th class="text-left hidden md:table-cell">Penulis</th>
                         <th class="text-left hidden sm:table-cell">Kategori</th>
                         <th class="text-left hidden lg:table-cell">Tanggal</th>
+                        <th class="text-center">Pelihat</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -55,16 +56,22 @@
                                     <span class="text-on-surface-variant font-body-md text-sm">-</span>
                                 @endif
                             </td>
-                            <td class="hidden lg:table-cell">
-                                <span class="font-label-mono text-xs text-on-surface-variant">{{ $article->published_at?->format('d M Y') ?? '-' }}</span>
-                            </td>
-                            <td class="text-center">
-                                @if($article->is_published)
-                                    <span class="admin-badge bg-green-100 text-green-700 border-green-700 text-[10px]">Terbit</span>
-                                @else
-                                    <span class="admin-badge bg-gray-100 text-gray-600 border-gray-400 text-[10px]">Draft</span>
-                                @endif
-                            </td>
+                        <td class="hidden lg:table-cell">
+                            <span class="font-label-mono text-xs text-on-surface-variant">{{ $article->published_at?->format('d M Y') ?? '-' }}</span>
+                        </td>
+                        <td class="text-center">
+                            <span class="inline-flex items-center gap-1 font-label-mono text-xs {{ $article->views_count > 0 ? 'text-on-surface' : 'text-on-surface-variant' }}">
+                                <span class="material-symbols-outlined text-sm">visibility</span>
+                                {{ $article->views_count }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            @if($article->is_published)
+                                <span class="admin-badge bg-green-100 text-green-700 border-green-700 text-[10px]">Terbit</span>
+                            @else
+                                <span class="admin-badge bg-gray-100 text-gray-600 border-gray-400 text-[10px]">Draft</span>
+                            @endif
+                        </td>
                             <td>
                                 <div class="flex items-center justify-center gap-1.5">
                                     <a href="{{ route('admin.articles.edit', $article) }}" class="action-btn action-btn-edit" title="Edit">
@@ -84,7 +91,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <div class="py-12 text-center">
                                     <div class="empty-state-icon">
                                         <span class="material-symbols-outlined text-2xl text-on-surface-variant">description</span>
