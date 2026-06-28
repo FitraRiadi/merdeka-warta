@@ -113,7 +113,8 @@ class Announcement extends Model
                         $html .= '<ul class="list-disc pl-6 space-y-2 mb-6 font-body-md">';
                     }
                     foreach ($items as $item) {
-                        $html .= '<li>' . e($item) . '</li>';
+                        $text = is_array($item) ? ($item['content'] ?? '') : (string) $item;
+                        $html .= '<li>' . e($text) . '</li>';
                     }
                     $html .= ($style === 'ordered') ? '</ol>' : '</ul>';
                     break;
@@ -131,8 +132,54 @@ class Announcement extends Model
                     $html .= '</blockquote>';
                     break;
 
+                case 'image':
+                    $url = $data['url'] ?? $data['file']['url'] ?? '';
+                    $caption = $data['caption'] ?? '';
+                    $stretched = $data['stretched'] ?? false;
+                    $withBorder = $data['withBorder'] ?? true;
+                    $withBackground = $data['withBackground'] ?? false;
+                    if ($url) {
+                        $html .= '<figure class="border-3 border-on-background brutalist-shadow mb-6">';
+                        $html .= '<img class="w-full object-cover" src="' . e($url) . '" alt="' . e($caption ?: 'Announcement image') . '">';
+                        if ($caption) {
+                            $html .= '<figcaption class="bg-surface-container p-3 font-label-mono text-xs uppercase border-t-3 border-on-background">' . e($caption) . '</figcaption>';
+                        }
+                        $html .= '</figure>';
+                    }
+                    break;
+
+                case 'checklist':
+                    $items = $data['items'] ?? [];
+                    $html .= '<ul class="space-y-3 mb-6 font-body-md">';
+                    foreach ($items as $item) {
+                        $checked = $item['checked'] ?? false;
+                        $text = $item['text'] ?? '';
+                        $html .= '<li class="flex items-center gap-3">';
+                        $html .= $checked
+                            ? '<span class="material-symbols-outlined text-secondary">check_circle</span>'
+                            : '<span class="material-symbols-outlined text-on-surface-variant">radio_button_unchecked</span>';
+                        $html .= '<span' . ($checked ? ' class="line-through opacity-60"' : '') . '>' . e($text) . '</span>';
+                        $html .= '</li>';
+                    }
+                    $html .= '</ul>';
+                    break;
+
                 case 'delimiter':
                     $html .= '<hr class="border-3 border-on-background my-10">';
+                    break;
+
+                case 'embed':
+                    $service = $data['service'] ?? '';
+                    $embed = $data['embed'] ?? '';
+                    $caption = $data['caption'] ?? '';
+                    if ($embed) {
+                        $html .= '<div class="border-3 border-on-background brutalist-shadow mb-6 aspect-video">';
+                        $html .= '<iframe class="w-full h-full" src="' . e($embed) . '" frameborder="0" allowfullscreen></iframe>';
+                        if ($caption) {
+                            $html .= '<div class="bg-surface-container p-3 font-label-mono text-xs uppercase border-t-3 border-on-background">' . e($caption) . '</div>';
+                        }
+                        $html .= '</div>';
+                    }
                     break;
 
                 default:

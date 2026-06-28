@@ -42,11 +42,6 @@
         <span>SOROTAN</span>
     </a>
 
-    <a href="{{ route('admin.testimonials.index') }}"
-       class="sidebar-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
-        <span class="material-symbols-outlined {{ request()->routeIs('admin.testimonials.*') ? 'material-symbols-filled' : '' }}">format_quote</span>
-        <span>TESIMONI</span>
-    </a>
 
     <a href="{{ route('admin.users.index') }}"
        class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">

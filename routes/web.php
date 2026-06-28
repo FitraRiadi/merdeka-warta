@@ -6,7 +6,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\RunningTextController;
 use App\Http\Controllers\Admin\SpotlightController;
-use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\AnnouncementController as PublicAnnouncementController;
@@ -39,6 +38,9 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Upload gambar untuk Editor.js
+    Route::post('/editor/upload-image', [AdminArticleController::class, 'uploadImage'])->name('editor.upload-image');
+
     // CRUD Artikel (author & super_admin)
     // Otorisasi diatur melalui Policy (author hanya milik sendiri)
     Route::resource('articles', AdminArticleController::class);
@@ -70,9 +72,6 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
     Route::resource('galleries', GalleryController::class)
         ->middleware('super_admin');
 
-    // Testimonials (hanya super_admin)
-    Route::resource('testimonials', TestimonialController::class)
-        ->middleware('super_admin');
 });
 
 // ============================================================

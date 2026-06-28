@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
             RunningTextSeeder::class,
             SpotlightSeeder::class,
             GallerySeeder::class,
-            TestimonialSeeder::class,
         ]);
     }
 }

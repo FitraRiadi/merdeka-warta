@@ -114,14 +114,11 @@
         .gallery-stack:hover .gallery-stack-item:hover { flex: 2.4; }
         .gallery-stack:hover .gallery-stack-item:hover .overlay { opacity: 1; }
         .gallery-stack-item:hover img { transform: scale(1.05); }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { animation: marquee 15s linear infinite; }
+
         @keyframes scroll-gallery { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-scroll-gallery { animation: scroll-gallery 10s linear infinite; }
         @media (max-width: 767px) { .animate-scroll-gallery { animation-duration: 6s; } }
-        @keyframes scroll-testimonials { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        .animate-scroll-testimonials { animation: scroll-testimonials 10s linear infinite; }
-        .pause-on-hover:hover .animate-scroll-testimonials { animation-play-state: paused; }
+
         #mobile-sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         #mobile-sidebar.closed { transform: translateX(100%); }
         #mobile-sidebar:not(.closed) { transform: translateX(0); }
@@ -169,11 +166,19 @@
                 </div>
             @empty
                 <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-xl bento-shadow bg-primary min-h-[320px] md:min-h-[460px] flex items-center justify-center">
-                    <div class="text-center text-on-primary p-8">
-                        <span class="material-symbols-outlined text-5xl md:text-6xl mb-4">newspaper</span>
-                        <h1 class="font-headline-lg text-2xl md:text-4xl uppercase">Selamat Datang</h1>
-                        <p class="font-body-md text-sm md:text-base mt-2">Portal Berita SMK Merdeka</p>
-                    </div>
+                    @if($articles->isEmpty())
+                        <div class="text-center text-on-primary p-8">
+                            <span class="material-symbols-outlined text-5xl md:text-6xl mb-4">description</span>
+                            <h1 class="font-headline-lg text-2xl md:text-4xl uppercase">Belum Ada Artikel</h1>
+                            <p class="font-body-md text-sm md:text-base mt-2">Belum ada artikel yang diterbitkan.</p>
+                        </div>
+                    @else
+                        <div class="text-center text-on-primary p-8">
+                            <span class="material-symbols-outlined text-5xl md:text-6xl mb-4">newspaper</span>
+                            <h1 class="font-headline-lg text-2xl md:text-4xl uppercase">Selamat Datang</h1>
+                            <p class="font-body-md text-sm md:text-base mt-2">Portal Berita SMK Merdeka</p>
+                        </div>
+                    @endif
                 </div>
             @endforelse
 
@@ -223,6 +228,11 @@
                                 <p class="font-bold truncate">{{ $ann->title }}</p>
                             </a>
                         @endforeach
+                    </div>
+                @else
+                    <div class="flex-1 flex flex-col items-center justify-center text-center py-4">
+                        <span class="material-symbols-outlined text-2xl text-on-surface-variant/40">campaign</span>
+                        <p class="font-body-md text-xs text-on-surface-variant/60 mt-1">Belum ada pengumuman.</p>
                     </div>
                 @endif
                 <a href="{{ route('public.announcement.list') }}" class="mt-auto text-xs font-label-mono text-primary hover:underline pt-2">Lihat semua &rarr;</a>
@@ -412,30 +422,55 @@
         {{-- ============================================================ --}}
         {{-- TESTIMONIALS --}}
         {{-- ============================================================ --}}
-        @if($testimonials->isNotEmpty())
-            <section class="mb-12 md:mb-16 overflow-hidden">
-                <div class="flex items-center justify-between mb-6 gap-4">
-                    <div class="flex items-center gap-3">
-                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-tertiary rounded"></span>
-                        <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TANGGAPAN</h2>
-                    </div>
-                    <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
+        <section class="mb-12 md:mb-16">
+            <div class="flex items-center justify-between mb-6 gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-1.5 h-6 md:w-2 md:h-8 bg-tertiary rounded"></span>
+                    <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TANGGAPAN</h2>
                 </div>
-                <div class="w-full overflow-hidden pause-on-hover py-4">
-                    <div class="flex animate-scroll-testimonials w-max gap-6">
-                        @foreach($testimonials as $t)
-                            <div class="w-[300px] md:w-[350px] bg-white dark:bg-surface-container-high rounded-xl bento-shadow p-6 flex flex-col gap-4 shrink-0 bento-card">
-                                <span class="material-symbols-outlined text-primary text-3xl md:text-4xl font-bold leading-none select-none">format_quote</span>
-                                <p class="font-bold font-body-md text-sm md:text-base flex-grow text-on-surface">{{ $t->quote }}</p>
-                                <div class="border-t border-outline-variant pt-4">
-                                    <p class="font-label-mono text-[10px] md:text-xs uppercase text-on-surface-variant">{{ $t->author_name }}{{ $t->author_role ? ', ' . $t->author_role : '' }}</p>
-                                </div>
+                <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
+            </div>
+            @php
+                $staticTestimonials = [
+                    [
+                        'quote' => 'Sangat membantu untuk mengetahui info sekolah terbaru! Merdeka Warta jadi rujukan utama saya.',
+                        'name' => 'Budi Santoso',
+                        'role' => 'Siswa Kelas XI',
+                        'image' => 'https://i.pravatar.cc/80?u=budi',
+                    ],
+                    [
+                        'quote' => 'Desain beritanya sangat modern dan mudah dibaca oleh semua kalangan civitas akademika.',
+                        'name' => 'Siti Aisyah',
+                        'role' => 'Guru',
+                        'image' => 'https://i.pravatar.cc/80?u=siti',
+                    ],
+                    [
+                        'quote' => 'Informasi pengumuman sekarang jauh lebih jelas dan transparan. Sukses terus untuk tim redaksi!',
+                        'name' => 'Rian Pratama',
+                        'role' => 'Alumni',
+                        'image' => 'https://i.pravatar.cc/80?u=rian',
+                    ],
+                ];
+            @endphp
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($staticTestimonials as $t)
+                    <div class="bg-white dark:bg-surface-container-high rounded-xl bento-shadow p-6 flex flex-col gap-4 bento-card">
+                        <div class="flex items-center gap-4">
+                            <img src="{{ $t['image'] }}" alt="{{ $t['name'] }}"
+                                 class="w-12 h-12 rounded-full object-cover border-2 border-on-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <div>
+                                <p class="font-bold font-body-md text-sm text-on-surface">{{ $t['name'] }}</p>
+                                <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">{{ $t['role'] }}</p>
                             </div>
-                        @endforeach
+                        </div>
+                        <div class="border-t border-outline-variant pt-4">
+                            <span class="material-symbols-outlined text-primary text-xl leading-none select-none">format_quote</span>
+                            <p class="font-body-md text-sm text-on-surface mt-1 leading-relaxed">{{ $t['quote'] }}</p>
+                        </div>
                     </div>
-                </div>
-            </section>
-        @endif
+                @endforeach
+            </div>
+        </section>
 
     </main>
 

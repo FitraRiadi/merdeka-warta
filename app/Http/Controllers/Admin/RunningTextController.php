@@ -22,6 +22,11 @@ class RunningTextController extends Controller
 
     public function create()
     {
+        $count = RunningText::count();
+        if ($count >= 4) {
+            return redirect()->route('admin.running-texts.index')
+                ->with('error', 'Maksimal 4 running text. Hapus salah satu terlebih dahulu.');
+        }
         return view('admin.running-texts.create');
     }
 
@@ -30,6 +35,12 @@ class RunningTextController extends Controller
         $validated = $request->validate([
             'text' => 'required|string',
         ]);
+
+        $count = RunningText::count();
+        if ($count >= 4) {
+            return redirect()->route('admin.running-texts.index')
+                ->with('error', 'Maksimal 4 running text. Hapus salah satu terlebih dahulu.');
+        }
 
         $rt = RunningText::create($validated);
 

@@ -106,14 +106,54 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-2">
+                <div class="md:col-span-2" x-data="editorModal()">
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Konten <span class="text-error">*</span></label>
-                    <textarea name="content" rows="15" required
-                        class="admin-input font-mono text-sm" placeholder="Tulis konten artikel di sini... (JSON Editor.js atau teks biasa)">{{ old('content') }}</textarea>
+
+                    <textarea name="content" hidden x-model="contentJson"></textarea>
+
+                    <button type="button" @click="openEditor()"
+                        class="admin-input flex items-center gap-2 cursor-pointer hover:bg-surface-container transition-colors">
+                        <span class="material-symbols-outlined text-sm text-primary">edit_note</span>
+                        <span class="font-body-md text-sm" x-text="contentJson && contentJson !== '{\"blocks\":[]}' ? 'Konten sudah diisi (' + blockCount + ' blok)' : 'Klik untuk buka Editor WYSIWYG'"></span>
+                        <span class="material-symbols-outlined text-sm ml-auto text-on-surface-variant">open_in_new</span>
+                    </button>
+
                     @error('content') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
-                    <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">
-                        Gunakan format JSON Editor.js atau teks biasa. Untuk JSON, struktur: {"blocks": [...]}
-                    </p>
+
+                    {{-- MODAL EDITOR --}}
+                    <div x-show="editorOpen" x-cloak x-transition.opacity
+                        class="fixed inset-0 z-[100] flex items-start justify-center pt-6 pb-6 bg-on-background/60">
+                        <div @click.outside="closeEditor()"
+                            class="w-full max-w-4xl max-h-[calc(100vh-3rem)] bg-surface border-3 border-on-background shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col">
+                            {{-- Modal header --}}
+                            <div class="flex items-center justify-between px-5 py-3 border-b-3 border-on-background bg-surface-container">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 bg-primary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                        <span class="material-symbols-outlined text-on-primary text-sm">edit_note</span>
+                                    </span>
+                                    <span class="font-headline-lg text-base uppercase tracking-tight">Editor Konten</span>
+                                </div>
+                                <button type="button" @click="closeEditor()" class="p-1 border-2 border-on-background hover:bg-surface-container-highest">
+                                    <span class="material-symbols-outlined text-sm">close</span>
+                                </button>
+                            </div>
+                            {{-- Editor body --}}
+                            <div class="flex-1 overflow-y-auto p-5 bg-surface">
+                                <div id="editorjs-content" class="min-h-[300px]"></div>
+                            </div>
+                            {{-- Modal footer --}}
+                            <div class="flex items-center justify-end gap-3 px-5 py-3 border-t-3 border-on-background bg-surface-container">
+                                <button type="button" @click="closeEditor()" class="admin-btn-secondary admin-btn-sm">
+                                    <span class="material-symbols-outlined text-sm">close</span>
+                                    Batal
+                                </button>
+                                <button type="button" @click="saveEditor()" class="admin-btn-primary admin-btn-sm">
+                                    <span class="material-symbols-outlined text-sm">save</span>
+                                    Simpan Konten
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="md:col-span-2">
@@ -139,3 +179,100 @@
         </div>
     </form>
 @endsection
+
+@push('scripts')
+<script>
+    function editorModal() {
+        return {
+            editorOpen: false,
+            contentJson: '{{ old('content', '{"blocks":[]}') }}',
+            editorInstance: null,
+            get blockCount() {
+                try {
+                    const data = JSON.parse(this.contentJson);
+                    return data.blocks ? data.blocks.length : 0;
+                } catch { return 0; }
+            },
+            async openEditor() {
+                this.editorOpen = true;
+                await this.$nextTick();
+                this.initEditor();
+            },
+            closeEditor() {
+                this.editorOpen = false;
+                this.destroyEditor();
+            },
+            saveEditor() {
+                if (!this.editorInstance) return;
+                this.editorInstance.save().then((output) => {
+                    this.contentJson = JSON.stringify(output);
+                    this.closeEditor();
+                }).catch((err) => {
+                    console.error('Editor.js save error:', err);
+                });
+            },
+            async initEditor() {
+                if (this.editorInstance) return;
+                let initialData;
+                try {
+                    initialData = JSON.parse(this.contentJson);
+                } catch {
+                    initialData = { blocks: [] };
+                }
+                this.editorInstance = new EditorJS({
+                    holder: 'editorjs-content',
+                    data: initialData,
+                    tools: {
+                        header: {
+                            class: Header,
+                            config: { defaultLevel: 2, levels: [1,2,3,4,5,6] }
+                        },
+                        list: {
+                            class: EditorjsList,
+                            inlineToolbar: true,
+                        },
+                        checklist: {
+                            class: Checklist,
+                            inlineToolbar: true,
+                        },
+                        quote: {
+                            class: Quote,
+                            inlineToolbar: true,
+                            config: { quotePlaceholder: 'Tulis kutipan...', captionPlaceholder: 'Sumber kutipan' }
+                        },
+                        delimiter: Delimiter,
+                        image: {
+                            class: ImageTool,
+                            config: {
+                                endpoints: {
+                                    byFile: '{{ route('admin.editor.upload-image') }}',
+                                },
+                                captionPlaceholder: 'Tulis keterangan gambar...',
+                                buttonText: 'Pilih gambar',
+                            }
+                        },
+                        embed: {
+                            class: Embed,
+                            config: {
+                                services: {
+                                    youtube: true,
+                                    vimeo: true,
+                                }
+                            }
+                        },
+                    },
+                    placeholder: 'Mulai tulis konten artikel...',
+                });
+            },
+            destroyEditor() {
+                if (this.editorInstance) {
+                    this.editorInstance.destroy();
+                    this.editorInstance = null;
+                    const holder = document.getElementById('editorjs-content');
+                    if (holder) holder.innerHTML = '';
+                }
+            },
+        };
+    }
+</script>
+@endpush

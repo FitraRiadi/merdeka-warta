@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Announcement;
+use App\Models\Spotlight;
 use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
@@ -78,6 +79,8 @@ class AnnouncementController extends Controller
 
     public function destroy(Announcement $announcement)
     {
+        Spotlight::where('type', 'announcement')->where('announcement_id', $announcement->id)->delete();
+
         $title = $announcement->title;
         $announcement->delete();
 

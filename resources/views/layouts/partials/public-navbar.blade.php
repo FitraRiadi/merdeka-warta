@@ -65,24 +65,32 @@
     {{-- NEWS TICKER --}}
     @if($runningTexts->isNotEmpty())
         <div class="w-full bg-secondary text-on-secondary py-3 brutalist-border border-x-0 overflow-hidden whitespace-nowrap">
-            <div class="flex animate-marquee">
+            <div class="flex animate-marquee" id="marqueeTrack">
                 <div class="flex items-center gap-8 px-4">
                     @foreach($runningTexts as $rt)
-                        <span class="font-label-mono text-label-mono uppercase tracking-widest">{{ $rt->text }}</span>
-                        @if(!$loop->last)
-                            <span class="material-symbols-outlined">stars</span>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="flex items-center gap-8 px-4">
-                    @foreach($runningTexts as $rt)
-                        <span class="font-label-mono text-label-mono uppercase tracking-widest">{{ $rt->text }}</span>
+                        <span class="font-label-mono text-label-mono uppercase tracking-widest whitespace-nowrap">{{ $rt->text }}</span>
                         @if(!$loop->last)
                             <span class="material-symbols-outlined">stars</span>
                         @endif
                     @endforeach
                 </div>
             </div>
+            <style>
+                @keyframes marquee {
+                    0% { transform: translateX(0); }
+                    50% { transform: translateX(var(--marquee-x, -50%)); }
+                    100% { transform: translateX(0); }
+                }
+                .animate-marquee { animation: marquee 20s ease-in-out infinite; }
+            </style>
+            <script>
+                (function() {
+                    var el = document.getElementById('marqueeTrack');
+                    if (!el) return;
+                    var dist = Math.max(0, el.scrollWidth - el.parentElement.clientWidth);
+                    el.style.setProperty('--marquee-x', (dist > 0 ? '-' + dist : '0') + 'px');
+                })();
+            </script>
         </div>
     @endif
 </div>

@@ -8,7 +8,6 @@ use App\Models\Article;
 use App\Models\Gallery;
 use App\Models\RunningText;
 use App\Models\Spotlight;
-use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +21,27 @@ class ArticleController extends Controller
             ->take(3)
             ->get();
 
+        if ($spotlights->isEmpty()) {
+            $fallback = Article::where('is_published', true)
+                ->latest('published_at')
+                ->take(3)
+                ->get();
+            $spotlights = $fallback->map(fn ($a) => tap(new \stdClass(), fn ($o) => $o->article = $a));
+        }
+
         $spotlightAnnouncement = Spotlight::with('announcement')
             ->announcementSpotlights()
             ->first();
+
+        if (!$spotlightAnnouncement) {
+            $fallback = Announcement::where('is_active', true)
+                ->where(fn ($q) => $q->whereNull('expired_at')->orWhere('expired_at', '>', now()))
+                ->latest()
+                ->first();
+            if ($fallback) {
+                $spotlightAnnouncement = tap(new \stdClass(), fn ($o) => $o->announcement = $fallback);
+            }
+        }
 
         $articles = Article::where('is_published', true)
             ->with('author')
@@ -45,12 +62,9 @@ class ArticleController extends Controller
 
         $galleries = Gallery::get();
 
-        $testimonials = Testimonial::where('is_active', true)
-            ->get();
-
         return view('public.index', compact(
             'spotlights', 'spotlightAnnouncement', 'articles', 'runningTexts',
-            'announcements', 'galleries', 'testimonials'
+            'announcements', 'galleries'
         ));
     }
 

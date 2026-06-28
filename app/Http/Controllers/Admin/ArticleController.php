@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Article;
+use App\Models\Spotlight;
 use App\Services\CdnService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,6 +18,32 @@ class ArticleController extends Controller
     public function __construct(CdnService $cdn)
     {
         $this->cdn = $cdn;
+    }
+
+    /**
+     * Upload an image for Editor.js.
+     */
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:5120',
+        ]);
+
+        $result = $this->cdn->upload($request->file('image'));
+
+        if ($result && $result['success']) {
+            return response()->json([
+                'success' => 1,
+                'file' => [
+                    'url' => $result['url'],
+                ],
+            ]);
+        }
+
+        return response()->json([
+            'success' => 0,
+            'message' => $result['error'] ?? 'Gagal upload gambar.',
+        ], 422);
     }
 
     /**
@@ -191,6 +218,8 @@ class ArticleController extends Controller
         if ($article->image) {
             $this->cdn->delete($article->image);
         }
+
+        Spotlight::where('type', 'article')->where('article_id', $article->id)->delete();
 
         $title = $article->title;
         $article->delete();

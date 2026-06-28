@@ -122,7 +122,8 @@ class Article extends Model
                         $html .= '<ul class="list-disc pl-6 space-y-2 mb-6 font-body-md">';
                     }
                     foreach ($items as $item) {
-                        $html .= '<li>' . e($item) . '</li>';
+                        $text = is_array($item) ? ($item['content'] ?? '') : (string) $item;
+                        $html .= '<li>' . e($text) . '</li>';
                     }
                     $html .= ($style === 'ordered') ? '</ol>' : '</ul>';
                     break;

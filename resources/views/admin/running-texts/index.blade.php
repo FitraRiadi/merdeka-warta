@@ -5,11 +5,16 @@
 @section('page_description', 'Kelola teks berjalan di halaman utama')
 
 @section('content')
+    @php $totalRunning = $runningTexts->total(); @endphp
     <div class="flex items-center justify-between mb-6">
         <div class="font-label-mono text-xs uppercase text-on-surface-variant">
-            Total: <span class="font-bold text-on-surface">{{ $runningTexts->total() }}</span> teks
+            Total: <span class="font-bold text-on-surface">{{ $totalRunning }}</span> / <span class="text-on-surface-variant">4</span> teks
+            @if($totalRunning >= 4)
+                <span class="text-error ml-2">(penuh)</span>
+            @endif
         </div>
-        <a href="{{ route('admin.running-texts.create') }}" class="admin-btn-primary admin-btn-sm">
+        <a href="{{ route('admin.running-texts.create') }}"
+           class="admin-btn-primary admin-btn-sm {{ $totalRunning >= 4 ? 'opacity-40 pointer-events-none' : '' }}">
             <span class="material-symbols-outlined text-sm">add</span>
             Tambah Running Text
         </a>
@@ -52,7 +57,9 @@
                                         <span class="material-symbols-outlined text-2xl text-on-surface-variant">format_list_bulleted</span>
                                     </div>
                                     <p class="font-body-md text-sm text-on-surface-variant">Belum ada running text.</p>
-                                    <a href="{{ route('admin.running-texts.create') }}" class="admin-btn-primary admin-btn-sm mt-4 inline-flex">Tambah Running Text</a>
+                                    @if($totalRunning < 4)
+                                        <a href="{{ route('admin.running-texts.create') }}" class="admin-btn-primary admin-btn-sm mt-4 inline-flex">Tambah Running Text</a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

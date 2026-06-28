@@ -48,6 +48,17 @@ class AnnouncementController extends Controller
         $spotlightAnnouncement = Spotlight::with('announcement')
             ->announcementSpotlights()
             ->first();
+
+        if (!$spotlightAnnouncement) {
+            $fallback = Announcement::where('is_active', true)
+                ->where(fn ($q) => $q->whereNull('expired_at')->orWhere('expired_at', '>', now()))
+                ->latest()
+                ->first();
+            if ($fallback) {
+                $spotlightAnnouncement = tap(new \stdClass(), fn ($o) => $o->announcement = $fallback);
+            }
+        }
+
         $featured = $spotlightAnnouncement?->announcement;
 
         // Latest announcements (2 after featured)
