@@ -27,7 +27,7 @@ class DashboardController extends Controller
             $data['totalRunningTexts'] = RunningText::count();
             $data['totalAuthors'] = User::where('role', 'author')->count();
             $data['recentArticles'] = Article::with('author')->withCount('views')->latest()->take(5)->get();
-            $data['recentAnnouncements'] = Announcement::withCount('views')->latest()->take(3)->get();
+            $data['recentAnnouncements'] = Announcement::withCount('views')->latest()->take(5)->get();
             $data['runningTexts'] = RunningText::latest()->get();
             $data['activityLogs'] = ActivityLog::with('user')->latest()->take(5)->get();
 

@@ -73,8 +73,8 @@
     {{-- Donut Chart Section --}}
     @if(Auth::user()->isSuperAdmin())
         @php
-            $artDeg = $totalViews > 0 ? round($articleViews / $totalViews * 360) : 0;
-            $annDeg = 360 - $artDeg;
+            $artPct = $totalViews > 0 ? round($articleViews / $totalViews * 100, 1) : 0;
+            $annPct = max(0, 100 - $artPct);
         @endphp
         <div class="admin-card p-5 md:p-6 mb-6">
             <div class="flex items-center gap-3 mb-6">
@@ -85,17 +85,17 @@
             </div>
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="flex flex-col md:flex-row items-center gap-8 lg:w-1/2">
-                    {{-- Donut --}}
+                    {{-- Donut SVG --}}
                     <div class="relative w-44 h-44 shrink-0">
-                        <div class="w-full h-full rounded-full border-3 border-on-background overflow-hidden"
-                             style="background: conic-gradient(
-                                 #2563eb 0deg {{ $artDeg }}deg,
-                                 #e11d48 {{ $artDeg }}deg 360deg
-                             );">
-                            <div class="absolute inset-2 bg-surface-container-lowest rounded-full border-2 border-on-background flex flex-col items-center justify-center">
-                                <span class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $totalViews }}</span>
-                                <span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Total Dilihat</span>
-                            </div>
+                        <svg class="w-full h-full" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e11d48" stroke-width="3.2" stroke-dasharray="100 0"/>
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2563eb" stroke-width="3.2"
+                                    stroke-dasharray="{{ $artPct }} {{ $annPct }}"
+                                    stroke-dashoffset="25"@if($artPct > 0 && $artPct < 100) stroke-linecap="round"@endif/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $totalViews }}</span>
+                            <span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Total Dilihat</span>
                         </div>
                     </div>
                     {{-- Legend --}}
@@ -149,10 +149,10 @@
         </div>
     @else
         @php
-            $authFullDeg = $authorTotalArticles > 0
-                ? min(360, round($authorArticleViews / max($authorTotalArticles, 1) * 360))
+            $authFullPct = $authorTotalArticles > 0
+                ? min(100, round($authorArticleViews / max($authorTotalArticles, 1) * 100, 1))
                 : 0;
-            $authFullDeg = min(360, $authFullDeg);
+            $authRemainingPct = max(0, 100 - $authFullPct);
         @endphp
         <div class="admin-card p-5 md:p-6 mb-6">
             <div class="flex items-center gap-3 mb-6">
@@ -164,15 +164,15 @@
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="flex flex-col md:flex-row items-center gap-8 lg:w-1/2">
                     <div class="relative w-44 h-44 shrink-0">
-                        <div class="w-full h-full rounded-full border-3 border-on-background overflow-hidden"
-                             style="background: conic-gradient(
-                                 #16a34a 0deg {{ $authFullDeg }}deg,
-                                 #e5e7eb {{ $authFullDeg }}deg 360deg
-                             );">
-                            <div class="absolute inset-2 bg-surface-container-lowest rounded-full border-2 border-on-background flex flex-col items-center justify-center">
-                                <span class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $authorArticleViews }}</span>
-                                <span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Dilihat</span>
-                            </div>
+                        <svg class="w-full h-full" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#d1d5db" stroke-width="3.2" stroke-dasharray="100 0"/>
+                            <circle cx="18" cy="18" r="15.9" fill="none" stroke="#16a34a" stroke-width="3.2"
+                                    stroke-dasharray="{{ $authFullPct }} {{ $authRemainingPct }}"
+                                    stroke-dashoffset="25"@if($authFullPct > 0 && $authFullPct < 100) stroke-linecap="round"@endif/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $authorArticleViews }}</span>
+                            <span class="font-label-mono text-[10px] uppercase text-on-surface-variant">Dilihat</span>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">

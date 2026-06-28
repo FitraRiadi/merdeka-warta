@@ -24,6 +24,7 @@
                         <th class="text-left w-full min-w-0">Judul</th>
                         <th class="text-left hidden sm:table-cell">Tipe</th>
                         <th class="text-left hidden md:table-cell">Tanggal</th>
+                        <th class="text-center hidden sm:table-cell">Pelihat</th>
                         <th class="text-center">Status</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -59,6 +60,16 @@
                                     <br><span class="text-error font-label-mono text-[10px]">Kedaluwarsa: {{ $announcement->expired_at->format('d M Y') }}</span>
                                 @endif
                             </td>
+                            <td class="text-center hidden sm:table-cell">
+                                @if($announcement->views_count > 0)
+                                    <div class="flex items-center justify-center gap-1 text-on-surface-variant" title="{{ $announcement->views_count }} pelihat">
+                                        <span class="material-symbols-outlined text-sm">visibility</span>
+                                        <span class="font-label-mono text-xs">{{ $announcement->views_count }}</span>
+                                    </div>
+                                @else
+                                    <span class="text-on-surface-variant/40 font-label-mono text-xs">-</span>
+                                @endif
+                            </td>
                             <td class="text-center">
                                 @if($announcement->expired_at && $announcement->expired_at->isPast())
                                     <span class="admin-badge bg-red-100 text-red-700 border-red-700 text-[10px]">Kedaluwarsa</span>
@@ -87,7 +98,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6">
+                            <td colspan="7">
                                 <div class="py-12 text-center">
                                     <div class="empty-state-icon">
                                         <span class="material-symbols-outlined text-2xl text-on-surface-variant">campaign</span>

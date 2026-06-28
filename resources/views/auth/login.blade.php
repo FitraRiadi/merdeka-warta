@@ -13,7 +13,7 @@
         </div>
 
         {{-- Login Card --}}
-        <div class="bg-surface border-4 border-on-background shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8">
+        <div class="bg-surface border-4 border-on-background guest-card-shadow p-6 md:p-8">
             <div class="flex items-center gap-3 mb-8">
                 <div class="w-10 h-10 bg-primary border-3 border-on-background flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                     <span class="material-symbols-outlined text-on-primary">login</span>
@@ -58,7 +58,7 @@
                             placeholder="Masukkan kata sandi...">
                         <button type="button" @click="show = !show"
                             class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors">
-                            <span class="material-symbols-outlined text-sm" x-text="show ? 'visibility_off' : 'visibility'">visibility</span>
+                            <span class="material-symbols-outlined text-sm" x-text="show ? 'visibility_off' : 'visibility'"></span>
                         </button>
                     </div>
                     @error('password')
