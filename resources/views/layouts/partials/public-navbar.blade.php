@@ -21,6 +21,10 @@
         @else
             <a href="{{ route('login') }}" class="w-full brutalist-border bg-primary text-on-primary px-6 py-4 font-label-mono text-label-mono brutalist-shadow-sm btn-press mb-4 text-center block">LOGIN</a>
         @endauth
+        <button onclick="toggleDarkMode()" class="w-full brutalist-border bg-surface-container-highest text-on-surface px-6 py-4 font-label-mono text-label-mono brutalist-shadow-sm btn-press text-center block flex items-center justify-center gap-2">
+            <span id="theme-icon-public-mobile" class="material-symbols-outlined">dark_mode</span>
+            <span>TEMA</span>
+        </button>
     </div>
 </div>
 
@@ -34,8 +38,7 @@
                 <a class="font-headline-lg text-[24px] md:text-headline-lg uppercase tracking-tighter text-on-surface" href="{{ route('home') }}">
                     MERDEKA WARTA
                 </a>
-            </div>    
-            
+            </div>            
             <div class="hidden lg:flex gap-8 items-center">
                 <a class="@if(request()->routeIs('home')) text-primary border-b-3 border-primary @else text-on-surface @endif pb-1 font-bold font-body-md text-body-md hover:text-primary transition-colors" href="{{ route('home') }}">Home</a>
                 <a class="@if(request()->routeIs('public.article.list')) text-primary border-b-3 border-primary @else text-on-surface @endif pb-1 font-bold font-body-md text-body-md hover:text-primary transition-colors" href="{{ route('public.article.list') }}">Berita</a>
@@ -43,6 +46,10 @@
                 <a class="@if(request()->routeIs('public.gallery.list')) text-primary border-b-3 border-primary @else text-on-surface @endif pb-1 font-bold font-body-md text-body-md hover:text-primary transition-colors" href="{{ route('public.gallery.list') }}">Galeri</a>
             </div>
             <div class="flex items-center gap-2 md:gap-4">
+                {{-- Dark Mode Toggle --}}
+                <button id="theme-toggle-public" class="hidden lg:block p-2.5 rounded-lg hover:bg-slate-100 transition-colors text-slate-700" onclick="toggleDarkMode()">
+                    <span id="theme-icon-public" class="material-symbols-outlined block">dark_mode</span>
+                </button>
                 @auth
                     <a href="{{ route('admin.dashboard') }}" class="hidden lg:block brutalist-border bg-primary text-on-primary px-6 py-2 font-label-mono text-label-mono brutalist-shadow-sm btn-press transition-all">DASHBOARD</a>
                 @else
@@ -79,3 +86,18 @@
         </div>
     @endif
 </div>
+
+<script>
+    function toggleDarkMode() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('dark-mode', isDark);
+        const icon = document.getElementById('theme-icon-public');
+        if (icon) {
+            icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+        }
+        const iconMobile = document.getElementById('theme-icon-public-mobile');
+        if (iconMobile) {
+            iconMobile.textContent = isDark ? 'light_mode' : 'dark_mode';
+        }
+    }
+</script>

@@ -45,7 +45,7 @@
                         <span x-text="selected || 'Pilih kategori...'" :class="selected ? 'text-on-surface' : 'text-on-surface-variant'" class="font-body-md text-sm"></span>
                         <span class="material-symbols-outlined text-sm transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
                     </button>
-                    <div x-show="open" @click.outside="open = false" x-cloak class="absolute z-50 mt-1 w-full bg-white border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-h-48 overflow-y-auto">
+                    <div x-show="open" @click.outside="open = false" x-cloak class="absolute z-50 mt-1 w-full bg-white dark:bg-surface-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-h-48 overflow-y-auto">
                         <template x-for="opt in options" :key="opt">
                             <button type="button" @click="select(opt)" class="w-full text-left px-3 py-2.5 font-body-md text-sm hover:bg-primary-fixed transition-colors border-b-2 border-on-background/10 last:border-b-0" :class="selected === opt ? 'bg-primary-fixed font-bold text-primary' : 'text-on-surface'">
                                 <div class="flex items-center gap-2">
@@ -121,7 +121,7 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-blue-50 transition-colors">
+                    <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
                         <input type="checkbox" name="is_published" value="1"
                             {{ old('is_published', $article->is_published) ? 'checked' : '' }}
                             class="w-5 h-5 border-3 border-on-background bg-surface text-primary focus:ring-0 focus:outline-none rounded-none

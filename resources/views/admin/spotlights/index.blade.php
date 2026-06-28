@@ -42,7 +42,7 @@
                                             class="w-12 h-9 object-cover border-2 border-on-background flex-shrink-0 hidden sm:block">
                                     @else
                                         <div class="w-12 h-9 bg-primary border-2 border-on-background flex-shrink-0 hidden sm:flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-white text-sm">image</span>
+                                            <span class="material-symbols-outlined text-on-primary text-sm">image</span>
                                         </div>
                                     @endif
                                     <div class="min-w-0">

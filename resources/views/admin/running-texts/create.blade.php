@@ -14,7 +14,7 @@
 
         <div class="admin-card p-6">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b-3 border-on-background">
-                <span class="w-8 h-8 bg-purple-700 border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                <span class="w-8 h-8 bg-purple-700 dark:bg-purple-800 border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                     <span class="material-symbols-outlined text-white text-sm">format_list_bulleted</span>
                 </span>
                 <div>

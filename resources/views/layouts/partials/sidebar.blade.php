@@ -66,6 +66,33 @@
     <span>SETTINGS</span>
 </a>
 
+{{-- Dark Mode --}}
+<a href="#"
+   class="sidebar-link"
+   onclick="event.preventDefault(); document.documentElement.classList.toggle('dark'); localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark'));">
+    <span class="material-symbols-outlined" id="sidebar-theme-icon">dark_mode</span>
+    <span id="sidebar-theme-text">GELAP</span>
+</a>
+
+<script>
+    (function() {
+        const icon = document.getElementById('sidebar-theme-icon');
+        const text = document.getElementById('sidebar-theme-text');
+        if (icon && text) {
+            const isDark = document.documentElement.classList.contains('dark');
+            icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+            text.textContent = isDark ? 'TERANG' : 'GELAP';
+        }
+        document.querySelector('.sidebar-link[onclick]')?.addEventListener('click', function() {
+            setTimeout(() => {
+                const isDark = document.documentElement.classList.contains('dark');
+                icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+                text.textContent = isDark ? 'TERANG' : 'GELAP';
+            }, 50);
+        });
+    })();
+</script>
+
 {{-- Back to Website --}}
 <a href="{{ route('home') }}" target="_blank" class="sidebar-link">
     <span class="material-symbols-outlined">open_in_new</span>

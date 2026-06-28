@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <script>
+        if (localStorage.getItem('dark-mode') === 'true' || (!('dark-mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>{{ $announcement->title }} | Merdeka Warta</title>
@@ -13,23 +18,23 @@
             theme: {
                 extend: {
                     colors: {
-                        "tertiary-container": "#aa5700", "surface-variant": "#e1e3e4", "on-background": "#191c1d",
-                        "background": "#f8f9fa", "on-tertiary-container": "#ffede3", "error": "#ba1a1a",
-                        "on-error": "#ffffff", "on-secondary-container": "#76014e", "on-primary-container": "#eeefff",
-                        "secondary": "#a43073", "surface": "#f8f9fa", "error-container": "#ffdad6",
-                        "inverse-primary": "#b4c5ff", "tertiary-fixed-dim": "#ffb783", "tertiary-fixed": "#ffdcc5",
-                        "tertiary": "#864300", "on-secondary": "#ffffff", "surface-container-highest": "#e1e3e4",
-                        "outline-variant": "#c3c6d7", "on-tertiary-fixed": "#301400", "secondary-fixed": "#ffd8e7",
-                        "surface-container-lowest": "#ffffff", "secondary-fixed-dim": "#ffafd3",
-                        "on-error-container": "#93000a", "outline": "#737686", "primary": "#004ac6",
-                        "surface-container": "#edeeef", "surface-container-high": "#e7e8e9", "surface-dim": "#d9dadb",
-                        "inverse-surface": "#2e3132", "on-primary-fixed": "#00174b", "on-tertiary-fixed-variant": "#713700",
-                        "on-tertiary": "#ffffff", "on-surface-variant": "#434655", "primary-container": "#2563eb",
-                        "surface-container-low": "#f3f4f5", "on-surface": "#191c1d", "primary-fixed-dim": "#b4c5ff",
-                        "on-secondary-fixed-variant": "#85145a", "on-secondary-fixed": "#3d0026",
-                        "inverse-on-surface": "#f0f1f2", "on-primary": "#ffffff", "secondary-container": "#fc79bd",
-                        "primary-fixed": "#dbe1ff", "surface-tint": "#0053db", "on-primary-fixed-variant": "#003ea8",
-                        "surface-bright": "#f8f9fa"
+                        "tertiary-container": "var(--tertiary-container)", "surface-variant": "var(--surface-variant)", "on-background": "var(--on-background)",
+                        "background": "var(--background)", "on-tertiary-container": "var(--on-tertiary-container)", "error": "var(--error)",
+                        "on-error": "var(--on-error)", "on-secondary-container": "var(--on-secondary-container)", "on-primary-container": "var(--on-primary-container)",
+                        "secondary": "var(--secondary)", "surface": "var(--surface)", "error-container": "var(--error-container)",
+                        "inverse-primary": "var(--inverse-primary)", "tertiary-fixed-dim": "var(--tertiary-fixed-dim)", "tertiary-fixed": "var(--tertiary-fixed)",
+                        "tertiary": "var(--tertiary)", "on-secondary": "var(--on-secondary)", "surface-container-highest": "var(--surface-container-highest)",
+                        "outline-variant": "var(--outline-variant)", "on-tertiary-fixed": "var(--on-tertiary-fixed)", "secondary-fixed": "var(--secondary-fixed)",
+                        "surface-container-lowest": "var(--surface-container-lowest)", "secondary-fixed-dim": "var(--secondary-fixed-dim)",
+                        "on-error-container": "var(--on-error-container)", "outline": "var(--outline)", "primary": "var(--primary)",
+                        "surface-container": "var(--surface-container)", "surface-container-high": "var(--surface-container-high)", "surface-dim": "var(--surface-dim)",
+                        "inverse-surface": "var(--inverse-surface)", "on-primary-fixed": "var(--on-primary-fixed)", "on-tertiary-fixed-variant": "var(--on-tertiary-fixed-variant)",
+                        "on-tertiary": "var(--on-tertiary)", "on-surface-variant": "var(--on-surface-variant)", "primary-container": "var(--primary-container)",
+                        "surface-container-low": "var(--surface-container-low)", "on-surface": "var(--on-surface)", "primary-fixed-dim": "var(--primary-fixed-dim)",
+                        "on-secondary-fixed-variant": "var(--on-secondary-fixed-variant)", "on-secondary-fixed": "var(--on-secondary-fixed)",
+                        "inverse-on-surface": "var(--inverse-on-surface)", "on-primary": "var(--on-primary)", "secondary-container": "var(--secondary-container)",
+                        "primary-fixed": "var(--primary-fixed)", "surface-tint": "var(--surface-tint)", "on-primary-fixed-variant": "var(--on-primary-fixed-variant)",
+                        "surface-bright": "var(--surface-bright)"
                     },
                     borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.75rem", "2xl": "1rem", full: "0.75rem" },
                     spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px" },
@@ -46,8 +51,46 @@
         }
     </script>
     <style>
+        :root {
+            --tertiary-container: #aa5700; --surface-variant: #e1e3e4; --on-background: #191c1d;
+            --background: #f8f9fa; --on-tertiary-container: #ffede3; --error: #ba1a1a;
+            --on-error: #ffffff; --on-secondary-container: #76014e; --on-primary-container: #eeefff;
+            --secondary: #a43073; --surface: #f8f9fa; --error-container: #ffdad6;
+            --inverse-primary: #b4c5ff; --tertiary-fixed-dim: #ffb783; --tertiary-fixed: #ffdcc5;
+            --tertiary: #864300; --on-secondary: #ffffff; --surface-container-highest: #e1e3e4;
+            --outline-variant: #c3c6d7; --on-tertiary-fixed: #301400; --secondary-fixed: #ffd8e7;
+            --surface-container-lowest: #ffffff; --secondary-fixed-dim: #ffafd3;
+            --on-error-container: #93000a; --outline: #737686; --primary: #004ac6;
+            --surface-container: #edeeef; --surface-container-high: #e7e8e9; --surface-dim: #d9dadb;
+            --inverse-surface: #2e3132; --on-primary-fixed: #00174b; --on-tertiary-fixed-variant: #713700;
+            --on-tertiary: #ffffff; --on-surface-variant: #434655; --primary-container: #2563eb;
+            --surface-container-low: #f3f4f5; --on-surface: #191c1d; --primary-fixed-dim: #b4c5ff;
+            --on-secondary-fixed-variant: #85145a; --on-secondary-fixed: #3d0026;
+            --inverse-on-surface: #f0f1f2; --on-primary: #ffffff; --secondary-container: #fc79bd;
+            --primary-fixed: #dbe1ff; --surface-tint: #0053db; --on-primary-fixed-variant: #003ea8;
+            --surface-bright: #f8f9fa;
+        }
+        .dark {
+            --tertiary-container: #665500; --surface-variant: #2a2a2a; --on-background: #ffffff;
+            --background: #0a0a0a; --on-tertiary-container: #ffe082; --error: #ff6b6b;
+            --on-error: #000000; --on-secondary-container: #ffe0b2; --on-primary-container: #fff8e1;
+            --secondary: #ff8c00; --surface: #111111; --error-container: #6b0000;
+            --inverse-primary: #004ac6; --tertiary-fixed-dim: #ffcc02; --tertiary-fixed: #fff3cd;
+            --tertiary: #ffcc02; --on-secondary: #000000; --surface-container-highest: #2a2a2a;
+            --outline-variant: #333333; --on-tertiary-fixed: #1a1400; --secondary-fixed: #ffe0b2;
+            --surface-container-lowest: #080808; --secondary-fixed-dim: #ffb347;
+            --on-error-container: #ffcccc; --outline: #444444; --primary: #ffd700;
+            --surface-container: #1a1a1a; --surface-container-high: #222222; --surface-dim: #0a0a0a;
+            --inverse-surface: #ffffff; --on-primary-fixed: #1a1400; --on-tertiary-fixed-variant: #332a00;
+            --on-tertiary: #000000; --on-surface-variant: #cccccc; --primary-container: #ffed4a;
+            --surface-container-low: #141414; --on-surface: #ffffff; --primary-fixed-dim: #ffd700;
+            --on-secondary-fixed-variant: #331c00; --on-secondary-fixed: #1a0e00;
+            --inverse-on-surface: #000000; --on-primary: #000000; --secondary-container: #e67e00;
+            --primary-fixed: #fff3b0; --surface-tint: #ffd700; --on-primary-fixed-variant: #332a00;
+            --surface-bright: #2a2a2a;
+        }
         * { box-sizing: border-box; }
-        body { margin: 0; background-color: #f8f9fa; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; max-width: 100%; }
+        body { margin: 0;             background-color: var(--background); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; width: 100%; max-width: 100%; }
         .bento-shadow { box-shadow: 3px 3px 0px 0px #000; }
         .bento-shadow-hover:hover { box-shadow: 5px 5px 0px 0px #000; transform: translateY(-2px); }
         .bento-card { border: 2px solid #000; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -161,7 +204,7 @@
                             $oColor = $typeColors[$other->type] ?? 'bg-secondary/10 text-secondary';
                             $oLabel = $typeLabels[$other->type] ?? 'PENGUMUMAN';
                         @endphp
-                        <div class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden">
+                        <div class="bg-white dark:bg-surface-container rounded-xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden">
                             <div class="p-4 flex flex-col flex-grow">
                                 <span class="{{ $oColor }} px-2 py-0.5 text-[10px] font-label-mono uppercase rounded self-start mb-2">{{ $oLabel }}</span>
                                 <h3 class="font-headline-lg text-base uppercase mb-1.5 leading-tight">{{ $other->title }}</h3>
@@ -185,7 +228,7 @@
 
                 {{-- Pengumuman Terbaru --}}
                 @if($otherAnnouncements->isNotEmpty())
-                <section class="bg-white rounded-xl bento-shadow p-5 md:p-6 border-2 border-black">
+                <section class="bg-white dark:bg-surface-container rounded-xl bento-shadow p-5 md:p-6 border-2 border-black dark:border-gray-700">
                     <h3 class="font-headline-lg text-lg md:text-xl uppercase mb-4 flex items-center gap-2">
                         <span class="material-symbols-outlined text-secondary">campaign</span> Pengumuman Terbaru
                     </h3>
@@ -207,7 +250,7 @@
 
                 {{-- Kategori --}}
                 @if($categories->isNotEmpty())
-                <section class="bg-white rounded-xl bento-shadow p-5 md:p-6 border-2 border-black">
+                <section class="bg-white dark:bg-surface-container rounded-xl bento-shadow p-5 md:p-6 border-2 border-black dark:border-gray-700">
                     <h3 class="font-headline-lg text-lg md:text-xl uppercase mb-4">Kategori</h3>
                     <ul class="space-y-1.5">
                         @foreach($categories->take(6) as $cat)
@@ -227,11 +270,11 @@
                 @endif
 
                 {{-- CTA Card --}}
-                <section class="bg-tertiary-container text-on-tertiary rounded-xl bento-shadow p-6 md:p-7 relative overflow-hidden group">
+                <section class="bg-blue-900 text-blue-100 dark:bg-blue-950 rounded-xl bento-shadow p-6 md:p-7 relative overflow-hidden group">
                     <div class="relative z-10">
                         <h3 class="font-headline-lg text-2xl mb-3 leading-none uppercase">Punya Berita Menarik?</h3>
                         <p class="mb-5 font-bold text-sm opacity-90">Kirimkan tulisan, foto, atau video kegiatan sekolahmu ke Redaksi Merdeka Warta!</p>
-                        <button class="bg-on-tertiary text-tertiary font-label-mono text-xs px-5 py-2.5 rounded-xl bento-shadow hover:bg-white transition-all open-contributor-modal inline-flex items-center gap-1.5">
+                        <button class="bg-white text-blue-900 font-label-mono text-xs px-5 py-2.5 rounded-xl bento-shadow hover:bg-blue-100 transition-all open-contributor-modal inline-flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-sm">edit_note</span> KIRIM TULISANMU
                         </button>
                     </div>

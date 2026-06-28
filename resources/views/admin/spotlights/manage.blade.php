@@ -44,12 +44,12 @@
                 {{-- Selected Summary Bar --}}
                 <div class="mb-5 p-4 transition-all duration-200"
                     :class="selected.length > 0
-                        ? 'bg-blue-50 border-2 border-[#004ac6]'
-                        : 'bg-gray-50 border-2 border-dashed border-gray-300'">
+                        ? 'bg-blue-50 dark:bg-blue-900/20 border-2 border-[#004ac6]'
+                        : 'bg-gray-50 dark:bg-surface-container border-2 border-dashed border-gray-300 dark:border-gray-600'">
 
                     <div class="flex items-center justify-between mb-2">
                         <p class="font-label-mono text-xs uppercase font-bold"
-                            :class="selected.length > 0 ? 'text-[#004ac6]' : 'text-gray-500'">
+                            :class="selected.length > 0 ? 'text-[#004ac6]' : 'text-gray-500 dark:text-on-surface-variant'">
                             <span x-text="selected.length"></span>/<span x-text="max"></span> Artikel Terpilih
                         </p>
                         <span class="font-label-mono text-[10px]"
@@ -59,12 +59,12 @@
                     </div>
 
                     <template x-if="selected.length === 0">
-                        <p class="font-body-md text-sm text-gray-400">Belum ada artikel yang dipilih sebagai sorotan.</p>
+                        <p class="font-body-md text-sm text-gray-400 dark:text-on-surface-variant">Belum ada artikel yang dipilih sebagai sorotan.</p>
                     </template>
 
                     <div class="space-y-1.5">
                         <template x-for="(id, index) in selected" :key="id">
-                            <div class="flex items-center gap-2 py-1 px-2 bg-white border border-[#004ac6]/30"
+                            <div class="flex items-center gap-2 py-1 px-2 bg-white dark:bg-surface-container border border-[#004ac6]/30"
                                 x-data="{ art: {{ $articles->map(fn($a) => ['id' => $a->id, 'title' => $a->title, 'image' => $a->image])->values()->toJson() }}.find(a => a.id === id) }">
                                 <span class="font-label-mono text-[10px] text-[#004ac6] bg-[#004ac6]/10 w-5 h-5 flex items-center justify-center flex-shrink-0 font-bold" x-text="index + 1"></span>
                                 <template x-if="art && art.image">
@@ -105,16 +105,16 @@
                             x-cloak>
                             <label @click.prevent="toggle({{ $article->id }})"
                                 :class="selected.includes({{ $article->id }})
-                                    ? 'border-[#004ac6] bg-blue-50 shadow-[2px_2px_0px_0px_rgba(0,74,198,0.3)]'
-                                    : 'border-[#191c1d] hover:border-[#004ac6] hover:bg-blue-50/50'"
-                                class="flex items-center gap-3 p-3 border-2 bg-white cursor-pointer transition-all select-none">
+                                    ? 'border-[#004ac6] bg-blue-50 dark:bg-blue-900/30 shadow-[2px_2px_0px_0px_rgba(0,74,198,0.3)]'
+                                    : 'border-[#191c1d] dark:border-gray-600 hover:border-[#004ac6] hover:bg-blue-50/50 dark:hover:bg-blue-900/10'"
+                                class="flex items-center gap-3 p-3 border-2 bg-white dark:bg-surface-container cursor-pointer transition-all select-none">
                                 <div class="relative flex-shrink-0">
                                     @if($article->image)
                                         <img src="{{ $article->image }}" alt=""
                                             class="w-16 h-12 object-cover border-2 border-on-background">
                                     @else
                                         <div class="w-16 h-12 bg-primary border-2 border-on-background flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-white">image</span>
+                                            <span class="material-symbols-outlined text-on-primary">image</span>
                                         </div>
                                     @endif
                                     <div x-show="selected.includes({{ $article->id }})" x-cloak
@@ -184,8 +184,8 @@
                 {{-- Selected Summary Bar --}}
                 <div class="mb-5 p-4 transition-all duration-200"
                     :class="selected
-                        ? 'bg-pink-50 border-2 border-[#a43073]'
-                        : 'bg-gray-50 border-2 border-dashed border-gray-300'">
+                        ? 'bg-pink-50 dark:bg-pink-900/20 border-2 border-[#a43073]'
+                        : 'bg-gray-50 dark:bg-surface-container border-2 border-dashed border-gray-300 dark:border-gray-600'">
 
                     <div class="flex items-center justify-between mb-2">
                         <p class="font-label-mono text-xs uppercase font-bold"
@@ -195,11 +195,11 @@
                     </div>
 
                     <template x-if="!selected">
-                        <p class="font-body-md text-sm text-gray-400">Belum ada pemberitahuan yang dipilih sebagai sorotan.</p>
+                        <p class="font-body-md text-sm text-gray-400 dark:text-on-surface-variant">Belum ada pemberitahuan yang dipilih sebagai sorotan.</p>
                     </template>
 
                     <template x-if="selected">
-                        <div class="flex items-center gap-2 py-1 px-2 bg-white border border-[#a43073]/30">
+                        <div class="flex items-center gap-2 py-1 px-2 bg-white dark:bg-surface-container border border-[#a43073]/30">
                             <span class="material-symbols-outlined text-[#a43073]">campaign</span>
                             <span class="font-body-md text-sm font-bold text-[#a43073] truncate flex-1" x-text="selectedAnn?.title ?? ''"></span>
                             <button type="button" @click="selected = ''"
@@ -235,9 +235,9 @@
                             x-cloak>
                             <label @click.prevent="selected = (selected == '{{ $announcement->id }}') ? '' : '{{ $announcement->id }}'"
                                 :class="selected == '{{ $announcement->id }}'
-                                    ? 'border-[#a43073] bg-pink-50 shadow-[2px_2px_0px_0px_rgba(164,48,115,0.3)]'
-                                    : 'border-[#191c1d] hover:border-[#a43073] hover:bg-pink-50/50'"
-                                class="flex items-center gap-3 p-3 border-2 bg-white cursor-pointer transition-all select-none">
+                                    ? 'border-[#a43073] bg-pink-50 dark:bg-pink-900/30 shadow-[2px_2px_0px_0px_rgba(164,48,115,0.3)]'
+                                    : 'border-[#191c1d] dark:border-gray-600 hover:border-[#a43073] hover:bg-pink-50/50 dark:hover:bg-pink-900/10'"
+                                class="flex items-center gap-3 p-3 border-2 bg-white dark:bg-surface-container cursor-pointer transition-all select-none">
                                 <div class="relative flex-shrink-0">
                                     <div class="w-12 h-12 bg-secondary-fixed border-2 border-on-background flex items-center justify-center">
                                         <span class="material-symbols-outlined text-secondary">campaign</span>

@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <script>
+        if (localStorage.getItem('dark-mode') === 'true' || (!('dark-mode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Merdeka Warta | Portal Berita SMK Merdeka</title>
@@ -13,23 +18,23 @@
             theme: {
                 extend: {
                     colors: {
-                        "tertiary-container": "#aa5700", "surface-variant": "#e1e3e4", "on-background": "#191c1d",
-                        "background": "#f8f9fa", "on-tertiary-container": "#ffede3", "error": "#ba1a1a",
-                        "on-error": "#ffffff", "on-secondary-container": "#76014e", "on-primary-container": "#eeefff",
-                        "secondary": "#a43073", "surface": "#f8f9fa", "error-container": "#ffdad6",
-                        "inverse-primary": "#b4c5ff", "tertiary-fixed-dim": "#ffb783", "tertiary-fixed": "#ffdcc5",
-                        "tertiary": "#864300", "on-secondary": "#ffffff", "surface-container-highest": "#e1e3e4",
-                        "outline-variant": "#c3c6d7", "on-tertiary-fixed": "#301400", "secondary-fixed": "#ffd8e7",
-                        "surface-container-lowest": "#ffffff", "secondary-fixed-dim": "#ffafd3",
-                        "on-error-container": "#93000a", "outline": "#737686", "primary": "#004ac6",
-                        "surface-container": "#edeeef", "surface-container-high": "#e7e8e9", "surface-dim": "#d9dadb",
-                        "inverse-surface": "#2e3132", "on-primary-fixed": "#00174b", "on-tertiary-fixed-variant": "#713700",
-                        "on-tertiary": "#ffffff", "on-surface-variant": "#434655", "primary-container": "#2563eb",
-                        "surface-container-low": "#f3f4f5", "on-surface": "#191c1d", "primary-fixed-dim": "#b4c5ff",
-                        "on-secondary-fixed-variant": "#85145a", "on-secondary-fixed": "#3d0026",
-                        "inverse-on-surface": "#f0f1f2", "on-primary": "#ffffff", "secondary-container": "#fc79bd",
-                        "primary-fixed": "#dbe1ff", "surface-tint": "#0053db", "on-primary-fixed-variant": "#003ea8",
-                        "surface-bright": "#f8f9fa"
+                        "tertiary-container": "var(--tertiary-container)", "surface-variant": "var(--surface-variant)", "on-background": "var(--on-background)",
+                        "background": "var(--background)", "on-tertiary-container": "var(--on-tertiary-container)", "error": "var(--error)",
+                        "on-error": "var(--on-error)", "on-secondary-container": "var(--on-secondary-container)", "on-primary-container": "var(--on-primary-container)",
+                        "secondary": "var(--secondary)", "surface": "var(--surface)", "error-container": "var(--error-container)",
+                        "inverse-primary": "var(--inverse-primary)", "tertiary-fixed-dim": "var(--tertiary-fixed-dim)", "tertiary-fixed": "var(--tertiary-fixed)",
+                        "tertiary": "var(--tertiary)", "on-secondary": "var(--on-secondary)", "surface-container-highest": "var(--surface-container-highest)",
+                        "outline-variant": "var(--outline-variant)", "on-tertiary-fixed": "var(--on-tertiary-fixed)", "secondary-fixed": "var(--secondary-fixed)",
+                        "surface-container-lowest": "var(--surface-container-lowest)", "secondary-fixed-dim": "var(--secondary-fixed-dim)",
+                        "on-error-container": "var(--on-error-container)", "outline": "var(--outline)", "primary": "var(--primary)",
+                        "surface-container": "var(--surface-container)", "surface-container-high": "var(--surface-container-high)", "surface-dim": "var(--surface-dim)",
+                        "inverse-surface": "var(--inverse-surface)", "on-primary-fixed": "var(--on-primary-fixed)", "on-tertiary-fixed-variant": "var(--on-tertiary-fixed-variant)",
+                        "on-tertiary": "var(--on-tertiary)", "on-surface-variant": "var(--on-surface-variant)", "primary-container": "var(--primary-container)",
+                        "surface-container-low": "var(--surface-container-low)", "on-surface": "var(--on-surface)", "primary-fixed-dim": "var(--primary-fixed-dim)",
+                        "on-secondary-fixed-variant": "var(--on-secondary-fixed-variant)", "on-secondary-fixed": "var(--on-secondary-fixed)",
+                        "inverse-on-surface": "var(--inverse-on-surface)", "on-primary": "var(--on-primary)", "secondary-container": "var(--secondary-container)",
+                        "primary-fixed": "var(--primary-fixed)", "surface-tint": "var(--surface-tint)", "on-primary-fixed-variant": "var(--on-primary-fixed-variant)",
+                        "surface-bright": "var(--surface-bright)"
                     },
                     borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.75rem", "2xl": "1rem", full: "0.75rem" },
                     spacing: { "margin-mobile": "16px", gutter: "24px", "margin-desktop": "64px", "grid-unit": "8px" },
@@ -46,13 +51,51 @@
         }
     </script>
     <style>
+        :root {
+            --tertiary-container: #aa5700; --surface-variant: #e1e3e4; --on-background: #191c1d;
+            --background: #f8f9fa; --on-tertiary-container: #ffede3; --error: #ba1a1a;
+            --on-error: #ffffff; --on-secondary-container: #76014e; --on-primary-container: #eeefff;
+            --secondary: #a43073; --surface: #f8f9fa; --error-container: #ffdad6;
+            --inverse-primary: #b4c5ff; --tertiary-fixed-dim: #ffb783; --tertiary-fixed: #ffdcc5;
+            --tertiary: #864300; --on-secondary: #ffffff; --surface-container-highest: #e1e3e4;
+            --outline-variant: #c3c6d7; --on-tertiary-fixed: #301400; --secondary-fixed: #ffd8e7;
+            --surface-container-lowest: #ffffff; --secondary-fixed-dim: #ffafd3;
+            --on-error-container: #93000a; --outline: #737686; --primary: #004ac6;
+            --surface-container: #edeeef; --surface-container-high: #e7e8e9; --surface-dim: #d9dadb;
+            --inverse-surface: #2e3132; --on-primary-fixed: #00174b; --on-tertiary-fixed-variant: #713700;
+            --on-tertiary: #ffffff; --on-surface-variant: #434655; --primary-container: #2563eb;
+            --surface-container-low: #f3f4f5; --on-surface: #191c1d; --primary-fixed-dim: #b4c5ff;
+            --on-secondary-fixed-variant: #85145a; --on-secondary-fixed: #3d0026;
+            --inverse-on-surface: #f0f1f2; --on-primary: #ffffff; --secondary-container: #fc79bd;
+            --primary-fixed: #dbe1ff; --surface-tint: #0053db; --on-primary-fixed-variant: #003ea8;
+            --surface-bright: #f8f9fa;
+        }
+        .dark {
+            --tertiary-container: #665500; --surface-variant: #2a2a2a; --on-background: #ffffff;
+            --background: #0a0a0a; --on-tertiary-container: #ffe082; --error: #ff6b6b;
+            --on-error: #000000; --on-secondary-container: #ffe0b2; --on-primary-container: #fff8e1;
+            --secondary: #ff8c00; --surface: #111111; --error-container: #6b0000;
+            --inverse-primary: #004ac6; --tertiary-fixed-dim: #ffcc02; --tertiary-fixed: #fff3cd;
+            --tertiary: #ffcc02; --on-secondary: #000000; --surface-container-highest: #2a2a2a;
+            --outline-variant: #333333; --on-tertiary-fixed: #1a1400; --secondary-fixed: #ffe0b2;
+            --surface-container-lowest: #080808; --secondary-fixed-dim: #ffb347;
+            --on-error-container: #ffcccc; --outline: #444444; --primary: #ffd700;
+            --surface-container: #1a1a1a; --surface-container-high: #222222; --surface-dim: #0a0a0a;
+            --inverse-surface: #ffffff; --on-primary-fixed: #1a1400; --on-tertiary-fixed-variant: #332a00;
+            --on-tertiary: #000000; --on-surface-variant: #cccccc; --primary-container: #ffed4a;
+            --surface-container-low: #141414; --on-surface: #ffffff; --primary-fixed-dim: #ffd700;
+            --on-secondary-fixed-variant: #331c00; --on-secondary-fixed: #1a0e00;
+            --inverse-on-surface: #000000; --on-primary: #000000; --secondary-container: #e67e00;
+            --primary-fixed: #fff3b0; --surface-tint: #ffd700; --on-primary-fixed-variant: #332a00;
+            --surface-bright: #2a2a2a;
+        }
         * { box-sizing: border-box; }
         body {
             margin: 0;
             overflow-x: hidden;
             width: 100%;
             max-width: 100%;
-            background-color: #f8f9fa;
+            background-color: var(--background);
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         .bento-shadow { box-shadow: 3px 3px 0px 0px #000; }
@@ -119,7 +162,7 @@
                         </span>
                         <h1 class="font-headline-lg text-xl md:text-3xl lg:text-4xl text-white mb-2 md:mb-3 leading-none uppercase">{{ $article->title }}</h1>
                         <p class="text-white/80 font-body-md text-xs md:text-sm mb-3 md:mb-4 max-w-xl line-clamp-2 md:line-clamp-3">{{ Str::limit($article->content_text, 200) }}</p>
-                        <a href="{{ route('public.article.show', $article->slug) }}" class="inline-flex items-center gap-1.5 bg-white/90 text-on-background px-5 py-2 md:px-6 md:py-2.5 font-bold rounded-xl text-xs md:text-sm hover:bg-white transition-all">
+                        <a href="{{ route('public.article.show', $article->slug) }}" class="inline-flex items-center gap-1.5 bg-blue-300 text-blue-900 px-5 py-2 md:px-6 md:py-2.5 font-bold rounded-xl text-xs md:text-sm hover:bg-blue-200 transition-all">
                             BACA SELENGKAPNYA <span class="material-symbols-outlined text-sm">arrow_forward</span>
                         </a>
                     </div>
@@ -155,14 +198,14 @@
             @endforeach
 
             {{-- Announcements bento cards --}}
-            <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-xl bento-shadow bg-tertiary-fixed p-4 md:p-5 flex flex-col min-h-[200px]">
+            <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-xl bento-shadow bg-tertiary-fixed dark:bg-surface-container-high p-4 md:p-5 flex flex-col min-h-[200px]">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="material-symbols-outlined text-tertiary text-xl">campaign</span>
                     <h2 class="font-headline-lg text-lg md:text-xl uppercase">PENGUMUMAN</h2>
                 </div>
                 @if(isset($spotlightAnnouncement) && $spotlightAnnouncement && $spotlightAnnouncement->announcement)
                     @php $featAnn = $spotlightAnnouncement->announcement; @endphp
-                    <a href="{{ route('public.announcement.show', $featAnn->id) }}" class="block p-3 bg-white/80 rounded-xl hover:bg-white transition-all mb-2 bento-shadow">
+                    <a href="{{ route('public.announcement.show', $featAnn->id) }}" class="block p-3 bg-white/80 dark:bg-surface-container dark:hover:bg-surface-container-high rounded-xl hover:bg-white transition-all mb-2 bento-shadow">
                         <div class="flex items-start gap-2">
                             <span class="material-symbols-outlined text-secondary text-lg flex-shrink-0">star</span>
                             <div>
@@ -175,7 +218,7 @@
                 @if($announcements->isNotEmpty())
                     <div class="flex-1 space-y-1.5 overflow-hidden">
                         @foreach($announcements->take(2) as $ann)
-                            <a href="{{ route('public.announcement.show', $ann->id) }}" class="block p-2.5 bg-white/60 rounded hover:bg-white/90 transition-all text-xs">
+                            <a href="{{ route('public.announcement.show', $ann->id) }}" class="block p-2.5 bg-white/60 dark:bg-surface-container dark:hover:bg-surface-container-high rounded hover:bg-white/90 transition-all text-xs">
                                 <span class="font-label-mono text-[10px] text-tertiary">{{ $ann->created_at->format('d F Y') }}</span>
                                 <p class="font-bold truncate">{{ $ann->title }}</p>
                             </a>
@@ -266,10 +309,10 @@
                 <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
                 @if($articles->count() > 3)
                     <div class="flex gap-2 shrink-0">
-                        <button class="bg-white text-on-surface bento-shadow rounded-xl p-2.5 hover:bg-primary hover:text-on-primary transition-all" id="newsPrevBtn">
+                        <button class="bg-white text-on-surface dark:bg-surface-container-high dark:text-on-surface bento-shadow rounded-xl p-2.5 hover:bg-primary hover:text-on-primary transition-all" id="newsPrevBtn">
                             <span class="material-symbols-outlined block text-lg">arrow_back</span>
                         </button>
-                        <button class="bg-white text-on-surface bento-shadow rounded-xl p-2.5 hover:bg-primary hover:text-on-primary transition-all" id="newsNextBtn">
+                        <button class="bg-white text-on-surface dark:bg-surface-container-high dark:text-on-surface bento-shadow rounded-xl p-2.5 hover:bg-primary hover:text-on-primary transition-all" id="newsNextBtn">
                             <span class="material-symbols-outlined block text-lg">arrow_forward</span>
                         </button>
                     </div>
@@ -280,7 +323,7 @@
                     <div class="news-slider-track" id="newsSliderTrack" style="transform: translateX(0%);">
                         @foreach($articles as $article)
                             <div class="news-slider-item">
-                                <article class="bg-white rounded-xl bento-shadow bento-card bento-shadow-hover h-full flex flex-col overflow-hidden">
+                                <article class="bg-surface-container-low rounded-xl bento-shadow bento-card bento-shadow-hover h-full flex flex-col overflow-hidden">
                                     <div class="aspect-video overflow-hidden bg-surface-variant">
                                         @if($article->image)
                                             <img alt="{{ $article->title }}" class="w-full h-full object-cover transition-all duration-500 hover:scale-105" src="{{ $article->image }}">
@@ -290,10 +333,10 @@
                                     </div>
                                     <div class="p-5 flex-grow flex flex-col">
                                         <div class="flex items-center gap-2 mb-3">
-                                            <span class="bg-primary/10 text-primary px-2.5 py-0.5 font-label-mono text-[10px] rounded">{{ $article->category ?? 'BERITA' }}</span>
+                                            <span class="bg-white dark:bg-surface-container px-2.5 py-0.5 font-label-mono text-[10px] rounded">{{ $article->category ?? 'BERITA' }}</span>
                                             <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $article->published_at->format('d M Y') }}</span>
                                         </div>
-                                        <h3 class="font-bold font-headline-lg text-lg md:text-xl leading-tight mb-2 uppercase">{{ $article->title }}</h3>
+                                        <h3 class="font-bold font-headline-lg text-lg md:text-xl leading-tight mb-2 uppercase dark:text-gray-400">{{ $article->title }}</h3>
                                         <p class="font-body-md text-xs md:text-sm text-on-surface-variant mb-4 flex-grow">{{ Str::limit($article->content_text, 120) }}</p>
                                         <a class="font-bold flex items-center gap-1.5 text-sm text-primary group" href="{{ route('public.article.show', $article->slug) }}">
                                             BACA BERITA <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
@@ -318,7 +361,7 @@
         {{-- ============================================================ --}}
         {{-- CTA SECTION --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 bento-card rounded-xl bento-shadow bg-on-background text-surface p-8 md:p-12 relative overflow-hidden">
+        <section class="mb-12 md:mb-16 bento-card rounded-xl bento-shadow bg-blue-900 text-blue-100 dark:bg-blue-950 dark:text-blue-100 p-8 md:p-12 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-40 md:w-60 h-40 md:h-60 bg-secondary/20 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-32 md:w-48 h-32 md:h-48 bg-primary/20 rounded-full blur-3xl"></div>
             <div class="relative z-10 max-w-2xl mx-auto text-center">
@@ -381,7 +424,7 @@
                 <div class="w-full overflow-hidden pause-on-hover py-4">
                     <div class="flex animate-scroll-testimonials w-max gap-6">
                         @foreach($testimonials as $t)
-                            <div class="w-[300px] md:w-[350px] bg-white rounded-xl bento-shadow p-6 flex flex-col gap-4 shrink-0 bento-card">
+                            <div class="w-[300px] md:w-[350px] bg-white dark:bg-surface-container-high rounded-xl bento-shadow p-6 flex flex-col gap-4 shrink-0 bento-card">
                                 <span class="material-symbols-outlined text-primary text-3xl md:text-4xl font-bold leading-none select-none">format_quote</span>
                                 <p class="font-bold font-body-md text-sm md:text-base flex-grow text-on-surface">{{ $t->quote }}</p>
                                 <div class="border-t border-outline-variant pt-4">
@@ -612,5 +655,19 @@
         })();
     </script>
 
+    <script>
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('dark-mode', isDark);
+            const icon = document.getElementById('theme-icon-public');
+            if (icon) {
+                icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+            }
+            const iconMobile = document.getElementById('theme-icon-public-mobile');
+            if (iconMobile) {
+                iconMobile.textContent = isDark ? 'light_mode' : 'dark_mode';
+            }
+        }
+    </script>
 </body>
 </html>
