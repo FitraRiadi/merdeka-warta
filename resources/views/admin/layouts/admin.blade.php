@@ -585,6 +585,231 @@
             background: var(--primary);
             color: var(--on-primary);
         }
+
+        /* ── Editor.js canvas: notebook paper style ── */
+        #editorjs-content .codex-editor {
+            background: #f7f6f3;
+            border: 1px solid #c4c3bd;
+            border-radius: 4px;
+        }
+        #editorjs-content .codex-editor__redactor {
+            padding-bottom: 200px !important;
+            counter-reset: ce-block-num;
+        }
+        #editorjs-content .ce-block {
+            counter-increment: ce-block-num;
+            padding-left: 3rem;
+            position: relative;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(2px);
+            margin: 0 0 1px 0;
+            border-left: 3px solid transparent;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        #editorjs-content .ce-block::before {
+            content: counter(ce-block-num);
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2rem;
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #bbb;
+            user-select: none;
+            pointer-events: none;
+        }
+        #editorjs-content .ce-block--selected {
+            border-left-color: var(--primary);
+            background: rgba(255,255,255,0.97);
+        }
+        #editorjs-content .ce-block--drop-target {
+            border-left-color: var(--error);
+        }
+        #editorjs-content .ce-block__content {
+            max-width: 100%;
+            padding: 6px 16px;
+        }
+        #editorjs-content .ce-block--drop-target .ce-block__content {
+            background: rgba(186,26,26,0.05);
+        }
+
+        /* ── Editor.js heading differentiation ── */
+        #editorjs-content h1.ce-header {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin: 0.5em 0 0.25em;
+            color: #1a1a1a;
+        }
+        #editorjs-content h2.ce-header {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.25;
+            margin: 0.4em 0 0.2em;
+            color: #1a1a1a;
+        }
+        #editorjs-content h3.ce-header {
+            font-size: 1.3rem;
+            font-weight: 600;
+            line-height: 1.3;
+            margin: 0.3em 0 0.15em;
+            color: #2a2a2a;
+        }
+        #editorjs-content h4.ce-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            line-height: 1.35;
+            margin: 0.2em 0 0.1em;
+            color: #2a2a2a;
+        }
+        #editorjs-content h5.ce-header {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #333;
+        }
+        #editorjs-content h6.ce-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        #editorjs-content .ce-paragraph {
+            line-height: 1.8;
+        }
+        #editorjs-content .ce-toolbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(4px);
+        }
+        @media (min-width: 651px) {
+            #editorjs-content .ce-toolbar__plus {
+                float: right;
+                position: static;
+                background: var(--surface-container-lowest);
+                border: 2px solid var(--on-background);
+                color: var(--on-surface);
+                box-shadow: 2px 2px 0 0 rgba(0,0,0,1);
+                transition: all 0.1s;
+            }
+            #editorjs-content .ce-toolbar__actions {
+                left: auto;
+                right: 60px;
+            }
+            #editorjs-content .ce-toolbar__settings-btn {
+                background: var(--surface-container-lowest);
+                border: 2px solid var(--on-background);
+                color: var(--on-surface);
+                box-shadow: 2px 2px 0 0 rgba(0,0,0,1);
+                transition: all 0.1s;
+            }
+        }
+        #editorjs-content .ce-toolbar__plus:hover,
+        #editorjs-content .ce-toolbar__settings-btn:hover {
+            transform: translate(-1px,-1px);
+            box-shadow: 3px 3px 0 0 rgba(0,0,0,1);
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+        #editorjs-content .ce-inline-toolbar {
+            border: 2px solid var(--on-background);
+            box-shadow: 4px 4px 0 0 rgba(0,0,0,1);
+            border-radius: 2px;
+            background: var(--surface);
+        }
+        #editorjs-content .ce-inline-toolbar__dropdown:hover,
+        #editorjs-content .ce-inline-tool:hover {
+            background: var(--primary-fixed);
+            color: var(--primary);
+        }
+        #editorjs-content .ce-conversion-toolbar {
+            border: 2px solid var(--on-background);
+            box-shadow: 4px 4px 0 0 rgba(0,0,0,1);
+            background: var(--surface);
+        }
+        #editorjs-content .ce-conversion-tool:hover {
+            background: var(--primary-fixed);
+            color: var(--primary);
+        }
+        #editorjs-content .ce-popover {
+            border: 2px solid var(--on-background);
+            box-shadow: 4px 4px 0 0 rgba(0,0,0,1);
+            background: var(--surface);
+        }
+        #editorjs-content .ce-popover-item:hover {
+            background: var(--primary-fixed);
+            color: var(--primary);
+        }
+        #editorjs-content .ce-popover-item--active {
+            background: var(--primary);
+            color: var(--on-primary);
+        }
+        #editorjs-content .ce-block--selected .ce-block__content {
+            background: transparent;
+        }
+        #editorjs-content .cdx-button {
+            background: var(--surface-container);
+            border: 2px solid var(--on-background);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            box-shadow: 2px 2px 0 0 rgba(0,0,0,1);
+            transition: all 0.1s;
+        }
+        #editorjs-content .cdx-button:hover {
+            transform: translate(-1px,-1px);
+            box-shadow: 3px 3px 0 0 rgba(0,0,0,1);
+        }
+
+        /* dark mode overrides */
+        .dark #editorjs-content .codex-editor {
+            background: #1a1a1a;
+            border-color: #444;
+        }
+        .dark #editorjs-content h1.ce-header,
+        .dark #editorjs-content h2.ce-header,
+        .dark #editorjs-content h3.ce-header,
+        .dark #editorjs-content h4.ce-header { color: #e8e6e3; }
+        .dark #editorjs-content h5.ce-header,
+        .dark #editorjs-content h6.ce-header { color: #c4c2bf; }
+        .dark #editorjs-content .ce-block {
+            background: rgba(30,30,30,0.9);
+        }
+        .dark #editorjs-content .ce-block::before {
+            color: #555;
+        }
+        .dark #editorjs-content .ce-block--selected {
+            border-left-color: var(--primary);
+            background: rgba(30,30,30,0.97);
+        }
+        .dark #editorjs-content .ce-toolbar {
+            background: rgba(20,20,20,0.95);
+        }
+        .dark #editorjs-content .ce-toolbar__plus,
+        .dark #editorjs-content .ce-toolbar__settings-btn {
+            background: var(--surface-container);
+            box-shadow: 2px 2px 0 0 rgba(255,255,255,0.12);
+        }
+        .dark #editorjs-content .ce-toolbar__plus:hover,
+        .dark #editorjs-content .ce-toolbar__settings-btn:hover {
+            box-shadow: 3px 3px 0 0 rgba(255,255,255,0.12);
+        }
+        .dark #editorjs-content .ce-inline-toolbar,
+        .dark #editorjs-content .ce-conversion-toolbar,
+        .dark #editorjs-content .ce-popover {
+            border-color: #333;
+            box-shadow: 4px 4px 0 0 rgba(255,255,255,0.12);
+            background: var(--surface-container);
+        }
+        .dark #editorjs-content .cdx-button {
+            background: var(--surface-container-high);
+            box-shadow: 2px 2px 0 0 rgba(255,255,255,0.12);
+        }
     </style>
     @stack('styles')
 </head>

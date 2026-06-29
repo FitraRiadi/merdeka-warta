@@ -69,9 +69,9 @@
 
                     {{-- MODAL EDITOR --}}
                     <div x-show="editorOpen" x-cloak x-transition.opacity
-                        class="fixed inset-0 z-[100] flex items-start justify-center pt-6 pb-6 bg-on-background/60">
-                        <div @click.outside="closeEditor()"
-                            class="w-full max-w-4xl max-h-[calc(100vh-3rem)] bg-surface border-3 border-on-background shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col">
+                        class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-on-background/60"
+                        @click.self="closeEditor()">
+                        <div class="w-full max-w-4xl max-h-[calc(100vh-3rem)] bg-surface border-3 border-on-background shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex flex-col">
                             <div class="flex items-center justify-between px-5 py-3 border-b-3 border-on-background bg-surface-container">
                                 <div class="flex items-center gap-2">
                                     <span class="w-7 h-7 bg-secondary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
@@ -84,7 +84,7 @@
                                 </button>
                             </div>
                             <div class="flex-1 overflow-y-auto p-5 bg-surface">
-                                <div id="editorjs-content" class="min-h-[300px]"></div>
+                                <div id="editorjs-content" class="min-h-[400px]"></div>
                             </div>
                             <div class="flex items-center justify-end gap-3 px-5 py-3 border-t-3 border-on-background bg-surface-container">
                                 <button type="button" @click="closeEditor()" class="admin-btn-secondary admin-btn-sm">
@@ -148,6 +148,7 @@
             editorOpen: false,
             contentJson: '{{ old('content', $announcement->content) }}',
             editorInstance: null,
+            isDirty: false,
             get blockCount() {
                 try {
                     const data = JSON.parse(this.contentJson);
@@ -155,11 +156,36 @@
                 } catch { return 0; }
             },
             async openEditor() {
+                this.isDirty = false;
                 this.editorOpen = true;
                 await this.$nextTick();
                 this.initEditor();
             },
             closeEditor() {
+                if (this.isDirty) {
+                    Swal.fire({
+                        title: 'Perubahan belum disimpan',
+                        text: 'Ada perubahan yang belum disimpan. Yakin ingin menutup editor?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#006b4f',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, tutup',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        customClass: {
+                            popup: 'brutalist-border shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] rounded-none',
+                            confirmButton: 'admin-btn-primary admin-btn-sm',
+                            cancelButton: 'admin-btn-secondary admin-btn-sm',
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.editorOpen = false;
+                            this.destroyEditor();
+                        }
+                    });
+                    return;
+                }
                 this.editorOpen = false;
                 this.destroyEditor();
             },
@@ -167,6 +193,7 @@
                 if (!this.editorInstance) return;
                 this.editorInstance.save().then((output) => {
                     this.contentJson = JSON.stringify(output);
+                    this.isDirty = false;
                     this.closeEditor();
                 }).catch((err) => {
                     console.error('Editor.js save error:', err);
@@ -183,6 +210,7 @@
                 this.editorInstance = new EditorJS({
                     holder: 'editorjs-content',
                     data: initialData,
+                    onChange: () => { this.isDirty = true; },
                     tools: {
                         header: {
                             class: Header,
