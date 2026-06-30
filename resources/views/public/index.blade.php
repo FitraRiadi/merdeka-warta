@@ -127,7 +127,7 @@
         #sidebar-overlay:not(.closed) { opacity: 1 !important; pointer-events: auto !important; }
         .news-slider-track { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .news-slider-item { flex: 0 0 100%; padding: 0 8px; }
-        @media (min-width: 768px) { .news-slider-item { flex: 0 0 50%; } }
+        @media (min-width: 768px) { .news-slider-item { flex: 0 0 50%; padding: 0 6px; } }
         @media (min-width: 1024px) { .news-slider-item { flex: 0 0 33.333%; } }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -136,7 +136,7 @@
 
     @include('layouts.partials.public-navbar', ['runningTexts' => $runningTexts])
 
-    <main class="w-full max-w-[1440px] mx-auto px-4 md:px-16 py-8 md:py-12 box-border">
+    <main class="w-full max-w-[1440px] mx-auto px-4 md:px-16 max-lg:px-8 py-8 md:py-12 box-border">
 
         {{-- ============================================================ --}}
         {{-- BENTO HERO + SPOTLIGHT + ANNOUNCEMENTS --}}
@@ -146,18 +146,18 @@
             {{-- Featured Hero --}}
             @forelse($spotlights->take(1) as $s)
                 @php $article = $s->article; @endphp
-                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover bg-surface-container-highest min-h-[320px] md:min-h-[460px] flex flex-col justify-end group">
+                <div class="col-span-2 md:col-span-4 lg:col-span-7 md:row-span-2 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover bg-surface-container-highest min-h-[320px] md:min-h-[460px] max-lg:min-h-[340px] flex flex-col justify-end group">
                     @if($article->image)
                         <img alt="{{ $article->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $article->image }}">
                     @else
                         <div class="absolute inset-0 bg-primary"></div>
                     @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
-                    <div class="relative z-10 p-5 md:p-8">
+                    <div class="relative z-10 p-5 md:p-8 max-lg:p-5">
                         <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-mono text-[10px] md:text-xs px-3 py-1 rounded mb-3 md:mb-4">
                             {{ $article->category ?? 'FEATURED' }}
                         </span>
-                        <h1 class="font-headline-lg text-xl md:text-3xl lg:text-4xl text-white mb-2 md:mb-3 leading-none uppercase">{{ $article->title }}</h1>
+                        <h1 class="font-headline-lg text-xl md:text-3xl lg:text-4xl max-lg:text-2xl text-white mb-2 md:mb-3 leading-none uppercase">{{ $article->title }}</h1>
                         <p class="text-white/80 font-body-md text-xs md:text-sm mb-3 md:mb-4 max-w-xl line-clamp-2 md:line-clamp-3">{{ Str::limit($article->content_text, 200) }}</p>
                         <a href="{{ route('public.article.show', $article->slug) }}" class="inline-flex items-center gap-1.5 bg-blue-300 text-blue-900 px-5 py-2 md:px-6 md:py-2.5 font-bold rounded-xl text-xs md:text-sm hover:bg-blue-200 transition-all">
                             BACA SELENGKAPNYA <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -187,7 +187,7 @@
             @foreach($secondarySpotlight as $i => $s)
                 @php $art = $s->article; @endphp
                 @if($art)
-                <a href="{{ route('public.article.show', $art->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-5 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end group {{ $i == 0 ? '' : '' }}">
+                <a href="{{ route('public.article.show', $art->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-5 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] max-lg:min-h-[150px] flex flex-col justify-end group">
                     @if($art->image)
                         <img alt="{{ $art->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $art->image }}">
                     @else
@@ -203,7 +203,7 @@
             @endforeach
 
             {{-- Announcements bento cards --}}
-            <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-xl bento-shadow bg-tertiary-fixed dark:bg-surface-container-high p-4 md:p-5 flex flex-col min-h-[200px]">
+            <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-xl bento-shadow bg-tertiary-fixed dark:bg-surface-container-high p-4 md:p-5 max-lg:p-4 flex flex-col min-h-[200px] max-lg:min-h-[160px]">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="material-symbols-outlined text-tertiary text-xl">campaign</span>
                     <h2 class="font-headline-lg text-lg md:text-xl uppercase">PENGUMUMAN</h2>
@@ -241,7 +241,7 @@
             {{-- Gallery stack: 3 photos tumpuk (desktop), 1 foto (mobile) --}}
             @php $galleryStack = $galleries->take(3); @endphp
             @if($galleryStack->isNotEmpty())
-            <a href="{{ route('public.gallery.list') }}" class="col-span-2 md:col-span-3 lg:col-span-4 bento-card rounded-xl bento-shadow overflow-hidden md:min-h-[160px] block relative">
+            <a href="{{ route('public.gallery.list') }}" class="col-span-2 md:col-span-3 lg:col-span-4 bento-card rounded-xl bento-shadow overflow-hidden md:min-h-[160px] max-lg:min-h-[130px] block relative">
                 {{-- Mobile: carousel --}}
                 <div class="w-full h-[140px] md:hidden relative" id="mobileGalleryCarousel">
                     <div class="flex h-full transition-transform duration-500 ease-in-out" id="mobileGalleryTrack" style="transform: translateX(0%);">
@@ -279,7 +279,7 @@
             @endif
 
             {{-- Category quick links --}}
-            <div class="col-span-2 md:col-span-2 lg:col-span-3 bento-card rounded-xl bento-shadow bg-primary-container text-on-primary p-4 md:p-5 flex flex-col justify-between">
+            <div class="col-span-2 md:col-span-2 lg:col-span-3 bento-card rounded-xl bento-shadow bg-primary-container text-on-primary p-4 md:p-5 max-lg:p-4 flex flex-col justify-between">
                 <span class="material-symbols-outlined text-2xl">explore</span>
                 <div>
                     <h3 class="font-headline-lg text-lg uppercase leading-tight">Jelajahi</h3>
@@ -292,7 +292,7 @@
             @php $thirdSpotlight = $spotlights->skip(3)->take(1)->first(); @endphp
             @if($thirdSpotlight && $thirdSpotlight->article)
                 @php $art3 = $thirdSpotlight->article; @endphp
-                <a href="{{ route('public.article.show', $art3->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-3 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] flex flex-col justify-end">
+                <a href="{{ route('public.article.show', $art3->slug) }}" class="col-span-1 md:col-span-2 lg:col-span-3 bento-card relative overflow-hidden rounded-xl bento-shadow bento-shadow-hover min-h-[140px] md:min-h-[200px] max-lg:min-h-[150px] flex flex-col justify-end">
                     @if($art3->image)
                         <img alt="{{ $art3->title }}" class="absolute inset-0 w-full h-full object-cover" src="{{ $art3->image }}">
                     @else
@@ -383,13 +383,13 @@
                                             <div class="w-full h-full bg-surface-variant"></div>
                                         @endif
                                     </div>
-                                    <div class="p-5 flex-grow flex flex-col">
+                                    <div class="p-5 max-lg:p-4 flex-grow flex flex-col">
                                         <div class="flex items-center gap-2 mb-3">
                                             <span class="bg-white dark:bg-surface-container px-2.5 py-0.5 font-label-mono text-[10px] rounded">{{ $article->category ?? 'BERITA' }}</span>
                                             <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $article->published_at->format('d M Y') }}</span>
                                         </div>
-                                        <h3 class="font-bold font-headline-lg text-lg md:text-xl leading-tight mb-2 uppercase dark:text-gray-400">{{ $article->title }}</h3>
-                                        <p class="font-body-md text-xs md:text-sm text-on-surface-variant mb-4 flex-grow">{{ Str::limit($article->content_text, 120) }}</p>
+                                        <h3 class="font-bold font-headline-lg text-lg md:text-xl max-lg:text-base leading-tight mb-2 uppercase dark:text-gray-400">{{ $article->title }}</h3>
+                                        <p class="font-body-md text-xs md:text-sm max-lg:text-xs text-on-surface-variant mb-4 flex-grow">{{ Str::limit($article->content_text, 120) }}</p>
                                         <a class="font-bold flex items-center gap-1.5 text-sm text-primary group" href="{{ route('public.article.show', $article->slug) }}">
                                             BACA BERITA <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
                                         </a>
@@ -413,7 +413,7 @@
         {{-- ============================================================ --}}
         {{-- CTA SECTION --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 bento-card rounded-xl bento-shadow bg-blue-900 text-blue-100 dark:bg-blue-950 dark:text-blue-100 p-8 md:p-12 relative overflow-hidden">
+        <section class="mb-12 md:mb-16 bento-card rounded-xl bento-shadow bg-blue-900 text-blue-100 dark:bg-blue-950 dark:text-blue-100 p-8 md:p-12 max-lg:p-6 md:px-12 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-40 md:w-60 h-40 md:h-60 bg-secondary/20 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-32 md:w-48 h-32 md:h-48 bg-primary/20 rounded-full blur-3xl"></div>
             <div class="relative z-10 max-w-2xl mx-auto text-center">
