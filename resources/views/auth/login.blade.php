@@ -5,7 +5,7 @@
         <div class="text-center mb-8">
             <a href="{{ route('home') }}" class="inline-block">
                 <div class="flex items-center justify-center gap-3 mb-4">
-                    <img width="40" height="40" src="https://cdn.ryzahen.web.id/GQApe.png" alt="smkmerdeka-logo">
+                    <img width="40" height="40" src="{{ asset('smk-merdeka-logo.png') }}" alt="smkmerdeka-logo">
                     <span class="font-headline-lg text-4xl uppercase tracking-tighter text-on-surface">MERDEKA WARTA</span>
                 </div>
             </a>
