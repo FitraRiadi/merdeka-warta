@@ -139,8 +139,9 @@ class Announcement extends Model
                     $withBorder = $data['withBorder'] ?? true;
                     $withBackground = $data['withBackground'] ?? false;
                     if ($url) {
-                        $html .= '<figure class="border-3 border-on-background brutalist-shadow mb-6">';
-                        $html .= '<img class="w-full object-cover" src="' . e($url) . '" alt="' . e($caption ?: 'Announcement image') . '">';
+                        $stretchClass = $stretched ? '' : ' max-w-lg';
+                        $html .= '<figure class="border-3 border-on-background brutalist-shadow mb-6' . $stretchClass . '">';
+                        $html .= '<img class="w-full max-h-96 object-contain" src="' . e($url) . '" alt="' . e($caption ?: 'Announcement image') . '">';
                         if ($caption) {
                             $html .= '<figcaption class="bg-surface-container p-3 font-label-mono text-xs uppercase border-t-3 border-on-background">' . e($caption) . '</figcaption>';
                         }

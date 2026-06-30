@@ -15,12 +15,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.30.7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.9.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
     <script>
@@ -764,6 +764,47 @@
         #editorjs-content .cdx-button:hover {
             transform: translate(-1px,-1px);
             box-shadow: 3px 3px 0 0 rgba(0,0,0,1);
+        }
+
+        /* ── Editor.js Image Tool display fixes ── */
+        #editorjs-content .image-tool__image {
+            margin-bottom: 10px;
+        }
+        #editorjs-content .image-tool__image-picture {
+            max-width: 100%;
+            max-height: 360px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        #editorjs-content .image-tool--uploading .image-tool__image {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color, #e8e8eb);
+            background-color: #fff;
+        }
+        #editorjs-content .image-tool--uploading .image-tool__image-picture,
+        #editorjs-content .image-tool--uploading .cdx-button {
+            display: none;
+        }
+        #editorjs-content .ce-block:has(.image-tool--filled) {
+            padding-left: 0;
+        }
+        #editorjs-content .ce-block:has(.image-tool--filled)::before {
+            display: none;
+        }
+        #editorjs-content .ce-block:has(.image-tool--filled) .ce-block__content {
+            max-width: 100%;
+            padding: 6px 0;
+        }
+
+        /* dark mode */
+        .dark #editorjs-content .image-tool--uploading .image-tool__image {
+            background-color: #1a1a1a;
+            border-color: #444;
         }
 
         /* dark mode overrides */

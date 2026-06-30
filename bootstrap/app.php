@@ -19,9 +19,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => CheckRole::class,
         ]);
 
-        // Atau jika ingin menggunakan metode lain:
-        // $middleware->append(SuperAdminMiddleware::class); // global
-        // $middleware->appendToGroup('admin', SuperAdminMiddleware::class);
+        // Exclude Editor.js image upload from CSRF (protected by auth + validation)
+        $middleware->validateCsrfTokens(except: [
+            'admin/editor/upload-image',
+            'admin/editor/upload-by-url',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

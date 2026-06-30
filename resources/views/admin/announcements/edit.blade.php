@@ -56,7 +56,7 @@
                 <div x-data="editorModal()">
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Konten <span class="text-error">*</span></label>
 
-                    <textarea name="content" hidden x-model="contentJson"></textarea>
+                    <input type="hidden" name="content" x-model="contentJson">
 
                     <button type="button" @click="openEditor()"
                         class="admin-input flex items-center gap-2 cursor-pointer hover:bg-surface-container transition-colors">
@@ -146,7 +146,7 @@
     function editorModal() {
         return {
             editorOpen: false,
-            contentJson: '{{ old('content', $announcement->content) }}',
+            contentJson: {!! json_encode(old('content') ?: ($announcement->content ?? '{"blocks":[]}')) !!},
             editorInstance: null,
             isDirty: false,
             get blockCount() {
@@ -235,7 +235,9 @@
                             config: {
                                 endpoints: {
                                     byFile: '{{ route('admin.editor.upload-image') }}',
+                                    byUrl: '{{ route('admin.editor.upload-by-url') }}',
                                 },
+                                field: 'image',
                                 captionPlaceholder: 'Tulis keterangan gambar...',
                                 buttonText: 'Pilih gambar',
                             }

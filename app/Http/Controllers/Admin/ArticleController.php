@@ -33,7 +33,7 @@ class ArticleController extends Controller
 
         if ($result && $result['success']) {
             return response()->json([
-                'success' => 1,
+                'success' => true,
                 'file' => [
                     'url' => $result['url'],
                 ],
@@ -41,9 +41,56 @@ class ArticleController extends Controller
         }
 
         return response()->json([
-            'success' => 0,
+            'success' => false,
             'message' => $result['error'] ?? 'Gagal upload gambar.',
         ], 422);
+    }
+
+    /**
+     * Upload an image via URL for Editor.js (byUrl endpoint).
+     */
+    public function uploadImageByUrl(Request $request)
+    {
+        $request->validate([
+            'url' => 'required|url',
+        ]);
+
+        try {
+            $contents = @file_get_contents($request->url);
+            if ($contents === false) {
+                throw new \RuntimeException('Gagal mengunduh gambar dari URL.');
+            }
+
+            $tempPath = tempnam(sys_get_temp_dir(), 'mw_');
+            file_put_contents($tempPath, $contents);
+
+            $mime = @mime_content_type($tempPath) ?: 'image/jpeg';
+            $extension = Str::afterLast($mime, '/');
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
+                $extension = 'jpg';
+            }
+
+            $file = new \Illuminate\Http\UploadedFile($tempPath, 'image.' . $extension, $mime, null, true);
+            $result = $this->cdn->upload($file);
+
+            @unlink($tempPath);
+
+            if ($result && $result['success']) {
+                return response()->json([
+                    'success' => true,
+                    'file' => [
+                        'url' => $result['url'],
+                    ],
+                ]);
+            }
+
+            throw new \RuntimeException($result['error'] ?? 'Gagal menyimpan gambar.');
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
     }
 
     /**

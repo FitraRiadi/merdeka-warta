@@ -40,6 +40,7 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
 
     // Upload gambar untuk Editor.js
     Route::post('/editor/upload-image', [AdminArticleController::class, 'uploadImage'])->name('editor.upload-image');
+    Route::post('/editor/upload-by-url', [AdminArticleController::class, 'uploadImageByUrl'])->name('editor.upload-by-url');
 
     // CRUD Artikel (author & super_admin)
     // Otorisasi diatur melalui Policy (author hanya milik sendiri)
