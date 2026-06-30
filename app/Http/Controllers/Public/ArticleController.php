@@ -62,9 +62,19 @@ class ArticleController extends Controller
 
         $galleries = Gallery::get();
 
+        $popularWeek = Article::where('is_published', true)
+            ->withCount(['views' => function ($q) {
+                $q->where('created_at', '>=', now()->startOfWeek());
+            }])
+            ->with('author')
+            ->orderBy('views_count', 'desc')
+            ->take(5)
+            ->get()
+            ->filter(fn ($a) => $a->views_count > 0);
+
         return view('public.index', compact(
             'spotlights', 'spotlightAnnouncement', 'articles', 'runningTexts',
-            'announcements', 'galleries'
+            'announcements', 'galleries', 'popularWeek'
         ));
     }
 

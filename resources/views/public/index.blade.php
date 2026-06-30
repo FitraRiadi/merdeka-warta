@@ -308,6 +308,48 @@
         </section>
 
         {{-- ============================================================ --}}
+        {{-- POPULAR THIS WEEK --}}
+        {{-- ============================================================ --}}
+        @if($popularWeek->isNotEmpty())
+        <section class="mb-12 md:mb-16">
+            <div class="flex items-center gap-3 mb-6 md:mb-8">
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
+                <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TERPOPULER MINGGU INI</h2>
+                <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
+            </div>
+            <div class="flex lg:grid lg:grid-cols-5 gap-3 md:gap-5 overflow-x-auto lg:overflow-visible pb-4 snap-x snap-mandatory scrollbar-thin">
+                @foreach($popularWeek as $i => $article)
+                <a href="{{ route('public.article.show', $article->slug) }}"
+                   class="min-w-[220px] sm:min-w-[240px] lg:min-w-0 snap-start bento-card rounded-xl bento-shadow bento-shadow-hover bg-surface-container-low overflow-hidden flex flex-col group relative">
+                    <div class="aspect-[4/3] overflow-hidden bg-surface-variant relative">
+                        @if($article->image)
+                            <img src="{{ $article->image }}" alt="{{ $article->title }}"
+                                 class="w-full h-full object-cover transition-all duration-500 group-hover:scale-105">
+                        @else
+                            <div class="w-full h-full bg-secondary/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-4xl text-secondary/40">image</span>
+                            </div>
+                        @endif
+                        <div class="absolute top-2 left-2 w-8 h-8 bg-primary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                            <span class="font-headline-lg text-sm text-on-primary">{{ $i + 1 }}</span>
+                        </div>
+                            <div class="absolute top-2 right-2 bg-surface/80 border border-on-background rounded px-2 py-0.5 flex items-center gap-1 text-[10px] font-label-mono text-white">
+                                <span class="material-symbols-outlined text-xs">visibility</span>
+                                {{ $article->views_count }}
+                            </div>
+                    </div>
+                    <div class="p-3 md:p-4 flex flex-col flex-grow">
+                        <span class="font-label-mono text-[10px] text-primary uppercase mb-1">{{ $article->category ?? 'BERITA' }}</span>
+                        <h3 class="font-headline-lg text-sm md:text-base leading-tight uppercase group-hover:text-primary transition-colors line-clamp-2">{{ $article->title }}</h3>
+                        <p class="font-label-mono text-[10px] text-on-surface-variant mt-auto pt-2">{{ $article->published_at->format('d M Y') }}</p>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </section>
+        @endif
+
+        {{-- ============================================================ --}}
         {{-- NEWS SLIDER (BERITA TERBARU) --}}
         {{-- ============================================================ --}}
         <section class="mb-12 md:mb-16" id="berita">
