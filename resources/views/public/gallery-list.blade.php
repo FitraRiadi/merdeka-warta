@@ -115,13 +115,17 @@
     <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 md:px-margin-desktop py-8 md:py-12">
 
         {{-- PAGE TITLE --}}
-        <div class="mb-10 md:mb-12 text-center">
-            <div class="flex items-center justify-center gap-3 mb-3">
-                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
-                <h1 class="font-headline-lg text-3xl sm:text-4xl md:text-5xl uppercase tracking-tighter">GALERI SMK MERDEKA</h1>
-                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
+        <div class="mb-10 md:mb-12">
+            <div class="flex items-center gap-2 text-on-surface-variant font-label-mono text-xs uppercase mb-3">
+                <a class="hover:text-primary transition-colors" href="{{ route('home') }}">Home</a>
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                <span class="text-primary">Galeri</span>
             </div>
-            <div class="h-1 w-20 md:w-24 bg-primary rounded mx-auto"></div>
+            <div class="flex items-center gap-3">
+                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
+                <h1 class="font-headline-lg text-2xl sm:text-3xl md:text-4xl uppercase tracking-tighter">GALERI SMK MERDEKA</h1>
+            </div>
+            <div class="h-px bg-outline-variant flex-grow mt-3"></div>
         </div>
 
         {{-- BENTO GALLERY GRID --}}

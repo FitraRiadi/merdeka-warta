@@ -112,13 +112,17 @@
     <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 md:px-margin-desktop py-8 md:py-12">
 
         {{-- PAGE TITLE --}}
-        <div class="mb-10 md:mb-12 text-center">
-            <div class="flex items-center justify-center gap-3 mb-3">
+        <div class="mb-10 md:mb-12">
+            <div class="flex items-center gap-2 text-on-surface-variant font-label-mono text-xs uppercase mb-3">
+                <a class="hover:text-primary transition-colors" href="{{ route('home') }}">Home</a>
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                <span class="text-primary">Pengumuman</span>
+            </div>
+            <div class="flex items-center gap-3">
                 <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
                 <h1 class="font-headline-lg text-2xl sm:text-3xl md:text-4xl uppercase tracking-tighter">PEMBERITAHUAN SEKOLAH</h1>
-                <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
             </div>
-            <div class="h-1 w-20 md:w-24 bg-primary rounded mx-auto"></div>
+            <div class="h-px bg-outline-variant flex-grow mt-3"></div>
         </div>
 
         {{-- FEATURED + LATEST BENTO SECTION --}}
@@ -152,35 +156,7 @@
             </a>
             @endif
 
-            {{-- Latest announcements --}}
-            @foreach($latestAnnouncements->take(3) as $i => $la)
-                @php
-                    $latestTypeStyles = [
-                        'important' => ['bg' => 'bg-error/10', 'iconBg' => 'bg-white', 'icon' => 'error', 'color' => 'text-error'],
-                        'warning' => ['bg' => 'bg-tertiary/10', 'iconBg' => 'bg-white', 'icon' => 'warning_amber', 'color' => 'text-tertiary'],
-                        'info' => ['bg' => 'bg-secondary/10', 'iconBg' => 'bg-white', 'icon' => 'campaign', 'color' => 'text-secondary'],
-                    ];
-                    $p = $latestTypeStyles[$la->type] ?? $latestTypeStyles['info'];
-                    $laLabel = $featTypeLabels[$la->type] ?? 'PENGUMUMAN';
-                @endphp
-                <a href="{{ route('public.announcement.show', $la->id) }}"
-                   class="bg-white dark:bg-surface-container rounded-xl bento-shadow bento-card bento-shadow-hover p-4 md:p-5 flex flex-col group @if($featured && $i == 2) md:col-span-2 lg:col-span-1 @endif">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center {{ $p['bg'] }}">
-                            <span class="material-symbols-outlined {{ $p['color'] }} text-xl">{{ $p['icon'] }}</span>
-                        </div>
-                        <div class="flex-grow min-w-0">
-                            <div class="flex items-center gap-2 mb-1.5">
-                                <span class="text-[10px] font-label-mono text-on-surface-variant uppercase">{{ $laLabel }}</span>
-                                <span class="text-[10px] font-label-mono text-on-surface-variant">/</span>
-                                <span class="text-[10px] font-label-mono text-on-surface-variant">{{ $la->created_at->format('d M') }}</span>
-                            </div>
-                            <h3 class="font-headline-lg text-sm md:text-base uppercase leading-tight group-hover:text-primary transition-colors">{{ $la->title }}</h3>
-                        </div>
-                    </div>
-                    <p class="text-xs text-on-surface-variant mt-2 line-clamp-1">{{ Str::limit($la->content_text, 80) }}</p>
-                </a>
-            @endforeach
+           
         </section>
         @endif
 
