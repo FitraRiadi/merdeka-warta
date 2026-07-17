@@ -434,32 +434,7 @@
             </div>
         </section>
 
-        {{-- ============================================================ --}}
-        {{-- ACTIVITY GALLERY --}}
-        {{-- ============================================================ --}}
-        @if($galleries->isNotEmpty())
-            <section class="mb-12 md:mb-16">
-                <div class="flex items-center justify-between mb-6 gap-4">
-                    <div class="flex items-center gap-3">
-                        <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
-                        <h2 class="font-headline-lg text-xl md:text-3xl uppercase">MOMEN DI SMK MERDEKA</h2>
-                    </div>
-                    <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
-                    <a href="{{ route('public.gallery.list') }}" class="font-label-mono text-xs uppercase text-primary hover:underline shrink-0 flex items-center gap-1">Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
-                </div>
-                <div class="w-full overflow-hidden">
-                    <div class="flex animate-scroll-gallery gap-4">
-                        @for($copy = 0; $copy < 3; $copy++)
-                            @foreach($galleries as $g)
-                                <div class="w-56 md:w-72 aspect-[4/3] rounded-xl bento-shadow overflow-hidden shrink-0 bento-card bento-shadow-hover">
-                                    <img alt="{{ $g->caption ?? 'Momen SMK Merdeka' }}" class="w-full h-full object-cover transition-all duration-500 hover:scale-110" src="{{ $g->image_url }}" loading="lazy">
-                                </div>
-                            @endforeach
-                        @endfor
-                    </div>
-                </div>
-            </section>
-        @endif
+        
 
         {{-- ============================================================ --}}
         {{-- TESTIMONIALS --}}

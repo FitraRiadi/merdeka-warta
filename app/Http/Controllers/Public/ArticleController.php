@@ -72,6 +72,17 @@ class ArticleController extends Controller
             ->get()
             ->filter(fn ($a) => $a->views_count > 0);
 
+        if ($popularWeek->count() < 5) {
+            $existingIds = $popularWeek->pluck('id');
+            $pad = Article::where('is_published', true)
+                ->whereNotIn('id', $existingIds)
+                ->latest('published_at')
+                ->take(5 - $popularWeek->count())
+                ->get()
+                ->map(fn ($a) => tap(clone $a, fn ($c) => $c->views_count = 0));
+            $popularWeek = $popularWeek->concat($pad);
+        }
+
         return view('public.index', compact(
             'spotlights', 'spotlightAnnouncement', 'articles', 'runningTexts',
             'announcements', 'galleries', 'popularWeek'
