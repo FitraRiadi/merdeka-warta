@@ -171,6 +171,27 @@ class Announcement extends Model
                     $html .= '<hr class="border-3 border-on-background my-10">';
                     break;
 
+                case 'button':
+                    $text = !empty($data['text']) ? $data['text'] : 'Tombol';
+                    $url = !empty($data['url']) ? $data['url'] : '#';
+                    $style = !empty($data['style']) ? $data['style'] : 'primary';
+                    $linkType = !empty($data['linkType']) ? $data['linkType'] : (!empty($data['download']) ? 'download' : 'link');
+                    $download = ($linkType === 'download');
+                    $icon = $download ? 'download' : 'link';
+                    $styleClasses = [
+                        'primary' => 'bg-primary text-on-primary border-2 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px]',
+                        'secondary' => 'bg-secondary text-on-secondary border-2 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px]',
+                        'outline' => 'bg-transparent text-on-background border-2 border-on-background hover:bg-on-background hover:text-surface',
+                    ];
+                    $class = $styleClasses[$style] ?? $styleClasses['primary'];
+                    $textColors = ['primary' => 'var(--on-primary)', 'secondary' => 'var(--on-secondary)', 'outline' => 'var(--on-background)'];
+                    $textColor = $textColors[$style] ?? 'var(--on-primary)';
+                    $downloadAttr = $download ? ' download' : '';
+                    $html .= '<div class="mb-6 text-center md:text-left">';
+                    $html .= '<a href="' . e($url) . '" style="color:' . $textColor . ';text-decoration:none" class="inline-block px-6 py-3 font-headline-lg text-sm uppercase tracking-wider transition-all ' . $class . '" target="_blank" rel="noopener noreferrer"' . $downloadAttr . '><span class="material-symbols-outlined text-sm mr-2 align-middle">' . $icon . '</span><span class="align-middle">' . e($text) . '</span></a>';
+                    $html .= '</div>';
+                    break;
+
                 case 'embed':
                     $service = $data['service'] ?? '';
                     $embed = $data['embed'] ?? '';

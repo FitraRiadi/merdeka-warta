@@ -38,9 +38,10 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Upload gambar untuk Editor.js
+    // Upload gambar & file untuk Editor.js
     Route::post('/editor/upload-image', [AdminArticleController::class, 'uploadImage'])->name('editor.upload-image');
     Route::post('/editor/upload-by-url', [AdminArticleController::class, 'uploadImageByUrl'])->name('editor.upload-by-url');
+    Route::post('/editor/upload-file', [AdminArticleController::class, 'uploadFile'])->name('editor.upload-file');
 
     // CRUD Artikel (author & super_admin)
     // Otorisasi diatur melalui Policy (author hanya milik sendiri)

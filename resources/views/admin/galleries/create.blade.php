@@ -28,14 +28,18 @@
                         </button>
                     </div>
 
-                    <div x-show="source==='upload'" x-cloak>
+                    <div x-show="source==='upload'" x-cloak
+                         class="p-3 border-2 border-dashed border-on-background/20 rounded">
+                        <p class="font-label-mono text-[10px] text-on-surface-variant mb-1">Upload dari perangkat</p>
                         <input type="file" name="image" accept="image/*"
                             @change="previewFile = $event.target.files[0] || null; imageError = false"
                             class="admin-input custom-file-input py-2">
                         <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Maks. 5MB. Format: JPG, PNG, WebP</p>
                     </div>
 
-                    <div x-show="source==='url'" x-cloak>
+                    <div x-show="source==='url'" x-cloak
+                         class="p-3 border-2 border-dashed border-on-background/20 rounded">
+                        <p class="font-label-mono text-[10px] text-on-surface-variant mb-1">URL gambar eksternal</p>
                         <input type="url" name="image_url" x-model="previewUrl"
                             @input="imageError = false"
                             class="admin-input" placeholder="https://contoh.com/gambar.jpg">

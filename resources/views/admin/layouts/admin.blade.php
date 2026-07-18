@@ -8,6 +8,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Panel Admin') - {{ config('app.name') }}</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
@@ -22,7 +23,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.9.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
 <script>
     const CustomQuote = class {
         static get toolbox() {
@@ -65,6 +65,237 @@
         }
         static get sanitize() {
             return { text: { br: true, b: true, i: true, a: true, mark: true }, caption: false };
+        }
+    };
+</script>
+<script>
+    const CustomButton = class {
+        static get toolbox() {
+            return {
+                title: 'Tombol',
+                icon: '<svg width="18" height="14" viewBox="0 0 18 14" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 4l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            };
+        }
+        constructor({ data, config, api }) {
+            this.api = api;
+            this.config = config || {};
+            const isDownload = data.download || false;
+            this.data = {
+                text: data.text || '',
+                url: data.url || '',
+                style: data.style || 'primary',
+                linkType: data.linkType || (isDownload ? 'download' : 'link'),
+                newTab: true,
+                download: isDownload,
+                fileName: data.fileName || ''
+            };
+            this.nodes = {};
+        }
+        _makeInput(type, placeholder, value, onChange) {
+            const i = document.createElement(type === 'textarea' ? 'textarea' : 'input');
+            i.className = type === 'textarea' ? 'cdx-button-field__input cdx-button-field__textarea' : 'cdx-button-field__input';
+            i.value = value || '';
+            i.placeholder = placeholder || '';
+            if (type !== 'textarea') i.type = type || 'text';
+            i.addEventListener('input', (e) => { onChange(e.target.value); });
+            i.addEventListener('keydown', (e) => {
+                e.stopImmediatePropagation();
+                if (e.key === 'Enter') e.preventDefault();
+            });
+            return i;
+        }
+        _makeField(labelText) {
+            const g = document.createElement('div');
+            g.className = 'cdx-button-field';
+            const l = document.createElement('div');
+            l.className = 'cdx-button-field__label';
+            l.textContent = labelText;
+            g.appendChild(l);
+            return g;
+        }
+        _showSection(id) {
+            this.nodes.linkSection.style.display = id === 'link' ? '' : 'none';
+            this.nodes.downloadSection.style.display = id === 'download' ? '' : 'none';
+        }
+        render() {
+            const wrap = document.createElement('div');
+            wrap.className = 'cdx-button-block';
+
+            // ── Teks tombol ──
+            const textField = this._makeField('Teks tombol');
+            textField.appendChild(this._makeInput('text', 'Contoh: Download Jadwal Upacara', this.data.text, (v) => { this.data.text = v; this._updatePreview(); }));
+            wrap.appendChild(textField);
+
+            // ── Tipe tombol: Link vs Download (radio) ──
+            const typeField = this._makeField('Tipe tombol');
+            const typeRow = document.createElement('div');
+            typeRow.className = 'cdx-button-field__row';
+            ['link', 'download'].forEach((t) => {
+                const label = document.createElement('label');
+                label.className = 'cdx-button-radio';
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'btn-type';
+                radio.value = t;
+                radio.checked = this.data.linkType === t;
+                radio.addEventListener('change', () => {
+                    this.data.linkType = t;
+                    this.data.download = (t === 'download');
+                    this.data.url = '';
+                    this.data.fileName = '';
+                    if (this.nodes.linkInput) this.nodes.linkInput.value = '';
+                    if (this.nodes.fileNameDisplay) this.nodes.fileNameDisplay.value = '';
+                    this._showSection(t);
+                    this._updatePreview();
+                });
+                label.appendChild(radio);
+                const span = document.createElement('span');
+                span.textContent = t === 'link' ? 'Button Link' : 'Button Download';
+                label.appendChild(span);
+                typeRow.appendChild(label);
+            });
+            typeField.appendChild(typeRow);
+            wrap.appendChild(typeField);
+
+            // ── Section: Link ──
+            this.nodes.linkSection = document.createElement('div');
+            this.nodes.linkSection.className = 'cdx-button-field';
+            const linkLabel = document.createElement('div');
+            linkLabel.className = 'cdx-button-field__label';
+            linkLabel.textContent = 'URL tujuan (otomatis buka tab baru)';
+            this.nodes.linkSection.appendChild(linkLabel);
+            this.nodes.linkInput = this._makeInput('url', 'https://contoh.com/halaman', this.data.url, (v) => { this.data.url = v; this._updatePreview(); });
+            this.nodes.linkSection.appendChild(this.nodes.linkInput);
+            wrap.appendChild(this.nodes.linkSection);
+
+            // ── Section: Download ──
+            this.nodes.downloadSection = document.createElement('div');
+            this.nodes.downloadSection.className = 'cdx-button-field';
+            const dlLabel = document.createElement('div');
+            dlLabel.className = 'cdx-button-field__label';
+            dlLabel.textContent = 'Upload file';
+            this.nodes.downloadSection.appendChild(dlLabel);
+            const dlRow = document.createElement('div');
+            dlRow.className = 'cdx-button-field__row';
+            this.nodes.fileNameDisplay = document.createElement('input');
+            this.nodes.fileNameDisplay.type = 'text';
+            this.nodes.fileNameDisplay.className = 'cdx-button-field__input flex-1';
+            this.nodes.fileNameDisplay.placeholder = 'Belum ada file dipilih';
+            this.nodes.fileNameDisplay.value = this.data.fileName || '';
+            this.nodes.fileNameDisplay.readOnly = true;
+            dlRow.appendChild(this.nodes.fileNameDisplay);
+            const fileBtn = document.createElement('button');
+            fileBtn.type = 'button';
+            fileBtn.className = 'cdx-button-field__file-btn';
+            fileBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px">upload_file</span> Pilih file';
+            fileBtn.addEventListener('click', () => { this._triggerFileUpload(); });
+            dlRow.appendChild(fileBtn);
+            this.nodes.downloadSection.appendChild(dlRow);
+            const dlHint = document.createElement('div');
+            dlHint.className = 'cdx-button-field__hint';
+            dlHint.textContent = 'Format: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG, WebP, GIF, ZIP';
+            this.nodes.downloadSection.appendChild(dlHint);
+            this.nodes.fileInput = document.createElement('input');
+            this.nodes.fileInput.type = 'file';
+            this.nodes.fileInput.style.display = 'none';
+            this.nodes.fileInput.accept = '.pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.webp,.gif,.zip';
+            this.nodes.fileInput.addEventListener('change', (e) => { this._handleFile(e); });
+            this.nodes.downloadSection.appendChild(this.nodes.fileInput);
+            wrap.appendChild(this.nodes.downloadSection);
+
+            // ── Gaya tombol ──
+            const styleField = this._makeField('Gaya tombol');
+            const styleRow = document.createElement('div');
+            styleRow.className = 'cdx-button-field__row';
+            ['primary', 'secondary', 'outline'].forEach((s) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'cdx-button-style-btn' + (s === this.data.style ? ' active' : '');
+                let label = s === 'primary' ? 'Utama' : s === 'secondary' ? 'Sekunder' : 'Garis';
+                b.textContent = label;
+                b.addEventListener('click', () => {
+                    this.data.style = s;
+                    styleRow.querySelectorAll('.cdx-button-style-btn').forEach((x) => x.classList.remove('active'));
+                    b.classList.add('active');
+                    this._updatePreview();
+                });
+                b.addEventListener('keydown', (e) => { e.stopPropagation(); });
+                styleRow.appendChild(b);
+            });
+            styleField.appendChild(styleRow);
+            wrap.appendChild(styleField);
+
+            // ── Preview ──
+            this.nodes.previewWrap = document.createElement('div');
+            this.nodes.previewWrap.className = 'cdx-button-preview';
+            this.nodes.previewEl = document.createElement('span');
+            this.nodes.previewEl.className = 'cdx-button-preview__el';
+            this.nodes.previewWrap.appendChild(this.nodes.previewEl);
+            wrap.appendChild(this.nodes.previewWrap);
+
+            this._showSection(this.data.linkType);
+            this._updatePreview();
+
+            return wrap;
+        }
+        _triggerFileUpload() {
+            this.nodes.fileInput.click();
+        }
+        async _handleFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const original = this.nodes.fileNameDisplay.placeholder;
+            this.nodes.fileNameDisplay.placeholder = 'Mengunggah...';
+            const form = new FormData();
+            form.append('file', file);
+            try {
+                const res = await fetch('/admin/editor/upload-file', {
+                    method: 'POST',
+                    headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content },
+                    body: form
+                });
+                const json = await res.json();
+                if (json.success) {
+                    this.data.url = json.url;
+                    this.data.fileName = file.name;
+                    this.nodes.fileNameDisplay.value = file.name;
+                    this._updatePreview();
+                } else {
+                    alert(json.message || 'Gagal upload file');
+                }
+            } catch (err) {
+                alert('Gagal upload file: ' + err.message);
+            }
+            this.nodes.fileNameDisplay.placeholder = original;
+            this.nodes.fileInput.value = '';
+        }
+        _updatePreview() {
+            if (!this.nodes.previewEl) return;
+            const txt = this.data.text || 'Tombol';
+            const isDownload = this.data.linkType === 'download';
+            const baseClass = 'cdx-button-preview__el inline-block px-6 py-3 font-headline-lg text-sm uppercase tracking-wider';
+            const styles = {
+                primary: 'bg-primary text-on-primary border-2 border-on-background',
+                secondary: 'bg-secondary text-on-secondary border-2 border-on-background',
+                outline: 'bg-transparent text-on-background border-2 border-on-background'
+            };
+            const icon = isDownload ? 'download' : 'link';
+            this.nodes.previewEl.className = baseClass + ' ' + (styles[this.data.style] || styles.primary);
+            this.nodes.previewEl.innerHTML = '<span class="material-symbols-outlined text-sm mr-2 align-middle">' + icon + '</span><span class="align-middle">' + txt + '</span>';
+        }
+        save() {
+            return {
+                text: this.data.text,
+                url: this.data.url,
+                style: this.data.style,
+                linkType: this.data.linkType,
+                newTab: true,
+                download: this.data.linkType === 'download',
+                fileName: this.data.fileName
+            };
+        }
+        static get sanitize() {
+            return { text: false, url: false, style: false, linkType: false, newTab: false, download: false, fileName: false };
         }
     };
 </script>
@@ -936,6 +1167,43 @@
         .dark .cdx-quote__caption:focus {
             border-color: #34d399;
         }
+
+        /* ── Custom Button Tool ── */
+        .cdx-button-block { padding: 0.5rem 0; }
+        .cdx-button-field { margin-bottom: 0.75rem; }
+        .cdx-button-field__label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #666; margin-bottom: 0.25rem; font-family: 'JetBrains Mono', monospace; }
+        .dark .cdx-button-field__label { color: #999; }
+        .cdx-button-field__input, .cdx-button-field__textarea { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0; font-size: 0.875rem; background: #fff; color: #111; outline: none; box-sizing: border-box; font-family: inherit; }
+        .cdx-button-field__input:focus, .cdx-button-field__textarea:focus { border-color: #006b4f; box-shadow: 0 0 0 2px rgba(0,107,79,0.15); }
+        .dark .cdx-button-field__input, .dark .cdx-button-field__textarea { background: #2a2a2a; color: #e5e5e5; border-color: #555; }
+        .dark .cdx-button-field__input:focus, .dark .cdx-button-field__textarea:focus { border-color: #34d399; box-shadow: 0 0 0 2px rgba(52,211,153,0.15); }
+        .cdx-button-field__textarea { resize: none; overflow: hidden; min-height: 2.5rem; }
+        .cdx-button-field__row { display: flex; gap: 0.5rem; }
+        .cdx-button-field__row .cdx-button-field__input { flex: 1; }
+        .cdx-button-field__file-btn { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.5rem 0.75rem; font-size: 0.75rem; font-weight: 600; border: 1px solid #d1d5db; background: #f3f4f6; cursor: pointer; transition: background 0.15s; white-space: nowrap; font-family: inherit; }
+        .cdx-button-field__file-btn:hover { background: #e5e7eb; }
+        .dark .cdx-button-field__file-btn { background: #333; border-color: #555; color: #e5e5e5; }
+        .dark .cdx-button-field__file-btn:hover { background: #444; }
+        .cdx-button-style-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.35rem 0.75rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 2px solid #333; cursor: pointer; transition: all 0.1s; background: #fff; color: #333; font-family: inherit; }
+        .cdx-button-style-btn.active { background: #333; color: #fff; }
+        .cdx-button-style-btn:hover { transform: translate(-1px,-1px); }
+        .cdx-button-style-btn + .cdx-button-style-btn { margin-left: 0.25rem; }
+        .dark .cdx-button-style-btn { border-color: #888; background: transparent; color: #ccc; }
+        .dark .cdx-button-style-btn.active { background: #ccc; color: #1a1a1a; }
+        .cdx-button-radio { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; cursor: pointer; color: #444; font-family: inherit; padding: 0.25rem 0.5rem; border: 2px solid #d1d5db; transition: all 0.1s; }
+        .cdx-button-radio input { width: 0.9rem; height: 0.9rem; cursor: pointer; accent-color: #006b4f; }
+        .cdx-button-radio:has(input:checked) { border-color: #006b4f; background: rgba(0,107,79,0.06); }
+        .dark .cdx-button-radio { color: #ccc; border-color: #555; }
+        .dark .cdx-button-radio input { accent-color: #34d399; }
+        .dark .cdx-button-radio:has(input:checked) { border-color: #34d399; background: rgba(52,211,153,0.1); }
+        .cdx-button-radio + .cdx-button-radio { margin-left: 0.25rem; }
+        .cdx-button-field__hint { font-size: 0.65rem; color: #999; margin-top: 0.25rem; font-family: 'JetBrains Mono', monospace; }
+        .dark .cdx-button-field__hint { color: #777; }
+        .cdx-button-field__input[readonly] { background: #f3f4f6; cursor: default; }
+        .dark .cdx-button-field__input[readonly] { background: #222; color: #999; }
+        .cdx-button-preview { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed #d1d5db; display: flex; justify-content: center; }
+        .cdx-button-preview__el { cursor: default; pointer-events: none; }
+        .dark .cdx-button-preview { border-color: #555; }
     </style>
     @stack('styles')
 </head>

@@ -61,7 +61,7 @@
                     <button type="button" @click="openEditor()"
                         class="admin-input flex items-center gap-2 cursor-pointer hover:bg-surface-container transition-colors">
                         <span class="material-symbols-outlined text-sm text-secondary">edit_note</span>
-                        <span class="font-body-md text-sm" x-text="contentJson && contentJson !== '{\"blocks\":[]}' ? 'Konten sudah diisi (' + blockCount + ' blok)' : 'Klik untuk buka Editor WYSIWYG'"></span>
+                        <span class="font-body-md text-sm" x-text="contentJson && contentJson !== '{\"blocks\":[]}' ? 'Konten sudah diisi (' + blockCount + ' blok)' : 'Ketuk untuk membuka konten'"></span>
                         <span class="material-symbols-outlined text-sm ml-auto text-on-surface-variant">open_in_new</span>
                     </button>
 
@@ -212,8 +212,8 @@
                             class: EditorjsList,
                             inlineToolbar: true,
                         },
-                        checklist: {
-                            class: Checklist,
+                        button: {
+                            class: CustomButton,
                             inlineToolbar: true,
                         },
                     quote: {

@@ -152,6 +152,34 @@ class ArticleController extends Controller
     }
 
     /**
+     * Upload any file for the Button tool (download).
+     */
+    public function uploadFile(Request $request)
+    {
+        $this->authorize('create', Article::class);
+
+        $request->validate([
+            'file' => 'required|file|max:10240',
+        ]);
+
+        $file = $request->file('file');
+        $result = $this->cdn->upload($file);
+
+        if ($result && $result['success']) {
+            return response()->json([
+                'success' => true,
+                'url' => $result['url'],
+                'name' => $file->getClientOriginalName(),
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $result['error'] ?? 'Gagal upload file.',
+        ], 422);
+    }
+
+    /**
      * Display a listing of the articles.
      */
     public function index()
