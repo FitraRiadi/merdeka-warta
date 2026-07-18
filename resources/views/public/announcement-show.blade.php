@@ -101,6 +101,7 @@
         #mobile-sidebar.open { transform: translateX(0); }
         #sidebar-overlay { transition: opacity 0.3s ease-in-out; }
         #sidebar-overlay.open { opacity: 1 !important; pointer-events: auto !important; }
+        .prose { overflow-wrap: break-word; word-break: break-word; }
         .prose h2 { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 1.5rem; line-height: 1.1; margin-top: 2rem; margin-bottom: 0.75rem; }
         .prose h3 { font-family: 'Anton', sans-serif; text-transform: uppercase; font-size: 1.25rem; line-height: 1.1; margin-top: 1.5rem; margin-bottom: 0.5rem; }
         .prose p { margin-bottom: 1rem; line-height: 1.7; }

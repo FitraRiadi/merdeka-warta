@@ -10,10 +10,10 @@
         </button>
     </div>
     <nav class="flex flex-col gap-6">
-        <a class="text-2xl font-bold font-body-md @if(request()->routeIs('home')) text-primary border-l-4 border-primary @else hover:text-primary border-l-4 border-transparent @endif pl-4 transition-colors" href="{{ route('home') }}">Home</a>
-        <a class="text-2xl font-bold font-body-md @if(request()->routeIs('public.article.list')) text-primary border-l-4 border-primary @else hover:text-primary border-l-4 border-transparent @endif pl-4 transition-colors" href="{{ route('public.article.list') }}">Berita</a>
-        <a class="text-2xl font-bold font-body-md @if(request()->routeIs('public.announcement.list')) text-primary border-l-4 border-primary @else hover:text-primary border-l-4 border-transparent @endif pl-4 transition-colors" href="{{ route('public.announcement.list') }}">Pengumuman</a>
-        <a class="text-2xl font-bold font-body-md @if(request()->routeIs('public.gallery.list')) text-primary border-l-4 border-primary @else hover:text-primary border-l-4 border-transparent @endif pl-4 transition-colors" href="{{ route('public.gallery.list') }}">Galeri</a>
+        <a class="nav-link-mobile text-2xl font-bold font-body-md @if(request()->routeIs('home')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-3 transition-colors" href="{{ route('home') }}">Home</a>
+        <a class="nav-link-mobile text-2xl font-bold font-body-md @if(request()->routeIs('public.article.list')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-3 transition-colors" href="{{ route('public.article.list') }}">Berita</a>
+        <a class="nav-link-mobile text-2xl font-bold font-body-md @if(request()->routeIs('public.announcement.list')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-3 transition-colors" href="{{ route('public.announcement.list') }}">Pengumuman</a>
+        <a class="nav-link-mobile text-2xl font-bold font-body-md @if(request()->routeIs('public.gallery.list')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-3 transition-colors" href="{{ route('public.gallery.list') }}">Galeri</a>
     </nav>
     <div class="mt-auto pt-12">
         @auth
@@ -31,19 +31,19 @@
 {{-- STICKY HEADER WRAPPER --}}
 <div class="sticky top-0 z-50">
     {{-- TOP NAVBAR --}}
-    <nav class="w-full bg-surface border-b-3 border-on-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <div class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-4 max-w-[1440px] mx-auto">
+    <nav class="bg-surface border-3 border-on-background outline-2 outline-offset-[-6px] outline-on-background shadow-sm rounded-2xl max-w-7xl mx-2 md:mx-auto">
+        <div class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-4">
             <div class="logo-smkmerdeka flex items-center gap-3">
                 <a href="https://www.smkmerdekabdg.sch.id/" target="_blank"><img width="30" height="30" src="{{ asset('smk-merdeka-logo.png') }}" alt="smkmerdeka-logo"></a>
                 <a class="font-headline-lg text-[24px] md:text-headline-lg uppercase tracking-tighter text-on-surface" href="{{ route('home') }}">
                     MERDEKA WARTA
                 </a>
             </div>            
-            <div class="hidden lg:flex gap-8 items-center">
-                <a class="@if(request()->routeIs('home')) text-primary border-b-3 border-primary @else text-on-surface @endif pb-1 font-bold font-body-md text-body-md hover:text-primary transition-colors" href="{{ route('home') }}">Home</a>
-                <a class="@if(request()->routeIs('public.article.list')) text-primary border-b-3 border-primary @else text-on-surface @endif pb-1 font-bold font-body-md text-body-md hover:text-primary transition-colors" href="{{ route('public.article.list') }}">Berita</a>
-                <a class="@if(request()->routeIs('public.announcement.list')) text-primary border-b-3 border-primary @else text-on-surface @endif pb-1 font-bold font-body-md text-body-md hover:text-primary transition-colors" href="{{ route('public.announcement.list') }}">Pengumuman</a>
-                <a class="@if(request()->routeIs('public.gallery.list')) text-primary border-b-3 border-primary @else text-on-surface @endif pb-1 font-bold font-body-md text-body-md hover:text-primary transition-colors" href="{{ route('public.gallery.list') }}">Galeri</a>
+            <div class="hidden lg:flex gap-2 items-center">
+                <a class="nav-link @if(request()->routeIs('home')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-2 font-bold font-body-md text-body-md transition-colors" href="{{ route('home') }}">Home</a>
+                <a class="nav-link @if(request()->routeIs('public.article.list')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-2 font-bold font-body-md text-body-md transition-colors" href="{{ route('public.article.list') }}">Berita</a>
+                <a class="nav-link @if(request()->routeIs('public.announcement.list')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-2 font-bold font-body-md text-body-md transition-colors" href="{{ route('public.announcement.list') }}">Pengumuman</a>
+                <a class="nav-link @if(request()->routeIs('public.gallery.list')) active text-primary @else text-on-surface hover:text-primary @endif px-4 py-2 font-bold font-body-md text-body-md transition-colors" href="{{ route('public.gallery.list') }}">Galeri</a>
             </div>
             <div class="flex items-center gap-2 md:gap-4">
                 {{-- Dark Mode Toggle --}}
@@ -64,7 +64,7 @@
 
     {{-- NEWS TICKER --}}
     @if($runningTexts->isNotEmpty())
-        <div class="w-full bg-secondary text-on-secondary py-3 brutalist-border border-x-0 overflow-hidden whitespace-nowrap">
+        <div class="bg-secondary text-on-secondary py-3 border-3 border-on-background shadow-sm rounded-2xl max-w-7xl mx-2 md:mx-auto overflow-hidden whitespace-nowrap">
             <div class="flex animate-marquee" id="marqueeTrack">
                 <div class="flex items-center gap-8 px-4">
                     @foreach($runningTexts as $rt)

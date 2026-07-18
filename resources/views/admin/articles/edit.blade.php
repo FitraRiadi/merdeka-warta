@@ -259,6 +259,7 @@
                     holder: 'editorjs-content',
                     data: initialData,
                     onChange: () => { this.isDirty = true; },
+                    onReady: () => { this.editorInstance?.focus(); },
                     tools: {
                         header: {
                             class: Header,
@@ -272,11 +273,11 @@
                             class: Checklist,
                             inlineToolbar: true,
                         },
-                        quote: {
-                            class: Quote,
-                            inlineToolbar: true,
-                            config: { quotePlaceholder: 'Tulis kutipan...', captionPlaceholder: 'Sumber kutipan' }
-                        },
+                    quote: {
+                        class: CustomQuote,
+                        inlineToolbar: true,
+                        config: { quotePlaceholder: 'Tulis kutipan...', captionPlaceholder: 'Sumber kutipan' }
+                    },
                         delimiter: Delimiter,
                         image: {
                             class: ImageTool,

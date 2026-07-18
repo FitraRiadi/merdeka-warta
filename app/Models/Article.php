@@ -131,11 +131,13 @@ class Article extends Model
                 case 'quote':
                 case 'blockquote':
                     $text = $data['text'] ?? '';
+                    $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
+                    $text = nl2br(e($text));
                     $caption = $data['caption'] ?? '';
                     $alignment = $data['alignment'] ?? 'left';
                     $html .= '<blockquote class="bg-on-background text-surface p-8 border-3 border-on-background brutalist-shadow italic relative overflow-hidden mb-6">';
                     $html .= '<span class="material-symbols-outlined absolute -top-4 -left-4 text-9xl opacity-20 rotate-12">format_quote</span>';
-                    $html .= '<p class="text-xl md:text-2xl font-bold relative z-10">' . e($text) . '</p>';
+                    $html .= '<p class="text-xl md:text-2xl font-bold relative z-10">' . $text . '</p>';
                     if ($caption) {
                         $html .= '<footer class="mt-4 font-label-mono text-xs uppercase opacity-70 relative z-10">— ' . e($caption) . '</footer>';
                     }

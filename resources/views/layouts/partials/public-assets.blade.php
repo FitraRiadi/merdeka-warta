@@ -194,6 +194,54 @@
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Nav underline animation — melebar kiri-kanan */
+    .nav-link {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        vertical-align: top;
+    }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 100%;
+        height: 3px;
+        background-color: var(--color-primary);
+        border-radius: 999px;
+        transform: translateX(-50%) scaleX(0);
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-origin: center;
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        transform: translateX(-50%) scaleX(1);
+    }
+
+    .nav-link-mobile {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+    }
+    .nav-link-mobile::after {
+        content: '';
+        position: absolute;
+        bottom: 5px;
+        left: 50%;
+        width: 100%;
+        height: 4px;
+        background-color: var(--color-primary);
+        border-radius: 999px;
+        transform: translateX(-50%) scaleX(0);
+        transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-origin: center;
+    }
+    .nav-link-mobile:hover::after,
+    .nav-link-mobile.active::after {
+        transform: translateX(-50%) scaleX(1);
+    }
 </style>
 
 {{-- GSAP via CDN --}}

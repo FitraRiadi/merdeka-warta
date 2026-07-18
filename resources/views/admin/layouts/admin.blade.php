@@ -22,8 +22,53 @@
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@2.9.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+<script>
+    const CustomQuote = class {
+        static get toolbox() {
+            return {
+                title: 'Kutipan',
+                icon: '<svg width="17" height="13" viewBox="0 0 17 13" xmlns="http://www.w3.org/2000/svg"><path d="M5.292 10.067c-1.245 0-2.256-.368-3.033-1.104C1.482 8.226 1.094 7.242 1.094 6.01c0-.898.225-1.754.674-2.567.46-.825 1.133-1.521 2.02-2.09.886-.568 1.93-.974 3.13-1.218l.404 1.66c-.787.232-1.451.578-1.992 1.038-.541.46-.91.985-1.104 1.575.257-.06.531-.09.82-.09.957 0 1.764.337 2.42 1.012.656.664.984 1.493.984 2.487 0 1.025-.34 1.87-1.022 2.534-.682.664-1.507.996-2.476.996zm7.656 0c-1.245 0-2.256-.368-3.033-1.104-.777-.737-1.165-1.721-1.165-2.953 0-.898.225-1.754.674-2.567.46-.825 1.133-1.521 2.02-2.09.886-.568 1.93-.974 3.13-1.218l.404 1.66c-.787.232-1.451.578-1.992 1.038-.541.46-.91.985-1.104 1.575.257-.06.531-.09.82-.09.957 0 1.764.337 2.42 1.012.656.664.984 1.493.984 2.487 0 1.025-.34 1.87-1.022 2.534-.682.664-1.507.996-2.476.996z"/></svg>'
+            };
+        }
+        constructor({ data, config, api }) {
+            this.api = api;
+            this.config = config || {};
+            this._data = { text: data.text || '', caption: data.caption || '', alignment: data.alignment || 'left' };
+            this._element = null;
+            this._caption = null;
+        }
+        render() {
+            const c = document.createElement('div');
+            c.className = 'cdx-quote';
+            this._element = document.createElement('div');
+            this._element.contentEditable = true;
+            this._element.innerHTML = this._data.text;
+            this._element.className = 'cdx-quote__text';
+            this._element.dataset.placeholder = this.config.quotePlaceholder || 'Tulis kutipan...';
+            this._caption = document.createElement('textarea');
+            this._caption.value = this._data.caption;
+            this._caption.className = 'cdx-quote__caption';
+            this._caption.placeholder = this.config.captionPlaceholder || 'Sumber kutipan';
+            this._caption.rows = 1;
+            this._caption.addEventListener('keydown', (e) => { if (e.key === 'Enter') e.stopPropagation(); });
+            this._caption.addEventListener('input', () => {
+                this._caption.style.height = 'auto';
+                this._caption.style.height = this._caption.scrollHeight + 'px';
+            });
+            c.appendChild(this._element);
+            c.appendChild(this._caption);
+            return c;
+        }
+        save() {
+            return { text: this._element.innerHTML, caption: this._caption.value, alignment: this._data.alignment };
+        }
+        static get sanitize() {
+            return { text: { br: true, b: true, i: true, a: true, mark: true }, caption: false };
+        }
+    };
+</script>
+<script>
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -850,6 +895,44 @@
         .dark #editorjs-content .cdx-button {
             background: var(--surface-container-high);
             box-shadow: 2px 2px 0 0 rgba(255,255,255,0.12);
+        }
+        .ce-paragraph[data-placeholder]:empty::before,
+        .cdx-quote__text[data-placeholder]:empty::before,
+        .cdx-block[data-placeholder]:empty::before {
+            content: attr(data-placeholder) !important;
+            color: #9ca3af !important;
+            pointer-events: none;
+            font-style: italic;
+        }
+        .cdx-quote__caption {
+            width: 100%;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border: 1px dashed #d1d5db;
+            border-radius: 0.25rem;
+            background: transparent;
+            font-size: 0.875rem;
+            color: inherit;
+            resize: none;
+            overflow: hidden;
+            min-height: 2.5rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .cdx-quote__caption:focus {
+            outline: none;
+            border-color: #006b4f;
+        }
+        .cdx-quote__caption::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+        }
+        .dark .cdx-quote__caption {
+            border-color: #555;
+            color: #e5e5e5;
+        }
+        .dark .cdx-quote__caption:focus {
+            border-color: #34d399;
         }
     </style>
     @stack('styles')

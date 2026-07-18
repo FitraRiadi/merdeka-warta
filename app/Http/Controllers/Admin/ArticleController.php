@@ -25,6 +25,8 @@ class ArticleController extends Controller
      */
     public function uploadImage(Request $request)
     {
+        $this->authorize('create', Article::class);
+
         $request->validate([
             'image' => 'required|image|max:5120',
         ]);
@@ -51,12 +53,51 @@ class ArticleController extends Controller
      */
     public function uploadImageByUrl(Request $request)
     {
+        $this->authorize('create', Article::class);
+
         $request->validate([
             'url' => 'required|url',
         ]);
 
+        $url = $request->url;
+        $parsed = parse_url($url);
+
+        if (!isset($parsed['scheme']) || !in_array($parsed['scheme'], ['https'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Hanya URL HTTPS yang diizinkan.',
+            ], 422);
+        }
+
+        $host = $parsed['host'] ?? '';
+        $ip = @gethostbyname($host);
+        $isPrivate = filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        ) === false;
+
+        if ($isPrivate) {
+            return response()->json([
+                'success' => false,
+                'message' => 'URL tidak valid atau tidak dapat dijangkau.',
+            ], 422);
+        }
+
         try {
-            $contents = @file_get_contents($request->url);
+            $contents = @file_get_contents($url, false, stream_context_create([
+                'http' => [
+                    'timeout' => 10,
+                    'method' => 'GET',
+                    'follow_location' => 1,
+                    'max_redirects' => 3,
+                    'header' => "User-Agent: MerdekaWarta/1.0\r\n",
+                ],
+                'ssl' => [
+                    'verify_peer' => true,
+                    'verify_peer_name' => true,
+                ],
+            ]));
             if ($contents === false) {
                 throw new \RuntimeException('Gagal mengunduh gambar dari URL.');
             }
@@ -64,11 +105,28 @@ class ArticleController extends Controller
             $tempPath = tempnam(sys_get_temp_dir(), 'mw_');
             file_put_contents($tempPath, $contents);
 
-            $mime = @mime_content_type($tempPath) ?: 'image/jpeg';
-            $extension = Str::afterLast($mime, '/');
-            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif'])) {
-                $extension = 'jpg';
+            $imageInfo = @getimagesize($tempPath);
+            if ($imageInfo === false) {
+                @unlink($tempPath);
+                throw new \RuntimeException('URL tidak mengarah ke file gambar yang valid.');
             }
+
+            $allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+            $mime = $imageInfo['mime'];
+            if (!in_array($mime, $allowedMimes)) {
+                @unlink($tempPath);
+                throw new \RuntimeException('Tipe gambar tidak diizinkan. Hanya JPEG, PNG, WebP, dan GIF.');
+            }
+
+            $extension = Str::afterLast($mime, '/');
+            $extension = $extension === 'jpeg' ? 'jpg' : $extension;
+
+            $img = @imagecreatefromstring($contents);
+            if ($img === false) {
+                @unlink($tempPath);
+                throw new \RuntimeException('File gambar rusak atau tidak valid.');
+            }
+            imagedestroy($img);
 
             $file = new \Illuminate\Http\UploadedFile($tempPath, 'image.' . $extension, $mime, null, true);
             $result = $this->cdn->upload($file);
