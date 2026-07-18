@@ -634,7 +634,7 @@
         /* ── Editor.js canvas: notebook paper style ── */
         #editorjs-content .codex-editor {
             background: #f7f6f3;
-            border: 1px solid #c4c3bd;
+            border: 2px solid rgba(0,0,0,0.15);
             border-radius: 4px;
         }
         #editorjs-content .codex-editor__redactor {
@@ -647,8 +647,9 @@
             position: relative;
             background: rgba(255,255,255,0.85);
             backdrop-filter: blur(2px);
-            margin: 0 0 1px 0;
+            margin: 0;
             border-left: 3px solid transparent;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
             transition: background 0.15s, border-color 0.15s;
         }
         #editorjs-content .ce-block::before {
@@ -660,8 +661,8 @@
             width: 2rem;
             text-align: right;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: #bbb;
+            font-size: 0.75rem;
+            color: #333;
             user-select: none;
             pointer-events: none;
         }
@@ -855,7 +856,7 @@
         /* dark mode overrides */
         .dark #editorjs-content .codex-editor {
             background: #1a1a1a;
-            border-color: #444;
+            border-color: rgba(255,255,255,0.15);
         }
         .dark #editorjs-content h1.ce-header,
         .dark #editorjs-content h2.ce-header,
@@ -865,9 +866,10 @@
         .dark #editorjs-content h6.ce-header { color: #c4c2bf; }
         .dark #editorjs-content .ce-block {
             background: rgba(30,30,30,0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
         .dark #editorjs-content .ce-block::before {
-            color: #555;
+            color: #ccc;
         }
         .dark #editorjs-content .ce-block--selected {
             border-left-color: var(--primary);
