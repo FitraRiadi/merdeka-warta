@@ -30,7 +30,7 @@ class AnnouncementController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:50',
             'content' => 'required|string', // JSON Editor.js
             'type' => 'required|in:info,warning,important',
             'is_active' => 'nullable|boolean',
@@ -60,7 +60,7 @@ class AnnouncementController extends Controller
     public function update(Request $request, Announcement $announcement)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:50',
             'content' => 'required|string',
             'type' => 'required|in:info,warning,important',
             'is_active' => 'nullable|boolean',

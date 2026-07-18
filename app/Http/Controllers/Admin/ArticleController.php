@@ -159,7 +159,7 @@ class ArticleController extends Controller
         $this->authorize('create', Article::class);
 
         $request->validate([
-            'file' => 'required|file|max:10240',
+            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png,webp,gif,zip|max:5120',
         ]);
 
         $file = $request->file('file');
@@ -219,13 +219,13 @@ class ArticleController extends Controller
         $this->authorize('create', Article::class);
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:50',
             'slug' => 'nullable|string|max:255|unique:articles,slug',
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
             'image_url' => 'nullable|string|max:500',
             'is_published' => 'nullable|boolean',
-            'category' => 'nullable|string|max:100',
+            'category' => 'required|string|max:100',
         ]);
 
         // Slug
@@ -292,13 +292,13 @@ class ArticleController extends Controller
         $this->authorize('update', $article);
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:50',
             'slug' => 'nullable|string|max:255|unique:articles,slug,' . $article->id,
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
             'image_url' => 'nullable|string|max:500',
             'is_published' => 'nullable|boolean',
-            'category' => 'nullable|string|max:100',
+            'category' => 'required|string|max:100',
         ]);
 
         if (empty($validated['slug'])) {

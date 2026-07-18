@@ -244,6 +244,11 @@
         async _handleFile(e) {
             const file = e.target.files[0];
             if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File maksimal 5MB.');
+                this.nodes.fileInput.value = '';
+                return;
+            }
             const original = this.nodes.fileNameDisplay.placeholder;
             this.nodes.fileNameDisplay.placeholder = 'Mengunggah...';
             const form = new FormData();

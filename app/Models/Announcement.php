@@ -90,6 +90,7 @@ class Announcement extends Model
                 case 'header':
                     $level = $data['level'] ?? 2;
                     $text = $data['text'] ?? '';
+                    $text = str_replace(['<br>', '<br/>', '<br />'], ' ', $text);
                     if ($level <= 2) {
                         $html .= '<h2 class="font-headline-lg text-3xl md:text-4xl uppercase leading-tight mb-6">' . e($text) . '</h2>';
                     } elseif ($level <= 4) {
@@ -101,7 +102,8 @@ class Announcement extends Model
 
                 case 'paragraph':
                     $text = $data['text'] ?? '';
-                    $html .= '<p class="font-body-md text-base md:text-lg leading-relaxed mb-6">' . e($text) . '</p>';
+                    $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
+                    $html .= '<p class="font-body-md text-base md:text-lg leading-relaxed mb-6">' . nl2br(e($text)) . '</p>';
                     break;
 
                 case 'list':
@@ -114,7 +116,8 @@ class Announcement extends Model
                     }
                     foreach ($items as $item) {
                         $text = is_array($item) ? ($item['content'] ?? '') : (string) $item;
-                        $html .= '<li>' . e($text) . '</li>';
+                        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
+                        $html .= '<li>' . nl2br(e($text)) . '</li>';
                     }
                     $html .= ($style === 'ordered') ? '</ol>' : '</ul>';
                     break;
@@ -157,11 +160,12 @@ class Announcement extends Model
                     foreach ($items as $item) {
                         $checked = $item['checked'] ?? false;
                         $text = $item['text'] ?? '';
+                        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
                         $html .= '<li class="flex items-center gap-3">';
                         $html .= $checked
                             ? '<span class="material-symbols-outlined text-secondary">check_circle</span>'
                             : '<span class="material-symbols-outlined text-on-surface-variant">radio_button_unchecked</span>';
-                        $html .= '<span' . ($checked ? ' class="line-through opacity-60"' : '') . '>' . e($text) . '</span>';
+                        $html .= '<span' . ($checked ? ' class="line-through opacity-60"' : '') . '>' . nl2br(e($text)) . '</span>';
                         $html .= '</li>';
                     }
                     $html .= '</ul>';
@@ -179,16 +183,16 @@ class Announcement extends Model
                     $download = ($linkType === 'download');
                     $icon = $download ? 'download' : 'link';
                     $styleClasses = [
-                        'primary' => 'bg-primary text-on-primary border-2 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px]',
-                        'secondary' => 'bg-secondary text-on-secondary border-2 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[-1px] hover:translate-y-[-1px]',
-                        'outline' => 'bg-transparent text-on-background border-2 border-on-background hover:bg-on-background hover:text-surface',
+                        'primary' => 'bg-primary text-on-primary border-2 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]',
+                        'secondary' => 'bg-secondary text-on-secondary border-2 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]',
+                        'outline' => 'bg-transparent text-on-background border-2 border-on-background',
                     ];
                     $class = $styleClasses[$style] ?? $styleClasses['primary'];
                     $textColors = ['primary' => 'var(--on-primary)', 'secondary' => 'var(--on-secondary)', 'outline' => 'var(--on-background)'];
                     $textColor = $textColors[$style] ?? 'var(--on-primary)';
                     $downloadAttr = $download ? ' download' : '';
                     $html .= '<div class="mb-6 text-center md:text-left">';
-                    $html .= '<a href="' . e($url) . '" style="color:' . $textColor . ';text-decoration:none" class="inline-block px-6 py-3 font-headline-lg text-sm uppercase tracking-wider transition-all ' . $class . '" target="_blank" rel="noopener noreferrer"' . $downloadAttr . '><span class="material-symbols-outlined text-sm mr-2 align-middle">' . $icon . '</span><span class="align-middle">' . e($text) . '</span></a>';
+                    $html .= '<a href="' . e($url) . '" style="color:' . $textColor . ';text-decoration:none" class="inline-block px-6 py-3 font-headline-lg text-sm uppercase tracking-wider transition-all hover:scale-105 ' . $class . '" target="_blank" rel="noopener noreferrer"' . $downloadAttr . '><span class="material-symbols-outlined text-sm mr-2 align-middle">' . $icon . '</span><span class="align-middle">' . e($text) . '</span></a>';
                     $html .= '</div>';
                     break;
 
@@ -208,7 +212,8 @@ class Announcement extends Model
 
                 default:
                     if (isset($data['text'])) {
-                        $html .= '<p class="font-body-md mb-6">' . e($data['text']) . '</p>';
+                        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $data['text']);
+                        $html .= '<p class="font-body-md mb-6">' . nl2br(e($text)) . '</p>';
                     }
                     break;
             }

@@ -32,7 +32,7 @@
                          class="p-3 border-2 border-dashed border-on-background/20 rounded">
                         <p class="font-label-mono text-[10px] text-on-surface-variant mb-1">Upload dari perangkat</p>
                         <input type="file" name="image" accept="image/*"
-                            @change="previewFile = $event.target.files[0] || null; imageError = false"
+                            @change="const f = $event.target.files[0]; if (f && f.size > 5*1024*1024) { alert('Gambar maksimal 5MB.'); $event.target.value = ''; previewFile = null; imageError = false; return; } previewFile = f || null; imageError = false"
                             class="admin-input custom-file-input py-2">
                         <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Maks. 5MB. Format: JPG, PNG, WebP</p>
                     </div>

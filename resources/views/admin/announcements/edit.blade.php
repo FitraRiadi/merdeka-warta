@@ -211,7 +211,32 @@
                     holder: 'editorjs-content',
                     data: initialData,
                     onChange: () => { this.isDirty = true; },
-                    onReady: () => { this.editorInstance?.focus(); },
+                    onReady: () => {
+                        this.editorInstance?.focus();
+                        const holder = document.getElementById('editorjs-content');
+                        if (holder) {
+                            holder.addEventListener('keydown', (e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    const sel = window.getSelection();
+                                    if (!sel || !sel.rangeCount) return;
+                                    const range = sel.getRangeAt(0);
+                                    const node = range.startContainer;
+                                    let emptyLine = false;
+                                    if (node.nodeType === 3) {
+                                        const b = node.textContent.substring(0, range.startOffset).trim();
+                                        const a = node.textContent.substring(range.endOffset).trim();
+                                        emptyLine = (b === '' && a === '');
+                                    } else {
+                                        emptyLine = true;
+                                    }
+                                    if (emptyLine) return;
+                                    e.preventDefault();
+                                    e.stopImmediatePropagation();
+                                    document.execCommand('insertLineBreak', false, null);
+                                }
+                            }, true);
+                        }
+                    },
                     tools: {
                         header: {
                             class: Header,

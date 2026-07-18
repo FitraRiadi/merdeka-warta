@@ -41,7 +41,7 @@
 
                 <div x-data="{ open: false, selected: '{{ old('category') }}', options: ['Prestasi', 'Kegiatan', 'Akademik', 'Kesiswaan', 'Alumni', 'Informasi', 'Pengumuman', 'Olahraga', 'Seni Budaya', 'Teknologi', 'Ekstrakurikuler', 'Liputan'], select(val) { this.selected = val; this.open = false; } }" class="relative">
                     <input type="hidden" name="category" x-model="selected">
-                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kategori</label>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kategori <span class="text-error">*</span></label>
                     <button type="button" @click="open = !open" class="admin-input flex items-center justify-between w-full cursor-pointer">
                         <span x-text="selected || 'Pilih kategori...'" :class="selected ? 'text-on-surface' : 'text-on-surface-variant'" class="font-body-md text-sm"></span>
                         <span class="material-symbols-outlined text-sm transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
@@ -77,7 +77,7 @@
                          class="p-3 border-2 border-dashed border-on-background/20 rounded">
                         <p class="font-label-mono text-[10px] text-on-surface-variant mb-1">Upload dari perangkat</p>
                         <input type="file" name="image" accept="image/*"
-                            @change="previewFile = $event.target.files[0] || null; imageError = false"
+                            @change="const f = $event.target.files[0]; if (f && f.size > 5*1024*1024) { alert('Gambar maksimal 5MB.'); $event.target.value = ''; previewFile = null; imageError = false; return; } previewFile = f || null; imageError = false"
                             class="admin-input custom-file-input py-2">
                         <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Maks. 5MB. Format: JPG, PNG, WebP</p>
                     </div>
@@ -254,7 +254,32 @@
                     holder: 'editorjs-content',
                     data: initialData,
                     onChange: () => { this.isDirty = true; },
-                    onReady: () => { this.editorInstance?.focus(); },
+                    onReady: () => {
+                        this.editorInstance?.focus();
+                        const holder = document.getElementById('editorjs-content');
+                        if (holder) {
+                            holder.addEventListener('keydown', (e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    const sel = window.getSelection();
+                                    if (!sel || !sel.rangeCount) return;
+                                    const range = sel.getRangeAt(0);
+                                    const node = range.startContainer;
+                                    let emptyLine = false;
+                                    if (node.nodeType === 3) {
+                                        const b = node.textContent.substring(0, range.startOffset).trim();
+                                        const a = node.textContent.substring(range.endOffset).trim();
+                                        emptyLine = (b === '' && a === '');
+                                    } else {
+                                        emptyLine = true;
+                                    }
+                                    if (emptyLine) return;
+                                    e.preventDefault();
+                                    e.stopImmediatePropagation();
+                                    document.execCommand('insertLineBreak', false, null);
+                                }
+                            }, true);
+                        }
+                    },
                     tools: {
                         header: {
                             class: Header,

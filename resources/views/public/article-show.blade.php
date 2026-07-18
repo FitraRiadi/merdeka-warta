@@ -156,6 +156,10 @@
                         <span class="material-symbols-outlined text-sm">visibility</span>
                         {{ $article->views_count }} PELIHAT
                     </div>
+                    <button onclick="copyLink()" class="flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined text-sm">share</span>
+                        BAGIKAN
+                    </button>
                 </div>
 
                 {{-- Featured Image --}}
@@ -359,6 +363,24 @@
                 .finally(function() {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<span class="material-symbols-outlined">send</span> KIRIM PERMINTAAN';
+                });
+            });
+        }
+
+        // Copy link
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Link Berita Disalin',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    toast: true,
+                    position: 'top-end',
+                    customClass: {
+                        popup: 'rounded-xl shadow-2xl mt-12',
+                        title: 'font-body-md text-sm',
+                    }
                 });
             });
         }
