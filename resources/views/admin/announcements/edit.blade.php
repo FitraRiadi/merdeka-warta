@@ -217,6 +217,7 @@
                         if (holder) {
                             holder.addEventListener('keydown', (e) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
+                                    if (e.target.closest('.cdx-list')) return;
                                     const sel = window.getSelection();
                                     if (!sel || !sel.rangeCount) return;
                                     const range = sel.getRangeAt(0);
@@ -240,11 +241,12 @@
                     tools: {
                         header: {
                             class: Header,
-                            config: { defaultLevel: 2, levels: [1,2,3,4,5,6] }
+                            config: { defaultLevel: 2, levels: [1,2,3,4,5,6], placeholder: 'Tulis judul bagian...' }
                         },
                         list: {
                             class: EditorjsList,
                             inlineToolbar: true,
+                            config: { placeholder: 'Tulis daftar...' }
                         },
                         button: {
                             class: CustomButton,

@@ -1136,7 +1136,10 @@
         }
         .ce-paragraph[data-placeholder]:empty::before,
         .cdx-quote__text[data-placeholder]:empty::before,
-        .cdx-block[data-placeholder]:empty::before {
+        .cdx-block[data-placeholder]:empty::before,
+        .cdx-header[data-placeholder]:empty::before,
+        .cdx-input[data-placeholder]:empty::before,
+        .cdx-list[data-placeholder]:empty::before {
             content: attr(data-placeholder) !important;
             color: #9ca3af !important;
             pointer-events: none;
