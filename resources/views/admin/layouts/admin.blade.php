@@ -877,7 +877,7 @@
             padding-bottom: 200px !important;
             counter-reset: ce-block-num;
             max-height: 100% !important;
-            overflow-y: auto !important;
+            overflow: visible !important;
         }
         #editorjs-content {
             overflow: visible !important;
@@ -1331,7 +1331,7 @@
             color: var(--error);
         }
 
-        /* Hide default EditorJS floating buttons */
+        /* Hide default EditorJS floating buttons (custom toolbar replaces them) */
         #editorjs-content .ce-toolbar__plus,
         #editorjs-content .ce-toolbar__actions {
             display: none !important;
@@ -1395,52 +1395,6 @@
         }
         .dark .editor-block-picker {
             background: var(--surface-container);
-        }
-
-        /* ── Convert Picker Popup ── */
-        .editor-convert-picker {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 999;
-            min-width: 180px;
-            background: var(--surface);
-            border: 3px solid var(--on-background);
-            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
-            margin-top: 4px;
-        }
-        .dark .editor-convert-picker {
-            box-shadow: 6px 6px 0px 0px rgba(255,255,255,0.12);
-            background: var(--surface-container);
-        }
-        .editor-convert-picker button {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            width: 100%;
-            padding: 0.5rem 0.75rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--on-surface);
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid var(--outline-variant);
-            cursor: pointer;
-            transition: background 0.1s;
-        }
-        .editor-convert-picker button:last-child {
-            border-bottom: none;
-        }
-        .editor-convert-picker button:hover {
-            background: var(--surface-container-highest);
-        }
-        .editor-convert-picker button:disabled {
-            opacity: 0.3;
-            cursor: default;
-            pointer-events: none;
         }
 
         /* ── Line Number Badge ── */

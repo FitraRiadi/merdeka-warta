@@ -16,6 +16,8 @@
 - Gausah terlalu humble, langsung cair aja.
 - Gunakan bahasa Indonesia.
 
+
+
 # MerdekaWarta — Agent Guide
 
 ## Stack

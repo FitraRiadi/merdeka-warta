@@ -149,7 +149,9 @@
                                     <div x-show="blockPickerOpen" @click.outside="blockPickerOpen = false" x-cloak class="editor-block-picker">
                                         <button type="button" @click="insertBlock('paragraph'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">text_fields</span> Paragraf</button>
                                         <button type="button" @click="insertBlock('header'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">title</span> Heading</button>
-                                        <button type="button" @click="insertBlock('list'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">format_list_bulleted</span> List</button>
+                                        <button type="button" @click="insertBlock('list', 'ordered'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">format_list_numbered</span> List Number</button>
+                                        <button type="button" @click="insertBlock('list', 'unordered'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">format_list_bulleted</span> List Symbol</button>
+                                        <button type="button" @click="insertBlock('list', 'checklist'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">checklist</span> List Check</button>
                                         <button type="button" @click="insertBlock('quote'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">format_quote</span> Kutipan</button>
                                         <button type="button" @click="insertBlock('image'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">image</span> Gambar</button>
                                         <button type="button" @click="insertBlock('delimiter'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">horizontal_rule</span> Pembatas</button>
@@ -168,18 +170,6 @@
                                         <button type="button" @click="undo()" :disabled="!canUndo" class="editor-toolbar__btn" title="Undo"><span class="material-symbols-outlined" style="font-size:14px">undo</span></button>
                                         <button type="button" @click="redo()" :disabled="!canRedo" class="editor-toolbar__btn" title="Redo"><span class="material-symbols-outlined" style="font-size:14px">redo</span></button>
                                     </div>
-                                    <div x-show="currentBlockType === 'header'" class="editor-toolbar__group">
-                                        <button type="button" @click="setHeaderLevel(1)" :class="{ active: headerLevel === 1 }" class="editor-toolbar__hbtn" title="Heading 1">H1</button>
-                                        <button type="button" @click="setHeaderLevel(2)" :class="{ active: headerLevel === 2 }" class="editor-toolbar__hbtn" title="Heading 2">H2</button>
-                                        <button type="button" @click="setHeaderLevel(3)" :class="{ active: headerLevel === 3 }" class="editor-toolbar__hbtn" title="Heading 3">H3</button>
-                                        <button type="button" @click="setHeaderLevel(4)" :class="{ active: headerLevel === 4 }" class="editor-toolbar__hbtn" title="Heading 4">H4</button>
-                                        <button type="button" @click="setHeaderLevel(5)" :class="{ active: headerLevel === 5 }" class="editor-toolbar__hbtn" title="Heading 5">H5</button>
-                                        <button type="button" @click="setHeaderLevel(6)" :class="{ active: headerLevel === 6 }" class="editor-toolbar__hbtn" title="Heading 6">H6</button>
-                                    </div>
-                                    <div x-show="currentBlockType === 'list'" class="editor-toolbar__group">
-                                        <button type="button" @click="setListStyle('unordered')" :class="{ active: listStyle === 'unordered' }" class="editor-toolbar__btn" title="Unordered list"><span class="material-symbols-outlined" style="font-size:14px">format_list_bulleted</span></button>
-                                        <button type="button" @click="setListStyle('ordered')" :class="{ active: listStyle === 'ordered' }" class="editor-toolbar__btn" title="Ordered list"><span class="material-symbols-outlined" style="font-size:14px">format_list_numbered</span></button>
-                                    </div>
                                     <div class="editor-toolbar__group">
                                         <button type="button" @mousedown.prevent="format('bold')" :class="{ active: hasBold }" class="editor-toolbar__btn" title="Tebal"><b>B</b></button>
                                         <button type="button" @mousedown.prevent="format('italic')" :class="{ active: hasItalic }" class="editor-toolbar__btn" title="Miring"><i>I</i></button>
@@ -191,19 +181,6 @@
                                         <button type="button" @click="duplicateBlock()" class="editor-toolbar__btn" title="Duplikat blok"><span class="material-symbols-outlined" style="font-size:14px">content_copy</span></button>
                                         <button type="button" @click="deleteBlock()" class="editor-toolbar__btn" title="Hapus blok" style="color:var(--error)"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
                                     </div>
-                                    <div class="editor-toolbar__group">
-                                        <button type="button" @click="toggleConvertPicker($event)" class="editor-toolbar__btn" title="Ubah tipe blok"><span class="material-symbols-outlined" style="font-size:14px">swap_horiz</span></button>
-                                    </div>
-                                </div>
-                                {{-- Convert popup (fixed positioning, outside scroll flow) --}}
-                                <div x-show="convertPickerOpen" @click.outside="convertPickerOpen = false" x-cloak class="editor-convert-picker" :style="`position:fixed;left:${convertPickerX}px;top:${convertPickerY}px;z-index:999`">
-                                    <button type="button" @click="convertBlock('paragraph'); convertPickerOpen = false" :disabled="currentBlockType === 'paragraph'"><span class="material-symbols-outlined" style="font-size:14px">text_fields</span> Paragraf</button>
-                                    <button type="button" @click="convertBlock('header'); convertPickerOpen = false" :disabled="currentBlockType === 'header'"><span class="material-symbols-outlined" style="font-size:14px">title</span> Heading</button>
-                                    <button type="button" @click="convertBlock('list'); convertPickerOpen = false" :disabled="currentBlockType === 'list'"><span class="material-symbols-outlined" style="font-size:14px">format_list_bulleted</span> List</button>
-                                    <button type="button" @click="convertBlock('quote'); convertPickerOpen = false" :disabled="currentBlockType === 'quote'"><span class="material-symbols-outlined" style="font-size:14px">format_quote</span> Kutipan</button>
-                                    <button type="button" @click="convertBlock('image'); convertPickerOpen = false" :disabled="currentBlockType === 'image'"><span class="material-symbols-outlined" style="font-size:14px">image</span> Gambar</button>
-                                    <button type="button" @click="convertBlock('delimiter'); convertPickerOpen = false" :disabled="currentBlockType === 'delimiter'"><span class="material-symbols-outlined" style="font-size:14px">horizontal_rule</span> Pembatas</button>
-                                    <button type="button" @click="convertBlock('button'); convertPickerOpen = false" :disabled="currentBlockType === 'button'"><span class="material-symbols-outlined" style="font-size:14px">smart_button</span> Tombol</button>
                                 </div>
                             </div>
                             {{-- Editor body --}}
@@ -267,9 +244,7 @@
             hasItalic: false,
             hasLink: false,
             blockPickerOpen: false,
-            convertPickerOpen: false,
-            convertPickerX: 0,
-            convertPickerY: 0,
+
 
             history: [],
             historyIndex: -1,
@@ -590,22 +565,30 @@
                 if (idx < 0) return;
                 this.editorInstance.blocks.delete(idx);
             },
-            insertBlock(type) {
+            insertBlock(type, listStyle) {
                 if (!this.editorInstance) return;
                 const idx = this.editorInstance.blocks.getCurrentBlockIndex();
                 if (type === 'image') {
                     this.editorInstance.blocks.insert('image', { file: {} }, undefined, idx + 1, true);
                     return;
                 }
-                const defaultData = {
-                    paragraph: { text: '' },
-                    header: { text: '', level: 2 },
-                    list: { style: 'unordered', items: [''] },
-                    quote: { text: '', caption: '', alignment: 'left' },
-                    delimiter: {},
-                    button: { text: '', url: '', style: 'primary', linkType: 'link' }
-                };
-                this.editorInstance.blocks.insert(type, defaultData[type] || {}, undefined, idx + 1, true);
+                let data;
+                if (type === 'list') {
+                    const style = listStyle || 'unordered';
+                    data = style === 'checklist'
+                        ? { style, items: [{ content: '', meta: { checked: false }, items: [] }] }
+                        : { style, items: [''] };
+                } else {
+                    const defaultData = {
+                        paragraph: { text: '' },
+                        header: { text: '', level: 2 },
+                        quote: { text: '', caption: '', alignment: 'left' },
+                        delimiter: {},
+                        button: { text: '', url: '', style: 'primary', linkType: 'link' }
+                    };
+                    data = defaultData[type] || {};
+                }
+                this.editorInstance.blocks.insert(type, data, undefined, idx + 1, true);
             },
             _updateBlockInfo() {
                 try {
@@ -642,48 +625,7 @@
                 await this.editorInstance.blocks.update(idx, { style, items: block.data.items });
                 this.listStyle = style;
             },
-            toggleConvertPicker(event) {
-                if (this.convertPickerOpen) {
-                    this.convertPickerOpen = false;
-                    return;
-                }
-                const rect = event.currentTarget.getBoundingClientRect();
-                this.convertPickerX = Math.max(0, rect.right - 180);
-                this.convertPickerY = rect.bottom + 4;
-                this.convertPickerOpen = true;
-            },
-            async convertBlock(targetType) {
-                if (!this.editorInstance) return;
-                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
-                const block = this.editorInstance.blocks.getBlockByIndex(idx);
-                if (!block || block.name === targetType) return;
-                const data = this._getConvertData(targetType, block);
-                this.editorInstance.blocks.insert(targetType, data, undefined, idx, true);
-                this.editorInstance.blocks.delete(idx + 1);
-                this._updateBlockInfo();
-            },
-            _getConvertData(targetType, sourceBlock) {
-                const srcName = sourceBlock.name;
-                const text = srcName === 'list'
-                    ? (sourceBlock.data.items || []).join('\n')
-                    : srcName === 'header'
-                        ? (sourceBlock.data.text || '')
-                        : srcName === 'quote'
-                            ? (sourceBlock.data.text || '')
-                            : srcName === 'paragraph'
-                                ? (sourceBlock.data.text || '')
-                                : '';
-                const targets = {
-                    paragraph: { text },
-                    header: { text, level: 2 },
-                    list: { style: 'unordered', items: text ? [text] : [''] },
-                    quote: { text, caption: '', alignment: 'left' },
-                    delimiter: {},
-                    button: { text: '', url: '', style: 'primary', linkType: 'link' },
-                    image: { file: {} },
-                };
-                return targets[targetType] || {};
-            },
+
             _updateFormatState() {
                 const sel = window.getSelection();
                 if (!sel || !sel.rangeCount) {
