@@ -888,22 +888,22 @@
         }
         #editorjs-content .ce-block {
             counter-increment: ce-block-num;
-            padding-left: 3rem;
+            padding-left: 2rem;
             position: relative;
             background: rgba(255,255,255,0.85);
             backdrop-filter: blur(2px);
             margin: 0;
             border-left: 3px solid transparent;
             border-bottom: 1px solid rgba(0,0,0,0.1);
-            transition: background 0.15s, border-color 0.15s;
+            transition: background 0.15s;
         }
         #editorjs-content .ce-block::before {
             content: counter(ce-block-num);
             position: absolute;
-            left: 6px;
+            left: 4px;
             top: 50%;
             transform: translateY(-50%);
-            width: 2rem;
+            width: 1.25rem;
             text-align: right;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
@@ -911,9 +911,11 @@
             user-select: none;
             pointer-events: none;
         }
-        #editorjs-content .ce-block--selected {
-            border-left-color: var(--primary);
-            background: rgba(255,255,255,0.97);
+        #editorjs-content .ce-block--selected {}
+        #editorjs-content .ce-block--selected::before {
+            content: "\25B8 " counter(ce-block-num);
+            color: var(--primary);
+            font-weight: 800;
         }
         #editorjs-content .ce-block--drop-target {
             border-left-color: var(--error);
@@ -1117,8 +1119,12 @@
             color: #ccc;
         }
         .dark #editorjs-content .ce-block--selected {
-            border-left-color: var(--primary);
-            background: rgba(30,30,30,0.97);
+            border-left: 5px solid var(--primary);
+            background: rgba(20,30,40,0.97);
+            box-shadow: inset 2px 0 0 0 var(--primary), 0 1px 4px rgba(0,0,0,0.3);
+        }
+        .dark #editorjs-content .ce-block--selected::before {
+            color: var(--primary);
         }
         .dark #editorjs-content .ce-toolbar {
             background: rgba(20,20,20,0.95);
@@ -1202,15 +1208,37 @@
 
         /* ── Editor Toolbar ── */
         .editor-toolbar {
+            position: relative;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.25rem;
             padding: 0.375rem 0.75rem;
             background: var(--surface-container);
             border-bottom: 2px solid var(--on-background);
             flex-shrink: 0;
-            overflow-x: auto;
             min-height: 2.5rem;
+        }
+        .editor-toolbar__scroll {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            scrollbar-width: thin;
+            scrollbar-color: var(--outline-variant) transparent;
+        }
+        .editor-toolbar__scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+        .editor-toolbar__scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .editor-toolbar__scroll::-webkit-scrollbar-thumb {
+            background: var(--outline-variant);
+            border-radius: 2px;
         }
         .editor-toolbar__group {
             display: flex;
@@ -1317,8 +1345,150 @@
             color: var(--on-primary);
             border-color: var(--on-background);
         }
+        .dark .editor-toolbar__hbtn.active {
+            background: var(--primary);
+            color: var(--on-primary);
+            border-color: var(--on-background);
+        }
         .dark .editor-tune-popup {
             background: var(--surface-container);
+        }
+
+        /* ── Block Picker Popup ── */
+        .editor-block-picker {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 999;
+            min-width: 180px;
+            background: var(--surface);
+            border: 3px solid var(--on-background);
+            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+            margin-top: 4px;
+        }
+        .dark .editor-block-picker {
+            box-shadow: 6px 6px 0px 0px rgba(255,255,255,0.12);
+        }
+        .editor-block-picker button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--on-surface);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--outline-variant);
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .editor-block-picker button:last-child {
+            border-bottom: none;
+        }
+        .editor-block-picker button:hover {
+            background: var(--surface-container-highest);
+        }
+        .dark .editor-block-picker {
+            background: var(--surface-container);
+        }
+
+        /* ── Convert Picker Popup ── */
+        .editor-convert-picker {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 999;
+            min-width: 180px;
+            background: var(--surface);
+            border: 3px solid var(--on-background);
+            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+            margin-top: 4px;
+        }
+        .dark .editor-convert-picker {
+            box-shadow: 6px 6px 0px 0px rgba(255,255,255,0.12);
+            background: var(--surface-container);
+        }
+        .editor-convert-picker button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--on-surface);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--outline-variant);
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .editor-convert-picker button:last-child {
+            border-bottom: none;
+        }
+        .editor-convert-picker button:hover {
+            background: var(--surface-container-highest);
+        }
+        .editor-convert-picker button:disabled {
+            opacity: 0.3;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        /* ── Line Number Badge ── */
+        .editor-toolbar__line-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--on-surface-variant);
+            white-space: nowrap;
+        }
+
+        /* ── Conditional group hide/show ── */
+        .editor-toolbar__group--conditional {
+            display: flex;
+            align-items: center;
+            gap: 0.125rem;
+        }
+
+        /* ── Heading level buttons ── */
+        .editor-toolbar__hbtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 1.75rem;
+            height: 1.75rem;
+            border: 2px solid transparent;
+            background: transparent;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            transition: all 0.1s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.65rem;
+            border-radius: 0;
+            padding: 0 4px;
+        }
+        .editor-toolbar__hbtn:hover {
+            background: var(--surface-container-highest);
+            border-color: var(--outline);
+            color: var(--on-surface);
+        }
+        .editor-toolbar__hbtn.active {
+            background: var(--primary);
+            color: var(--on-primary);
+            border-color: var(--on-background);
         }
 
         /* ── Custom Button Tool ── */

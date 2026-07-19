@@ -83,31 +83,69 @@
                                     <span class="material-symbols-outlined text-sm">close</span>
                                 </button>
                             </div>
-                            {{-- Toolbar --}}
+                             {{-- Toolbar --}}
                             <div x-show="editorInstance" class="editor-toolbar" x-cloak>
-                                <div class="editor-toolbar__group">
-                                    <span class="editor-toolbar__line">Line: <span x-text="currentBlock + 1">1</span></span>
-                                </div>
-                                <div class="editor-toolbar__group">
-                                    <button type="button" @click="addBlock()" class="editor-toolbar__btn" title="Tambah blok"><span class="material-symbols-outlined" style="font-size:14px">add</span></button>
-                                </div>
-                                <div class="editor-toolbar__group">
-                                    <button type="button" @click="undo()" :disabled="!canUndo" class="editor-toolbar__btn" title="Undo"><span class="material-symbols-outlined" style="font-size:14px">undo</span></button>
-                                    <button type="button" @click="redo()" :disabled="!canRedo" class="editor-toolbar__btn" title="Redo"><span class="material-symbols-outlined" style="font-size:14px">redo</span></button>
-                                </div>
-                                <div class="editor-toolbar__group">
-                                    <button type="button" @mousedown.prevent="format('bold')" :class="{ active: hasBold }" class="editor-toolbar__btn" title="Tebal"><b>B</b></button>
-                                    <button type="button" @mousedown.prevent="format('italic')" :class="{ active: hasItalic }" class="editor-toolbar__btn" title="Miring"><i>I</i></button>
-                                    <button type="button" @mousedown.prevent="formatLink()" :class="{ active: hasLink }" class="editor-toolbar__btn" title="Tautan"><span class="material-symbols-outlined" style="font-size:14px">link</span></button>
-                                </div>
-                                <div class="editor-toolbar__group" style="position:relative">
-                                    <button type="button" @click="tuneOpen = !tuneOpen" class="editor-toolbar__btn" title="Pengaturan blok"><span class="material-symbols-outlined" style="font-size:14px">tune</span></button>
-                                    <div x-show="tuneOpen" @click.outside="tuneOpen = false" x-cloak class="editor-tune-popup">
-                                        <button type="button" @click="moveUp(); tuneOpen = false"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_up</span> Pindah Atas</button>
-                                        <button type="button" @click="moveDown(); tuneOpen = false"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_down</span> Pindah Bawah</button>
-                                        <button type="button" @click="duplicateBlock(); tuneOpen = false"><span class="material-symbols-outlined" style="font-size:14px">content_copy</span> Duplikat</button>
-                                        <button type="button" @click="deleteBlock(); tuneOpen = false" class="text-error"><span class="material-symbols-outlined" style="font-size:14px">delete</span> Hapus</button>
+                                {{-- Block picker (outside scroll) --}}
+                                <div class="editor-toolbar__group" style="position:relative;flex-shrink:0">
+                                    <button type="button" @click="blockPickerOpen = !blockPickerOpen" class="editor-toolbar__btn" title="Tambah blok"><span class="material-symbols-outlined" style="font-size:14px">add</span></button>
+                                    <div x-show="blockPickerOpen" @click.outside="blockPickerOpen = false" x-cloak class="editor-block-picker">
+                                        <button type="button" @click="insertBlock('paragraph'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">text_fields</span> Paragraf</button>
+                                        <button type="button" @click="insertBlock('header'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">title</span> Heading</button>
+                                        <button type="button" @click="insertBlock('list'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">format_list_bulleted</span> List</button>
+                                        <button type="button" @click="insertBlock('quote'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">format_quote</span> Kutipan</button>
+                                        <button type="button" @click="insertBlock('image'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">image</span> Gambar</button>
+                                        <button type="button" @click="insertBlock('delimiter'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">horizontal_rule</span> Pembatas</button>
+                                        <button type="button" @click="insertBlock('button'); blockPickerOpen = false"><span class="material-symbols-outlined" style="font-size:14px">smart_button</span> Tombol</button>
                                     </div>
+                                </div>
+                                {{-- Scrollable toolbar content --}}
+                                <div class="editor-toolbar__scroll">
+                                    <div class="editor-toolbar__group">
+                                        <span class="editor-toolbar__line-badge">
+                                            <span class="material-symbols-outlined" style="font-size:12px">edit</span>
+                                            <span x-text="currentBlock + 1">1</span>
+                                        </span>
+                                    </div>
+                                    <div class="editor-toolbar__group">
+                                        <button type="button" @click="undo()" :disabled="!canUndo" class="editor-toolbar__btn" title="Undo"><span class="material-symbols-outlined" style="font-size:14px">undo</span></button>
+                                        <button type="button" @click="redo()" :disabled="!canRedo" class="editor-toolbar__btn" title="Redo"><span class="material-symbols-outlined" style="font-size:14px">redo</span></button>
+                                    </div>
+                                    <div x-show="currentBlockType === 'header'" class="editor-toolbar__group">
+                                        <button type="button" @click="setHeaderLevel(1)" :class="{ active: headerLevel === 1 }" class="editor-toolbar__hbtn" title="Heading 1">H1</button>
+                                        <button type="button" @click="setHeaderLevel(2)" :class="{ active: headerLevel === 2 }" class="editor-toolbar__hbtn" title="Heading 2">H2</button>
+                                        <button type="button" @click="setHeaderLevel(3)" :class="{ active: headerLevel === 3 }" class="editor-toolbar__hbtn" title="Heading 3">H3</button>
+                                        <button type="button" @click="setHeaderLevel(4)" :class="{ active: headerLevel === 4 }" class="editor-toolbar__hbtn" title="Heading 4">H4</button>
+                                        <button type="button" @click="setHeaderLevel(5)" :class="{ active: headerLevel === 5 }" class="editor-toolbar__hbtn" title="Heading 5">H5</button>
+                                        <button type="button" @click="setHeaderLevel(6)" :class="{ active: headerLevel === 6 }" class="editor-toolbar__hbtn" title="Heading 6">H6</button>
+                                    </div>
+                                    <div x-show="currentBlockType === 'list'" class="editor-toolbar__group">
+                                        <button type="button" @click="setListStyle('unordered')" :class="{ active: listStyle === 'unordered' }" class="editor-toolbar__btn" title="Unordered list"><span class="material-symbols-outlined" style="font-size:14px">format_list_bulleted</span></button>
+                                        <button type="button" @click="setListStyle('ordered')" :class="{ active: listStyle === 'ordered' }" class="editor-toolbar__btn" title="Ordered list"><span class="material-symbols-outlined" style="font-size:14px">format_list_numbered</span></button>
+                                    </div>
+                                    <div class="editor-toolbar__group">
+                                        <button type="button" @mousedown.prevent="format('bold')" :class="{ active: hasBold }" class="editor-toolbar__btn" title="Tebal"><b>B</b></button>
+                                        <button type="button" @mousedown.prevent="format('italic')" :class="{ active: hasItalic }" class="editor-toolbar__btn" title="Miring"><i>I</i></button>
+                                        <button type="button" @mousedown.prevent="formatLink()" :class="{ active: hasLink }" class="editor-toolbar__btn" title="Tautan"><span class="material-symbols-outlined" style="font-size:14px">link</span></button>
+                                    </div>
+                                    <div class="editor-toolbar__group">
+                                        <button type="button" @click="moveUp()" class="editor-toolbar__btn" title="Pindah ke atas"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_up</span></button>
+                                        <button type="button" @click="moveDown()" class="editor-toolbar__btn" title="Pindah ke bawah"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_down</span></button>
+                                        <button type="button" @click="duplicateBlock()" class="editor-toolbar__btn" title="Duplikat blok"><span class="material-symbols-outlined" style="font-size:14px">content_copy</span></button>
+                                        <button type="button" @click="deleteBlock()" class="editor-toolbar__btn" title="Hapus blok" style="color:var(--error)"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
+                                    </div>
+                                    <div class="editor-toolbar__group">
+                                        <button type="button" @click="toggleConvertPicker($event)" class="editor-toolbar__btn" title="Ubah tipe blok"><span class="material-symbols-outlined" style="font-size:14px">swap_horiz</span></button>
+                                    </div>
+                                </div>
+                                {{-- Convert popup (fixed positioning, outside scroll flow) --}}
+                                <div x-show="convertPickerOpen" @click.outside="convertPickerOpen = false" x-cloak class="editor-convert-picker" :style="`position:fixed;left:${convertPickerX}px;top:${convertPickerY}px;z-index:999`">
+                                    <button type="button" @click="convertBlock('paragraph'); convertPickerOpen = false" :disabled="currentBlockType === 'paragraph'"><span class="material-symbols-outlined" style="font-size:14px">text_fields</span> Paragraf</button>
+                                    <button type="button" @click="convertBlock('header'); convertPickerOpen = false" :disabled="currentBlockType === 'header'"><span class="material-symbols-outlined" style="font-size:14px">title</span> Heading</button>
+                                    <button type="button" @click="convertBlock('list'); convertPickerOpen = false" :disabled="currentBlockType === 'list'"><span class="material-symbols-outlined" style="font-size:14px">format_list_bulleted</span> List</button>
+                                    <button type="button" @click="convertBlock('quote'); convertPickerOpen = false" :disabled="currentBlockType === 'quote'"><span class="material-symbols-outlined" style="font-size:14px">format_quote</span> Kutipan</button>
+                                    <button type="button" @click="convertBlock('image'); convertPickerOpen = false" :disabled="currentBlockType === 'image'"><span class="material-symbols-outlined" style="font-size:14px">image</span> Gambar</button>
+                                    <button type="button" @click="convertBlock('delimiter'); convertPickerOpen = false" :disabled="currentBlockType === 'delimiter'"><span class="material-symbols-outlined" style="font-size:14px">horizontal_rule</span> Pembatas</button>
+                                    <button type="button" @click="convertBlock('button'); convertPickerOpen = false" :disabled="currentBlockType === 'button'"><span class="material-symbols-outlined" style="font-size:14px">smart_button</span> Tombol</button>
                                 </div>
                             </div>
                             <div class="flex-1 overflow-y-auto p-5 bg-surface">
@@ -177,10 +215,17 @@
             editorInstance: null,
             isDirty: false,
             currentBlock: 0,
+            currentBlockType: 'paragraph',
+            headerLevel: 2,
+            listStyle: 'unordered',
             hasBold: false,
             hasItalic: false,
             hasLink: false,
-            tuneOpen: false,
+            blockPickerOpen: false,
+            convertPickerOpen: false,
+            convertPickerX: 0,
+            convertPickerY: 0,
+
             history: [],
             historyIndex: -1,
             canUndo: false,
@@ -283,11 +328,11 @@
                         const holder = document.getElementById('editorjs-content');
                         if (holder) {
                             holder.addEventListener('click', () => {
-                                this._updateCurrentBlock();
+                                this._updateBlockInfo();
                                 this._updateFormatState();
                             });
                             holder.addEventListener('keyup', () => {
-                                this._updateCurrentBlock();
+                                this._updateBlockInfo();
                                 this._updateFormatState();
                             });
                         }
@@ -440,11 +485,99 @@
                 if (idx < 0) return;
                 this.editorInstance.blocks.delete(idx);
             },
-            _updateCurrentBlock() {
+            insertBlock(type) {
+                if (!this.editorInstance) return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                if (type === 'image') {
+                    this.editorInstance.blocks.insert('image', { file: {} }, undefined, idx + 1, true);
+                    return;
+                }
+                const defaultData = {
+                    paragraph: { text: '' },
+                    header: { text: '', level: 2 },
+                    list: { style: 'unordered', items: [''] },
+                    quote: { text: '', caption: '', alignment: 'left' },
+                    delimiter: {},
+                    button: { text: '', url: '', style: 'primary', linkType: 'link' }
+                };
+                this.editorInstance.blocks.insert(type, defaultData[type] || {}, undefined, idx + 1, true);
+            },
+            _updateBlockInfo() {
                 try {
-                    const index = this.editorInstance?.blocks?.getCurrentBlockIndex();
-                    if (index !== undefined && index !== null) this.currentBlock = index;
+                    const api = this.editorInstance;
+                    if (!api) return;
+                    const index = api.blocks.getCurrentBlockIndex();
+                    if (index === undefined || index === null) return;
+                    this.currentBlock = index;
+                    const block = api.blocks.getBlockByIndex(index);
+                    if (block) {
+                        this.currentBlockType = block.name;
+                        if (block.name === 'header') {
+                            this.headerLevel = block.data.level || 2;
+                        }
+                        if (block.name === 'list') {
+                            this.listStyle = block.data.style || 'unordered';
+                        }
+                    }
                 } catch (e) {}
+            },
+            async setHeaderLevel(level) {
+                if (!this.editorInstance || this.currentBlockType !== 'header') return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                const block = this.editorInstance.blocks.getBlockByIndex(idx);
+                if (!block) return;
+                await this.editorInstance.blocks.update(idx, { text: block.data.text, level });
+                this.headerLevel = level;
+            },
+            async setListStyle(style) {
+                if (!this.editorInstance || this.currentBlockType !== 'list') return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                const block = this.editorInstance.blocks.getBlockByIndex(idx);
+                if (!block) return;
+                await this.editorInstance.blocks.update(idx, { style, items: block.data.items });
+                this.listStyle = style;
+            },
+            toggleConvertPicker(event) {
+                if (this.convertPickerOpen) {
+                    this.convertPickerOpen = false;
+                    return;
+                }
+                const rect = event.currentTarget.getBoundingClientRect();
+                this.convertPickerX = Math.max(0, rect.right - 180);
+                this.convertPickerY = rect.bottom + 4;
+                this.convertPickerOpen = true;
+            },
+            async convertBlock(targetType) {
+                if (!this.editorInstance) return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                const block = this.editorInstance.blocks.getBlockByIndex(idx);
+                if (!block || block.name === targetType) return;
+                const data = this._getConvertData(targetType, block);
+                this.editorInstance.blocks.insert(targetType, data, undefined, idx, true);
+                this.editorInstance.blocks.delete(idx + 1);
+                this._updateBlockInfo();
+            },
+            _getConvertData(targetType, sourceBlock) {
+                const srcName = sourceBlock.name;
+                const text = srcName === 'list'
+                    ? (sourceBlock.data.items || []).join('\n')
+                    : srcName === 'header'
+                        ? (sourceBlock.data.text || '')
+                        : srcName === 'quote'
+                            ? (sourceBlock.data.text || '')
+                            : srcName === 'paragraph'
+                                ? (sourceBlock.data.text || '')
+                                : '';
+                const targets = {
+                    paragraph: { text },
+                    header: { text, level: 2 },
+                    list: { style: 'unordered', items: text ? [text] : [''] },
+                    quote: { text, caption: '', alignment: 'left' },
+                    delimiter: {},
+                    button: { text: '', url: '', style: 'primary', linkType: 'link' },
+                    image: { file: {} },
+                };
+                return targets[targetType] || {};
             },
             _updateFormatState() {
                 const sel = window.getSelection();
