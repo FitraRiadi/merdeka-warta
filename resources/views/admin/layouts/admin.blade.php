@@ -876,6 +876,15 @@
         #editorjs-content .codex-editor__redactor {
             padding-bottom: 200px !important;
             counter-reset: ce-block-num;
+            max-height: 100% !important;
+            overflow-y: auto !important;
+        }
+        #editorjs-content {
+            overflow: visible !important;
+        }
+        #editorjs-content .ce-popover,
+        #editorjs-content .ce-tune-popover {
+            z-index: 1000 !important;
         }
         #editorjs-content .ce-block {
             counter-increment: ce-block-num;
@@ -1174,6 +1183,142 @@
         }
         .dark .cdx-quote__caption:focus {
             border-color: #34d399;
+        }
+        .cdx-quote__text {
+            padding: 10px 14px 10px 20px;
+            border-left: 3px solid var(--primary);
+            min-height: 50px;
+            outline: none;
+        }
+        .cdx-quote__text:focus {
+            border-left-color: var(--secondary);
+        }
+        .dark .cdx-quote__text {
+            border-left-color: var(--primary);
+        }
+        .dark .cdx-quote__text:focus {
+            border-left-color: var(--secondary);
+        }
+
+        /* ── Editor Toolbar ── */
+        .editor-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--surface-container);
+            border-bottom: 2px solid var(--on-background);
+            flex-shrink: 0;
+            overflow-x: auto;
+            min-height: 2.5rem;
+        }
+        .editor-toolbar__group {
+            display: flex;
+            align-items: center;
+            gap: 0.125rem;
+            white-space: nowrap;
+        }
+        .editor-toolbar__group + .editor-toolbar__group {
+            border-left: 1px solid var(--outline-variant);
+            padding-left: 0.5rem;
+        }
+        .editor-toolbar__btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            border: 2px solid transparent;
+            background: transparent;
+            color: var(--on-surface-variant);
+            cursor: pointer;
+            transition: all 0.1s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border-radius: 0;
+        }
+        .editor-toolbar__btn:hover {
+            background: var(--surface-container-highest);
+            border-color: var(--outline);
+            color: var(--on-surface);
+        }
+        .editor-toolbar__btn.active {
+            background: var(--primary);
+            color: var(--on-primary);
+            border-color: var(--on-background);
+        }
+        .editor-toolbar__btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .editor-toolbar__line {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--on-surface-variant);
+            white-space: nowrap;
+            padding: 0 0.25rem;
+        }
+        .editor-tune-popup {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 50;
+            min-width: 170px;
+            background: var(--surface);
+            border: 3px solid var(--on-background);
+            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+            margin-top: 4px;
+        }
+        .dark .editor-tune-popup {
+            box-shadow: 6px 6px 0px 0px rgba(255,255,255,0.12);
+        }
+        .editor-tune-popup button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--on-surface);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--outline-variant);
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .editor-tune-popup button:last-child {
+            border-bottom: none;
+        }
+        .editor-tune-popup button:hover {
+            background: var(--surface-container-highest);
+        }
+        .editor-tune-popup .text-error {
+            color: var(--error);
+        }
+
+        /* Hide default EditorJS floating buttons */
+        #editorjs-content .ce-toolbar__plus,
+        #editorjs-content .ce-toolbar__actions {
+            display: none !important;
+        }
+
+        .dark .editor-toolbar {
+            background: var(--surface-container-high);
+        }
+        .dark .editor-toolbar__btn.active {
+            background: var(--primary);
+            color: var(--on-primary);
+            border-color: var(--on-background);
+        }
+        .dark .editor-tune-popup {
+            background: var(--surface-container);
         }
 
         /* ── Custom Button Tool ── */

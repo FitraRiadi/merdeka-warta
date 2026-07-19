@@ -83,8 +83,35 @@
                                     <span class="material-symbols-outlined text-sm">close</span>
                                 </button>
                             </div>
+                            {{-- Toolbar --}}
+                            <div x-show="editorInstance" class="editor-toolbar" x-cloak>
+                                <div class="editor-toolbar__group">
+                                    <span class="editor-toolbar__line">Line: <span x-text="currentBlock + 1">1</span></span>
+                                </div>
+                                <div class="editor-toolbar__group">
+                                    <button type="button" @click="addBlock()" class="editor-toolbar__btn" title="Tambah blok"><span class="material-symbols-outlined" style="font-size:14px">add</span></button>
+                                </div>
+                                <div class="editor-toolbar__group">
+                                    <button type="button" @click="undo()" :disabled="!canUndo" class="editor-toolbar__btn" title="Undo"><span class="material-symbols-outlined" style="font-size:14px">undo</span></button>
+                                    <button type="button" @click="redo()" :disabled="!canRedo" class="editor-toolbar__btn" title="Redo"><span class="material-symbols-outlined" style="font-size:14px">redo</span></button>
+                                </div>
+                                <div class="editor-toolbar__group">
+                                    <button type="button" @mousedown.prevent="format('bold')" :class="{ active: hasBold }" class="editor-toolbar__btn" title="Tebal"><b>B</b></button>
+                                    <button type="button" @mousedown.prevent="format('italic')" :class="{ active: hasItalic }" class="editor-toolbar__btn" title="Miring"><i>I</i></button>
+                                    <button type="button" @mousedown.prevent="formatLink()" :class="{ active: hasLink }" class="editor-toolbar__btn" title="Tautan"><span class="material-symbols-outlined" style="font-size:14px">link</span></button>
+                                </div>
+                                <div class="editor-toolbar__group" style="position:relative">
+                                    <button type="button" @click="tuneOpen = !tuneOpen" class="editor-toolbar__btn" title="Pengaturan blok"><span class="material-symbols-outlined" style="font-size:14px">tune</span></button>
+                                    <div x-show="tuneOpen" @click.outside="tuneOpen = false" x-cloak class="editor-tune-popup">
+                                        <button type="button" @click="moveUp(); tuneOpen = false"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_up</span> Pindah Atas</button>
+                                        <button type="button" @click="moveDown(); tuneOpen = false"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_down</span> Pindah Bawah</button>
+                                        <button type="button" @click="duplicateBlock(); tuneOpen = false"><span class="material-symbols-outlined" style="font-size:14px">content_copy</span> Duplikat</button>
+                                        <button type="button" @click="deleteBlock(); tuneOpen = false" class="text-error"><span class="material-symbols-outlined" style="font-size:14px">delete</span> Hapus</button>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="flex-1 overflow-y-auto p-5 bg-surface">
-                                <div id="editorjs-content" class="min-h-[400px]"></div>
+                                <div id="editorjs-content" class="min-h-[400px] h-full"></div>
                             </div>
                             <div class="flex items-center justify-end gap-3 px-5 py-3 border-t-3 border-on-background bg-surface-container">
                                 <button type="button" @click="closeEditor()" class="admin-btn-secondary admin-btn-sm">
@@ -149,16 +176,30 @@
             contentJson: {!! json_encode(old('content') ?: ($announcement->content ?? '{"blocks":[]}')) !!},
             editorInstance: null,
             isDirty: false,
+            currentBlock: 0,
+            hasBold: false,
+            hasItalic: false,
+            hasLink: false,
+            tuneOpen: false,
+            history: [],
+            historyIndex: -1,
+            canUndo: false,
+            canRedo: false,
+            _historyTimer: null,
+            _isRestoring: false,
             get blockCount() {
                 try {
                     const data = JSON.parse(this.contentJson);
                     return data.blocks ? data.blocks.length : 0;
                 } catch { return 0; }
             },
+            _onSelectionChange: null,
             async openEditor() {
                 this.isDirty = false;
                 this.editorOpen = true;
                 await this.$nextTick();
+                this._onSelectionChange = () => this._updateFormatState();
+                document.addEventListener('selectionchange', this._onSelectionChange);
                 this.initEditor();
             },
             closeEditor() {
@@ -210,10 +251,46 @@
                 this.editorInstance = new EditorJS({
                     holder: 'editorjs-content',
                     data: initialData,
-                    onChange: () => { this.isDirty = true; },
+                    onChange: () => {
+                        this.isDirty = true;
+                        if (!this._isRestoring) {
+                            clearTimeout(this._historyTimer);
+                            this._historyTimer = setTimeout(() => {
+                                if (!this.editorInstance) return;
+                                this.editorInstance.save().then(data => {
+                                    const str = JSON.stringify(data);
+                                    if (this.history[this.historyIndex] !== str) {
+                                        this.history = this.history.slice(0, this.historyIndex + 1);
+                                        this.history.push(str);
+                                        this.historyIndex = this.history.length - 1;
+                                        this.canUndo = this.historyIndex > 0;
+                                        this.canRedo = false;
+                                    }
+                                });
+                            }, 800);
+                        }
+                    },
                     onReady: () => {
                         this.editorInstance?.focus();
+                        if (this.editorInstance) {
+                            this.editorInstance.save().then(data => {
+                                this.history = [JSON.stringify(data)];
+                                this.historyIndex = 0;
+                                this.canUndo = false;
+                                this.canRedo = false;
+                            });
+                        }
                         const holder = document.getElementById('editorjs-content');
+                        if (holder) {
+                            holder.addEventListener('click', () => {
+                                this._updateCurrentBlock();
+                                this._updateFormatState();
+                            });
+                            holder.addEventListener('keyup', () => {
+                                this._updateCurrentBlock();
+                                this._updateFormatState();
+                            });
+                        }
                         if (holder) {
                             holder.addEventListener('keydown', (e) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -284,12 +361,108 @@
                 });
             },
             destroyEditor() {
+                if (this._onSelectionChange) {
+                    document.removeEventListener('selectionchange', this._onSelectionChange);
+                    this._onSelectionChange = null;
+                }
                 if (this.editorInstance) {
                     this.editorInstance.destroy();
                     this.editorInstance = null;
                     const holder = document.getElementById('editorjs-content');
                     if (holder) holder.innerHTML = '';
                 }
+            },
+            // ── Toolbar methods ──
+            async addBlock() {
+                if (!this.editorInstance) return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                this.editorInstance.blocks.insert('paragraph', { text: '' }, undefined, idx + 1, true);
+            },
+            async undo() {
+                if (this.historyIndex <= 0) return;
+                this.historyIndex--;
+                this._isRestoring = true;
+                await this.editorInstance.render(JSON.parse(this.history[this.historyIndex]));
+                this._isRestoring = false;
+                this.canUndo = this.historyIndex > 0;
+                this.canRedo = true;
+            },
+            async redo() {
+                if (this.historyIndex >= this.history.length - 1) return;
+                this.historyIndex++;
+                this._isRestoring = true;
+                await this.editorInstance.render(JSON.parse(this.history[this.historyIndex]));
+                this._isRestoring = false;
+                this.canUndo = this.historyIndex > 0;
+                this.canRedo = this.historyIndex < this.history.length - 1;
+            },
+            format(type) {
+                const sel = window.getSelection();
+                if (!sel || !sel.rangeCount) return;
+                const editor = document.getElementById('editorjs-content');
+                if (!editor || !editor.contains(sel.anchorNode)) return;
+                if (type === 'bold') document.execCommand('bold');
+                else if (type === 'italic') document.execCommand('italic');
+                this._updateFormatState();
+            },
+            formatLink() {
+                const sel = window.getSelection();
+                if (!sel || !sel.rangeCount) return;
+                const editor = document.getElementById('editorjs-content');
+                if (!editor || !editor.contains(sel.anchorNode)) return;
+                if (this.hasLink) { document.execCommand('unlink'); }
+                else { const url = prompt('Masukkan URL:'); if (url) document.execCommand('createLink', false, url); }
+                this._updateFormatState();
+            },
+            async moveUp() {
+                if (!this.editorInstance) return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                if (idx <= 0) return;
+                this.editorInstance.blocks.move(idx, idx - 1);
+            },
+            async moveDown() {
+                if (!this.editorInstance) return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                const total = this.editorInstance.blocks.getBlocksCount();
+                if (idx >= total - 1) return;
+                this.editorInstance.blocks.move(idx, idx + 1);
+            },
+            async duplicateBlock() {
+                if (!this.editorInstance) return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                const block = this.editorInstance.blocks.getBlockByIndex(idx);
+                if (!block) return;
+                this.editorInstance.blocks.insert(block.name, block.data, undefined, idx + 1, true);
+            },
+            async deleteBlock() {
+                if (!this.editorInstance) return;
+                const idx = this.editorInstance.blocks.getCurrentBlockIndex();
+                if (idx < 0) return;
+                this.editorInstance.blocks.delete(idx);
+            },
+            _updateCurrentBlock() {
+                try {
+                    const index = this.editorInstance?.blocks?.getCurrentBlockIndex();
+                    if (index !== undefined && index !== null) this.currentBlock = index;
+                } catch (e) {}
+            },
+            _updateFormatState() {
+                const sel = window.getSelection();
+                if (!sel || !sel.rangeCount) { this.hasBold = false; this.hasItalic = false; this.hasLink = false; return; }
+                const editor = document.getElementById('editorjs-content');
+                if (!editor || !editor.contains(sel.anchorNode)) { this.hasBold = false; this.hasItalic = false; this.hasLink = false; return; }
+                this.hasBold = document.queryCommandState('bold');
+                this.hasItalic = document.queryCommandState('italic');
+                let linkFound = false;
+                let node = sel.anchorNode;
+                if (node) {
+                    if (node.nodeType === 3) node = node.parentNode;
+                    while (node && node !== editor) {
+                        if (node.tagName === 'A') { linkFound = true; break; }
+                        node = node.parentNode;
+                    }
+                }
+                this.hasLink = linkFound;
             },
         };
     }
