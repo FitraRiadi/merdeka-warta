@@ -28,6 +28,7 @@
                 max: 3,
                 search: '',
                 limit: 5,
+                increment: 5,
                 get filteredCount() {
                     if (!this.search) return this.articleTitles.length;
                     const q = this.search.toLowerCase();
@@ -101,7 +102,7 @@
                 </p>
                 <div class="grid grid-cols-1 gap-2 max-h-[500px] overflow-y-auto border-2 border-on-background p-2 bg-surface-container-low">
                     @foreach($articles as $i => $article)
-                        <div x-show="!search ? ({{ $i }} < limit || selected.includes({{ $article->id }})) : '{{ str_replace("'", "\\'", $article->title) }}'.toLowerCase().includes(search.toLowerCase())"
+                        <div x-show="!search ? ({{ $i }} < limit) : '{{ str_replace("'", "\\'", $article->title) }}'.toLowerCase().includes(search.toLowerCase())"
                             x-cloak>
                             <label @click.prevent="toggle({{ $article->id }})"
                                 :class="selected.includes({{ $article->id }})
@@ -141,11 +142,11 @@
                     @endforeach
                 </div>
 
-                {{-- Show More / Show Less --}}
-                <div x-show="!search && {{ count($articles) }} > limit" class="mt-3 text-center">
-                    <button type="button" @click="limit = limit < {{ count($articles) }} ? {{ count($articles) }} : 5"
+                {{-- Load More --}}
+                <div x-show="!search && limit < {{ count($articles) }}" class="mt-3 text-center">
+                    <button type="button" @click="limit += increment"
                         class="font-label-mono text-xs text-primary hover:underline focus:outline-none">
-                        <span x-text="limit < {{ count($articles) }} ? 'Tampilkan semua ({{ count($articles) }})' : 'Tampilkan lebih sedikit'"></span>
+                        Muat lainnya
                     </button>
                 </div>
 
@@ -172,6 +173,7 @@
                 announcements: {{ $announcements->map(fn($a) => ['id' => (string)$a->id, 'title' => $a->title])->values()->toJson() }},
                 search: '',
                 limit: 5,
+                increment: 5,
                 get selectedAnn() {
                     return this.selected ? this.announcements.find(a => a.id === this.selected) : null;
                 },
@@ -231,7 +233,7 @@
                 </p>
                 <div class="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto border-2 border-on-background p-2 bg-surface-container-low">
                     @foreach($announcements as $i => $announcement)
-                        <div x-show="!search ? ({{ $i }} < limit || selected == '{{ $announcement->id }}') : '{{ str_replace("'", "\\'", $announcement->title) }}'.toLowerCase().includes(search.toLowerCase())"
+                        <div x-show="!search ? ({{ $i }} < limit) : '{{ str_replace("'", "\\'", $announcement->title) }}'.toLowerCase().includes(search.toLowerCase())"
                             x-cloak>
                             <label @click.prevent="selected = (selected == '{{ $announcement->id }}') ? '' : '{{ $announcement->id }}'"
                                 :class="selected == '{{ $announcement->id }}'
@@ -266,11 +268,11 @@
                     @endforeach
                 </div>
 
-                {{-- Show More / Show Less --}}
-                <div x-show="!search && {{ count($announcements) }} > limit" class="mt-3 text-center">
-                    <button type="button" @click="limit = limit < {{ count($announcements) }} ? {{ count($announcements) }} : 5"
+                {{-- Load More --}}
+                <div x-show="!search && limit < {{ count($announcements) }}" class="mt-3 text-center">
+                    <button type="button" @click="limit += increment"
                         class="font-label-mono text-xs text-primary hover:underline focus:outline-none">
-                        <span x-text="limit < {{ count($announcements) }} ? 'Tampilkan semua ({{ count($announcements) }})' : 'Tampilkan lebih sedikit'"></span>
+                        Muat lainnya
                     </button>
                 </div>
 

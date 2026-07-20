@@ -30,14 +30,28 @@ class SpotlightController extends Controller
 
     public function manage()
     {
-        $articles = Article::where('is_published', true)->latest('published_at')->get();
-        $announcements = Announcement::latest()->get();
         $currentArticleSpotlights = Spotlight::with('article')
             ->where('type', 'article')
             ->get();
+        $currentArticleIds = $currentArticleSpotlights->pluck('article_id');
+
+        $allArticles = Article::where('is_published', true)->latest('published_at')->get();
+        $spotlightedArticles = $allArticles->whereIn('id', $currentArticleIds);
+        $otherArticles = $allArticles->whereNotIn('id', $currentArticleIds);
+        $articles = $spotlightedArticles->concat($otherArticles)->values();
+
         $currentAnnouncementSpotlight = Spotlight::with('announcement')
             ->where('type', 'announcement')
             ->first();
+
+        $allAnnouncements = Announcement::latest()->get();
+        if ($currentAnnouncementSpotlight) {
+            $spotlightedAnn = $allAnnouncements->where('id', $currentAnnouncementSpotlight->announcement_id);
+            $otherAnn = $allAnnouncements->where('id', '!=', $currentAnnouncementSpotlight->announcement_id);
+            $announcements = $spotlightedAnn->concat($otherAnn)->values();
+        } else {
+            $announcements = $allAnnouncements;
+        }
 
         return view('admin.spotlights.manage', compact(
             'articles', 'announcements',

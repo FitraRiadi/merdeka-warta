@@ -16,24 +16,59 @@
         </a>
     @endif
 
-    <div class="flex items-center justify-between mb-6">
-        <div class="font-label-mono text-xs uppercase text-on-surface-variant flex items-center gap-4">
-            <span>Total: <span class="font-bold text-on-surface">{{ $articles->total() }}</span> artikel</span>
+    {{-- Header: total, filter, search, sort, add --}}
+    <div class="mb-6 space-y-3">
+        {{-- Row 1: Total + Status Tabs --}}
+        <div class="flex flex-wrap items-center gap-3">
+            <div class="font-label-mono text-xs uppercase text-on-surface-variant">
+                Total: <span class="font-bold text-on-surface">{{ $articles->total() }}</span> artikel
+            </div>
             @if(Auth::user()->isSuperAdmin())
-                <div class="flex gap-1">
-                    <a href="{{ route('admin.articles.index') }}" class="px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ !request('status') ? 'bg-on-background text-surface' : 'text-on-surface' }}">Semua</a>
-                    <a href="{{ route('admin.articles.index', ['status' => 'pending']) }}" class="px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ request('status') === 'pending' ? 'bg-amber-500 text-white' : 'text-on-surface' }}">Pending</a>
-                    <a href="{{ route('admin.articles.index', ['status' => 'published']) }}" class="px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ request('status') === 'published' ? 'bg-green-600 text-white' : 'text-on-surface' }}">Terbit</a>
-                    <a href="{{ route('admin.articles.index', ['status' => 'rejected']) }}" class="px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ request('status') === 'rejected' ? 'bg-red-600 text-white' : 'text-on-surface' }}">Ditolak</a>
+                <div class="flex gap-1 overflow-x-auto pb-0.5">
+                    <a href="{{ route('admin.articles.index') }}" class="whitespace-nowrap px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ !request('status') ? 'bg-on-background text-surface' : 'text-on-surface' }}">Semua</a>
+                    <a href="{{ route('admin.articles.index', ['status' => 'pending']) }}" class="whitespace-nowrap px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ request('status') === 'pending' ? 'bg-amber-500 text-white' : 'text-on-surface' }}">Pending</a>
+                    <a href="{{ route('admin.articles.index', ['status' => 'published']) }}" class="whitespace-nowrap px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ request('status') === 'published' ? 'bg-green-600 text-white' : 'text-on-surface' }}">Terbit</a>
+                    <a href="{{ route('admin.articles.index', ['status' => 'rejected']) }}" class="whitespace-nowrap px-3 py-1 border-2 border-on-background font-bold text-[10px] {{ request('status') === 'rejected' ? 'bg-red-600 text-white' : 'text-on-surface' }}">Ditolak</a>
                 </div>
             @endif
         </div>
-        <a href="{{ route('admin.articles.create') }}" class="admin-btn-primary admin-btn-sm">
-            <span class="material-symbols-outlined text-sm">add</span>
-            Tambah Artikel
-        </a>
+
+        {{-- Row 2: Search + Sort + Add --}}
+        <div class="flex flex-wrap items-center gap-3">
+            <form method="GET" action="{{ route('admin.articles.index') }}" class="relative flex-1 sm:flex-none min-w-[200px]">
+                @if(request('status'))
+                    <input type="hidden" name="status" value="{{ request('status') }}">
+                @endif
+                @if(request('sort'))
+                    <input type="hidden" name="sort" value="{{ request('sort') }}">
+                @endif
+                <input type="text" name="search" placeholder="Cari judul..." value="{{ request('search') }}"
+                       class="admin-input pl-8 pr-8 py-1.5 text-sm w-full sm:w-48"
+                       @keydown.enter="$el.form.submit()">
+                <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-on-surface-variant pointer-events-none">search</span>
+                @if(request('search'))
+                    <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}" class="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface">
+                        <span class="material-symbols-outlined text-sm">close</span>
+                    </a>
+                @endif
+            </form>
+
+            {{-- Sort --}}
+            <a href="{{ request()->fullUrlWithQuery(['sort' => request('sort') === 'oldest' ? 'newest' : 'oldest']) }}"
+               class="flex items-center gap-1.5 px-3 py-1.5 border-2 border-on-background font-label-mono text-xs hover:bg-surface-container transition-colors whitespace-nowrap">
+                <span class="material-symbols-outlined text-sm">{{ request('sort') === 'oldest' ? 'arrow_upward' : 'arrow_downward' }}</span>
+                {{ request('sort') === 'oldest' ? 'Terlama' : 'Terbaru' }}
+            </a>
+
+            {{-- Add --}}
+            <a href="{{ route('admin.articles.create') }}" class="admin-btn-primary admin-btn-sm whitespace-nowrap">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Tambah Artikel
+            </a>
+        </div>
     </div>
 
+    {{-- Table --}}
     <div class="admin-card overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full admin-table">
@@ -56,7 +91,7 @@
                             <td class="w-full min-w-0">
                                 <div class="flex items-center gap-3">
                                     @if($article->image)
-                                        <img src="{{ $article->image }}" alt="" class="w-10 h-10 object-cover border-2 border-on-background shrink-0 hidden sm:block shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]">
+                                        <img src="{{ $article->image }}" alt="" class="w-10 h-10 object-cover border-2 border-on-background shrink-0 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]">
                                     @endif
                                     <div class="min-w-0">
                                         <a href="{{ route('admin.articles.edit', $article) }}" class="font-body-md text-sm font-bold hover:text-primary truncate block">
@@ -150,7 +185,9 @@
                                         <span class="material-symbols-outlined text-2xl text-on-surface-variant">description</span>
                                     </div>
                                     <p class="font-body-md text-sm text-on-surface-variant">
-                                        @if(request('status') === 'pending')
+                                        @if(request('search'))
+                                            Tidak ada artikel yang cocok dengan pencarian "{{ request('search') }}".
+                                        @elseif(request('status') === 'pending')
                                             Tidak ada artikel yang menunggu persetujuan.
                                         @elseif(request('status') === 'rejected')
                                             Tidak ada artikel yang ditolak.
@@ -158,7 +195,9 @@
                                             Belum ada artikel.
                                         @endif
                                     </p>
-                                    <a href="{{ route('admin.articles.create') }}" class="admin-btn-primary admin-btn-sm mt-4 inline-flex">Tulis Artikel Pertama</a>
+@unless(request('search') || request('status'))
+<a href="{{ route('admin.articles.create') }}" class="admin-btn-primary admin-btn-sm mt-4 inline-flex">Tulis Artikel Pertama</a>
+@endunless
                                 </div>
                             </td>
                         </tr>

@@ -17,9 +17,20 @@ class AnnouncementController extends Controller
         $this->middleware('super_admin')->except(['index', 'show']);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $announcements = Announcement::withCount('views')->latest()->paginate(10);
+        $query = Announcement::withCount('views');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('title', 'like', "%{$search}%");
+        }
+
+        $sort = $request->input('sort', 'newest');
+        $query->orderBy('created_at', $sort === 'oldest' ? 'asc' : 'desc');
+
+        $announcements = $query->paginate(10)->withQueryString();
+
         return view('admin.announcements.index', compact('announcements'));
     }
 

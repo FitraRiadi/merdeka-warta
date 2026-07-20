@@ -39,9 +39,9 @@
                                 <div class="flex items-center gap-3 min-w-0">
                                     @if($spotlight->article?->image)
                                         <img src="{{ $spotlight->article->image }}" alt=""
-                                            class="w-12 h-9 object-cover border-2 border-on-background flex-shrink-0 hidden sm:block">
+                                            class="w-12 h-9 object-cover border-2 border-on-background flex-shrink-0">
                                     @else
-                                        <div class="w-12 h-9 bg-primary border-2 border-on-background flex-shrink-0 hidden sm:flex items-center justify-center">
+                                        <div class="w-12 h-9 bg-primary border-2 border-on-background flex-shrink-0 flex items-center justify-center">
                                             <span class="material-symbols-outlined text-on-primary text-sm">image</span>
                                         </div>
                                     @endif

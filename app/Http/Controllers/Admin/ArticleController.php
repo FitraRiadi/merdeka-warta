@@ -197,7 +197,15 @@ class ArticleController extends Controller
             $query->where('status', $request->status);
         }
 
-        $articles = $query->latest()->paginate(10);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('title', 'like', "%{$search}%");
+        }
+
+        $sort = $request->input('sort', 'newest');
+        $query->orderBy('created_at', $sort === 'oldest' ? 'asc' : 'desc');
+
+        $articles = $query->paginate(10)->withQueryString();
 
         if ($user->isSuperAdmin()) {
             $pendingCount = Article::where('status', 'pending')->count();

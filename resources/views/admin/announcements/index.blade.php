@@ -5,16 +5,42 @@
 @section('page_description', 'Kelola pengumuman dan pemberitahuan')
 
 @section('content')
-    <div class="flex items-center justify-between mb-6">
+    {{-- Header: total, search, sort, add --}}
+    <div class="mb-6 space-y-3">
         <div class="font-label-mono text-xs uppercase text-on-surface-variant">
             Total: <span class="font-bold text-on-surface">{{ $announcements->total() }}</span> pengumuman
         </div>
-        <a href="{{ route('admin.announcements.create') }}" class="admin-btn-primary admin-btn-sm">
-            <span class="material-symbols-outlined text-sm">add</span>
-            Tambah Pengumuman
-        </a>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <form method="GET" action="{{ route('admin.announcements.index') }}" class="relative flex-1 sm:flex-none min-w-[200px]">
+                @if(request('sort'))
+                    <input type="hidden" name="sort" value="{{ request('sort') }}">
+                @endif
+                <input type="text" name="search" placeholder="Cari judul..." value="{{ request('search') }}"
+                       class="admin-input pl-8 pr-8 py-1.5 text-sm w-full sm:w-48"
+                       @keydown.enter="$el.form.submit()">
+                <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-on-surface-variant pointer-events-none">search</span>
+                @if(request('search'))
+                    <a href="{{ request()->fullUrlWithQuery(['search' => null]) }}" class="absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface">
+                        <span class="material-symbols-outlined text-sm">close</span>
+                    </a>
+                @endif
+            </form>
+
+            <a href="{{ request()->fullUrlWithQuery(['sort' => request('sort') === 'oldest' ? 'newest' : 'oldest']) }}"
+               class="flex items-center gap-1.5 px-3 py-1.5 border-2 border-on-background font-label-mono text-xs hover:bg-surface-container transition-colors whitespace-nowrap">
+                <span class="material-symbols-outlined text-sm">{{ request('sort') === 'oldest' ? 'arrow_upward' : 'arrow_downward' }}</span>
+                {{ request('sort') === 'oldest' ? 'Terlama' : 'Terbaru' }}
+            </a>
+
+            <a href="{{ route('admin.announcements.create') }}" class="admin-btn-primary admin-btn-sm whitespace-nowrap">
+                <span class="material-symbols-outlined text-sm">add</span>
+                Tambah Pengumuman
+            </a>
+        </div>
     </div>
 
+    {{-- Table --}}
     <div class="admin-card overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full admin-table">
@@ -103,8 +129,16 @@
                                     <div class="empty-state-icon">
                                         <span class="material-symbols-outlined text-2xl text-on-surface-variant">campaign</span>
                                     </div>
-                                    <p class="font-body-md text-sm text-on-surface-variant">Belum ada pengumuman.</p>
+                                    <p class="font-body-md text-sm text-on-surface-variant">
+                                        @if(request('search'))
+                                            Tidak ada pengumuman yang cocok dengan pencarian "{{ request('search') }}".
+                                        @else
+                                            Belum ada pengumuman.
+                                        @endif
+                                    </p>
+                                    @unless(request('search'))
                                     <a href="{{ route('admin.announcements.create') }}" class="admin-btn-primary admin-btn-sm mt-4 inline-flex">Buat Pengumuman</a>
+                                    @endunless
                                 </div>
                             </td>
                         </tr>
