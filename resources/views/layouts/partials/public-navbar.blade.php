@@ -29,7 +29,7 @@
 </div>
 
 {{-- STICKY HEADER WRAPPER --}}
-<div class="sticky top-0 z-50">
+<div class="sticky top-0 z-50 navbar-sticky">
     {{-- TOP NAVBAR --}}
     <nav class="bg-surface border-3 border-on-background outline-2 outline-offset-[-6px] outline-on-background shadow-sm rounded-2xl max-w-7xl mx-2 md:mx-auto">
         <div class="flex justify-between items-center w-full px-4 md:px-margin-desktop py-4">

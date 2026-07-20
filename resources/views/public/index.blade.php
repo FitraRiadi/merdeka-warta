@@ -133,11 +133,135 @@
         .testimonial-track { display: flex; width: max-content; animation: scroll-testimonial 40s linear infinite; }
         .testimonial-track:hover { animation-play-state: paused; }
         @keyframes scroll-testimonial { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Intro Animation */
+        #app-intro {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--background);
+            transition: opacity 0.5s ease;
+        }
+        #intro-content {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            opacity: 0;
+            transform: scale(0.4);
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #intro-logo {
+            width: auto;
+            height: 80px;
+            transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        #intro-text {
+            font-family: 'Anton', sans-serif;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--on-surface);
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }
+        .intro-logo-show #intro-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .intro-text-show #intro-content {
+            gap: 16px;
+        }
+        .intro-text-show #intro-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .intro-split #intro-content {
+            gap: 0;
+        }
+        .intro-split #intro-logo {
+            transform: translateX(-30px);
+        }
+        .intro-split #intro-text {
+            opacity: 0;
+            transform: translateX(60px);
+        }
+        .intro-split #intro-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .intro-lift #app-intro {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .intro-lift #intro-content {
+            transform: translateY(-50vh) scale(0.35);
+            opacity: 0;
+        }
+        .intro-lift #intro-text {
+            opacity: 0;
+        }
+        .intro-lift #intro-logo {
+            transform: translateX(-20px);
+        }
+
+        .navbar-hidden {
+            opacity: 0 !important;
+            transform: translateY(-100%) !important;
+            transition: none !important;
+        }
+        .navbar-reveal {
+            animation: slide-down 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+        }
+        @keyframes slide-down {
+            0% { opacity: 0; transform: translateY(-100%); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        [data-intro-pop] {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        [data-intro-pop].pop-reveal {
+            animation: pop-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes pop-in {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        [data-intro-fade] {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        [data-intro-fade].fade-reveal {
+            animation: fade-up 0.6s ease-out forwards;
+        }
+        @keyframes fade-up {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .intro-skip #app-intro { display: none; }
+        .intro-skip .navbar-hidden { opacity: 1 !important; transform: translateY(0) !important; }
+        .intro-skip [data-intro-pop] { opacity: 1; transform: scale(1); }
+        .intro-skip [data-intro-fade] { opacity: 1; transform: translateY(0); }
     </style>
     @include('layouts.partials.pattern-styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="text-on-surface font-body-md">
+
+    <div id="app-intro">
+        <div id="intro-content">
+            <img id="intro-logo" src="{{ asset('smk-merdeka-logo.png') }}" alt="SMK Merdeka">
+            <span id="intro-text">MERDEKA WARTA</span>
+        </div>
+    </div>
 
     @include('layouts.partials.public-navbar', ['runningTexts' => $runningTexts])
 
@@ -146,7 +270,7 @@
         {{-- ============================================================ --}}
         {{-- BENTO HERO + SPOTLIGHT + ANNOUNCEMENTS --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 bento-grid grid-cols-2 md:grid-cols-6 lg:grid-cols-12 auto-rows-auto">
+        <section class="mb-12 md:mb-16 bento-grid grid-cols-2 md:grid-cols-6 lg:grid-cols-12 auto-rows-auto" data-intro-pop>
 
             {{-- Featured Hero --}}
             @forelse($spotlights->take(1) as $s)
@@ -211,7 +335,7 @@
             <div class="col-span-2 md:col-span-2 lg:col-span-5 bento-card rounded-xl bento-shadow bg-tertiary-fixed dark:bg-surface-container-high p-4 md:p-5 max-lg:p-4 flex flex-col min-h-[200px] max-lg:min-h-[160px]">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="material-symbols-outlined text-tertiary text-xl">campaign</span>
-                    <h2 class="font-headline-lg text-lg md:text-xl uppercase">PENGUMUMAN</h2>
+                    <h2 class="font-headline-lg text-lg md:text-xl uppercase" data-intro-fade>PENGUMUMAN</h2>
                 </div>
                 @if(isset($spotlightAnnouncement) && $spotlightAnnouncement && $spotlightAnnouncement->announcement)
                     @php $featAnn = $spotlightAnnouncement->announcement; @endphp
@@ -317,10 +441,10 @@
         {{-- POPULAR THIS WEEK --}}
         {{-- ============================================================ --}}
         @if($popularWeek->isNotEmpty())
-        <section class="mb-12 md:mb-16 bg-dots py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8">
+        <section class="mb-12 md:mb-16 bg-dots py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8" data-intro-pop>
             <div class="flex items-center gap-3 mb-6 md:mb-8">
                 <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
-                <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TERPOPULER MINGGU INI</h2>
+                <h2 class="font-headline-lg text-xl md:text-3xl uppercase" data-intro-fade>TERPOPULER MINGGU INI</h2>
                 <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
             </div>
             <div class="flex lg:grid lg:grid-cols-5 gap-3 md:gap-5 overflow-x-auto lg:overflow-visible pb-4 snap-x snap-mandatory scrollbar-thin">
@@ -355,11 +479,11 @@
         {{-- ============================================================ --}}
         {{-- NEWS SLIDER (BERITA TERBARU) --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 bg-stripes py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8" id="berita">
+        <section class="mb-12 md:mb-16 bg-stripes py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8" id="berita" data-intro-pop>
             <div class="flex items-center justify-between mb-6 md:mb-8 gap-4">
                 <div class="flex items-center gap-3">
                     <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
-                    <h2 class="font-headline-lg text-xl md:text-3xl uppercase">BERITA TERBARU</h2>
+                    <h2 class="font-headline-lg text-xl md:text-3xl uppercase" data-intro-fade>BERITA TERBARU</h2>
                 </div>
                 <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
                 @if($articles->count() > 3)
@@ -416,12 +540,12 @@
         {{-- ============================================================ --}}
         {{-- CTA SECTION --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 bento-card rounded-xl bento-shadow bg-blue-900 text-blue-100 dark:bg-blue-950 dark:text-blue-100 p-8 md:p-12 max-lg:p-6 md:px-12 relative overflow-hidden">
+        <section class="mb-12 md:mb-16 bento-card rounded-xl bento-shadow bg-blue-900 text-blue-100 dark:bg-blue-950 dark:text-blue-100 p-8 md:p-12 max-lg:p-6 md:px-12 relative overflow-hidden" data-intro-pop>
             <div class="absolute top-0 right-0 w-40 md:w-60 h-40 md:h-60 bg-secondary/20 rounded-full blur-3xl"></div>
             <div class="absolute bottom-0 left-0 w-32 md:w-48 h-32 md:h-48 bg-primary/20 rounded-full blur-3xl"></div>
             <div class="relative z-10 max-w-2xl mx-auto text-center">
                 <span class="material-symbols-outlined text-4xl md:text-5xl mb-4 text-secondary block">edit_note</span>
-                <h2 class="font-headline-lg text-2xl md:text-4xl mb-4 leading-none">PUNYA BERITA MENARIK? SUARAKAN DISINI!</h2>
+                <h2 class="font-headline-lg text-2xl md:text-4xl mb-4 leading-none" data-intro-fade>PUNYA BERITA MENARIK? SUARAKAN DISINI!</h2>
                 <p class="font-body-md text-sm md:text-base mb-8 text-white/70">Ayo, suarakan ide dan ceritamu! Kirimkan tulisanmu sekarang dan jadilah bagian dari Merdeka Warta.</p>
                 <div class="flex flex-wrap gap-4 justify-center">
                     <a class="cursor-pointer open-contributor-modal bg-primary text-on-primary rounded-xl px-8 py-3.5 font-bold text-base btn-press hover:bg-primary/90 transition-all inline-flex items-center gap-2 bento-shadow">
@@ -436,11 +560,11 @@
         {{-- ============================================================ --}}
         {{-- TESTIMONIALS --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16 bg-crosshatch py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8">
+        <section class="mb-12 md:mb-16 bg-crosshatch py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8" data-intro-pop>
             <div class="flex items-center justify-between mb-6 gap-4">
                 <div class="flex items-center gap-3">
                     <span class="w-1.5 h-6 md:w-2 md:h-8 bg-tertiary rounded"></span>
-                    <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TANGGAPAN</h2>
+                    <h2 class="font-headline-lg text-xl md:text-3xl uppercase" data-intro-fade>TANGGAPAN</h2>
                 </div>
                 <div class="h-px bg-outline-variant flex-grow hidden md:block"></div>
             </div>
@@ -702,6 +826,70 @@
                 });
             });
             setInterval(function() { goTo(current + 1); }, 4000);
+        })();
+
+        // Intro Animation
+        (function() {
+            var played = sessionStorage.getItem('intro_played');
+            var intro = document.getElementById('app-intro');
+            var navbar = document.querySelector('.navbar-sticky');
+            var main = document.querySelector('main');
+            var popEls = document.querySelectorAll('[data-intro-pop]');
+            var fadeEls = document.querySelectorAll('[data-intro-fade]');
+
+            if (!intro) return;
+
+            if (played) {
+                document.body.classList.add('intro-skip');
+                return;
+            }
+
+            if (navbar) navbar.classList.add('navbar-hidden');
+            if (main) main.style.opacity = '0';
+
+            // Phase 1: Logo muncul (0.3s)
+            setTimeout(function() {
+                intro.classList.add('intro-logo-show');
+            }, 300);
+
+            // Phase 2: Text MERDEKA WARTA muncul (1s)
+            setTimeout(function() {
+                intro.classList.add('intro-text-show');
+            }, 1000);
+
+            // Phase 3: Split (1.9s)
+            setTimeout(function() {
+                intro.classList.remove('intro-logo-show', 'intro-text-show');
+                intro.classList.add('intro-split');
+            }, 1900);
+
+            // Phase 4: Lift + reveal (2.7s)
+            setTimeout(function() {
+                intro.style.opacity = '0';
+            }, 2700);
+
+            setTimeout(function() {
+                intro.style.display = 'none';
+                if (navbar) {
+                    navbar.classList.remove('navbar-hidden');
+                    navbar.classList.add('navbar-reveal');
+                }
+                if (main) {
+                    main.style.transition = 'opacity 0.5s ease';
+                    main.style.opacity = '1';
+                }
+                popEls.forEach(function(el, i) {
+                    setTimeout(function() {
+                        el.classList.add('pop-reveal');
+                    }, 200 + i * 120);
+                });
+                fadeEls.forEach(function(el, i) {
+                    setTimeout(function() {
+                        el.classList.add('fade-reveal');
+                    }, 300 + i * 100);
+                });
+                sessionStorage.setItem('intro_played', '1');
+            }, 3200);
         })();
     </script>
 
