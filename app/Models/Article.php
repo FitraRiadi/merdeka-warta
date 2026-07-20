@@ -80,6 +80,42 @@ class Article extends Model
         return array_values(array_unique($tags));
     }
 
+    private function renderText(string $text, bool $preserveLines = true): string
+    {
+        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
+
+        $text = preg_replace_callback(
+            '/<a\s+(?:[^>]*?\s+)?href="([^"]*)"([^>]*)>(.*?)<\/a>/i',
+            function ($m) {
+                $url = $m[1];
+                $inner = $m[3];
+
+                $safeProtocols = ['http://', 'https://', 'mailto:', 'tel:', '#'];
+                $safe = false;
+                foreach ($safeProtocols as $protocol) {
+                    if (str_starts_with(strtolower($url), $protocol)) {
+                        $safe = true;
+                        break;
+                    }
+                }
+
+                $url = $safe ? e($url) : '#';
+                $inner = e($inner);
+
+                return '<a href="' . $url . '" class="text-primary underline hover:text-secondary transition-colors" target="_blank" rel="noopener noreferrer">' . $inner . '</a>';
+            },
+            $text
+        );
+
+        $text = strip_tags($text, '<b><i><u><s><strong><em><code><span><sub><sup><mark><del><a><br>');
+
+        if ($preserveLines) {
+            $text = nl2br($text);
+        }
+
+        return $text;
+    }
+
     public function renderContent(): string
     {
         $blocks = $this->content_array['blocks'] ?? [];
@@ -94,25 +130,22 @@ class Article extends Model
                 case 'header':
                     $level = $data['level'] ?? 2;
                     $text = $data['text'] ?? '';
-                    $text = str_replace(['<br>', '<br/>', '<br />'], ' ', $text);
                     if ($level <= 2) {
-                        $html .= '<h2 class="font-headline-lg text-3xl md:text-4xl uppercase leading-tight mb-6">' . e($text) . '</h2>';
+                        $html .= '<h2 class="font-headline-lg text-3xl md:text-4xl uppercase leading-tight mb-6">' . $this->renderText($text, false) . '</h2>';
                     } elseif ($level <= 4) {
-                        $html .= '<h3 class="font-headline-lg text-2xl md:text-3xl uppercase leading-tight mb-4">' . e($text) . '</h3>';
+                        $html .= '<h3 class="font-headline-lg text-2xl md:text-3xl uppercase leading-tight mb-4">' . $this->renderText($text, false) . '</h3>';
                     } else {
-                        $html .= '<h4 class="font-headline-lg text-xl uppercase leading-tight mb-3">' . e($text) . '</h4>';
+                        $html .= '<h4 class="font-headline-lg text-xl uppercase leading-tight mb-3">' . $this->renderText($text, false) . '</h4>';
                     }
                     break;
 
                 case 'paragraph':
                     $text = $data['text'] ?? '';
-                    $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
-                    $text = nl2br(e($text));
                     if ($firstParagraph) {
-                        $html .= '<p class="text-xl font-bold leading-relaxed italic border-l-8 border-secondary-container pl-6 py-2 mb-6">' . $text . '</p>';
+                        $html .= '<p class="text-xl font-bold leading-relaxed italic border-l-8 border-secondary-container pl-6 py-2 mb-6">' . $this->renderText($text) . '</p>';
                         $firstParagraph = false;
                     } else {
-                        $html .= '<p class="font-body-md text-base md:text-lg leading-relaxed mb-6">' . $text . '</p>';
+                        $html .= '<p class="font-body-md text-base md:text-lg leading-relaxed mb-6">' . $this->renderText($text) . '</p>';
                     }
                     break;
 
@@ -126,8 +159,7 @@ class Article extends Model
                     }
                     foreach ($items as $item) {
                         $text = is_array($item) ? ($item['content'] ?? '') : (string) $item;
-                        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
-                        $html .= '<li>' . nl2br(e($text)) . '</li>';
+                        $html .= '<li>' . $this->renderText($text) . '</li>';
                     }
                     $html .= ($style === 'ordered') ? '</ol>' : '</ul>';
                     break;
@@ -135,15 +167,13 @@ class Article extends Model
                 case 'quote':
                 case 'blockquote':
                     $text = $data['text'] ?? '';
-                    $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
-                    $text = nl2br(e($text));
                     $caption = $data['caption'] ?? '';
                     $alignment = $data['alignment'] ?? 'left';
                     $html .= '<blockquote class="bg-on-background text-surface p-8 border-3 border-on-background brutalist-shadow italic relative overflow-hidden mb-6">';
                     $html .= '<span class="material-symbols-outlined absolute -top-4 -left-4 text-9xl opacity-20 rotate-12">format_quote</span>';
-                    $html .= '<p class="text-xl md:text-2xl font-bold relative z-10">' . $text . '</p>';
+                    $html .= '<p class="text-xl md:text-2xl font-bold relative z-10">' . $this->renderText($text) . '</p>';
                     if ($caption) {
-                        $html .= '<footer class="mt-4 font-label-mono text-xs uppercase opacity-70 relative z-10">— ' . e($caption) . '</footer>';
+                        $html .= '<footer class="mt-4 font-label-mono text-xs uppercase opacity-70 relative z-10">— ' . $this->renderText($caption, false) . '</footer>';
                     }
                     $html .= '</blockquote>';
                     break;
@@ -159,7 +189,7 @@ class Article extends Model
                         $html .= '<figure class="border-3 border-on-background brutalist-shadow mb-6' . $stretchClass . '">';
                         $html .= '<img class="w-full max-h-96 object-contain" src="' . e($url) . '" alt="' . e($caption ?: 'Article image') . '">';
                         if ($caption) {
-                            $html .= '<figcaption class="bg-surface-container p-3 font-label-mono text-xs uppercase border-t-3 border-on-background">' . e($caption) . '</figcaption>';
+                            $html .= '<figcaption class="bg-surface-container p-3 font-label-mono text-xs uppercase border-t-3 border-on-background">' . $this->renderText($caption, false) . '</figcaption>';
                         }
                         $html .= '</figure>';
                     }
@@ -169,14 +199,13 @@ class Article extends Model
                     $items = $data['items'] ?? [];
                     $html .= '<ul class="space-y-3 mb-6 font-body-md">';
                     foreach ($items as $item) {
-                        $checked = $item['checked'] ?? false;
-                        $text = $item['text'] ?? '';
-                        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
+                        $checked = $item['meta']['checked'] ?? $item['checked'] ?? false;
+                        $text = $item['content'] ?? $item['text'] ?? '';
                         $html .= '<li class="flex items-center gap-3">';
                         $html .= $checked
                             ? '<span class="material-symbols-outlined text-secondary">check_circle</span>'
                             : '<span class="material-symbols-outlined text-on-surface-variant">radio_button_unchecked</span>';
-                        $html .= '<span' . ($checked ? ' class="line-through opacity-60"' : '') . '>' . nl2br(e($text)) . '</span>';
+                        $html .= '<span' . ($checked ? ' class="line-through opacity-60"' : '') . '>' . $this->renderText($text) . '</span>';
                         $html .= '</li>';
                     }
                     $html .= '</ul>';
@@ -215,7 +244,7 @@ class Article extends Model
                         $html .= '<div class="border-3 border-on-background brutalist-shadow mb-6 aspect-video">';
                         $html .= '<iframe class="w-full h-full" src="' . e($embed) . '" frameborder="0" allowfullscreen></iframe>';
                         if ($caption) {
-                            $html .= '<div class="bg-surface-container p-3 font-label-mono text-xs uppercase border-t-3 border-on-background">' . e($caption) . '</div>';
+                            $html .= '<div class="bg-surface-container p-3 font-label-mono text-xs uppercase border-t-3 border-on-background">' . $this->renderText($caption, false) . '</div>';
                         }
                         $html .= '</div>';
                     }
@@ -223,8 +252,7 @@ class Article extends Model
 
                 default:
                     if (isset($data['text'])) {
-                        $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $data['text']);
-                        $html .= '<p class="font-body-md mb-6">' . nl2br(e($text)) . '</p>';
+                        $html .= '<p class="font-body-md mb-6">' . $this->renderText($data['text']) . '</p>';
                     }
                     break;
             }

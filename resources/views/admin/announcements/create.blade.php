@@ -104,8 +104,7 @@
                                 <div class="editor-toolbar__scroll">
                                     <div class="editor-toolbar__group">
                                         <span class="editor-toolbar__line-badge">
-                                            <span class="material-symbols-outlined" style="font-size:12px">edit</span>
-                                            <span x-text="currentBlock + 1">1</span>
+                                            Line <span x-text="currentBlock + 1">1</span>
                                         </span>
                                     </div>
                                     <div class="editor-toolbar__group">
@@ -120,7 +119,6 @@
                                     <div class="editor-toolbar__group">
                                         <button type="button" @click="moveUp()" class="editor-toolbar__btn" title="Pindah ke atas"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_up</span></button>
                                         <button type="button" @click="moveDown()" class="editor-toolbar__btn" title="Pindah ke bawah"><span class="material-symbols-outlined" style="font-size:14px">keyboard_arrow_down</span></button>
-                                        <button type="button" @click="duplicateBlock()" class="editor-toolbar__btn" title="Duplikat blok"><span class="material-symbols-outlined" style="font-size:14px">content_copy</span></button>
                                         <button type="button" @click="deleteBlock()" class="editor-toolbar__btn" title="Hapus blok" style="color:var(--error)"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>
                                     </div>
                                 </div>
@@ -443,7 +441,7 @@
                 const idx = this.editorInstance.blocks.getCurrentBlockIndex();
                 const block = this.editorInstance.blocks.getBlockByIndex(idx);
                 if (!block) return;
-                this.editorInstance.blocks.insert(block.name, block.data, undefined, idx + 1, true);
+                this.editorInstance.blocks.insert(block.name, JSON.parse(JSON.stringify(block.data)), undefined, idx + 1, true);
             },
             async deleteBlock() {
                 if (!this.editorInstance) return;

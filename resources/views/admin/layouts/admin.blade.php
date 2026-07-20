@@ -1403,10 +1403,14 @@
             align-items: center;
             gap: 4px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             color: var(--on-surface-variant);
             white-space: nowrap;
+            background: var(--surface-container-high);
+            padding: 2px 8px;
+            border-radius: 3px;
+            border: 1px solid var(--outline-variant);
         }
 
         /* ── Conditional group hide/show ── */
