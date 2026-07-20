@@ -3,7 +3,7 @@
         <div class="space-y-6">
             <h3 class="font-headline-lg text-2xl md:text-headline-lg text-surface dark:text-on-surface">MERDEKA WARTA</h3>
             <p class="font-body-md text-sm md:text-body-md text-surface/80 dark:text-on-surface/80">
-                SMK Swasta Unggulan di Kota Bandung dengan fasilitas lengkap dan letaknya strategis.
+                Merdeka Warta adalah portal berita dan informasi resmi SMK Merdeka Bandung. Menyajikan berita terkini seputar kegiatan sekolah, prestasi siswa, dan pengumuman resmi.
             </p>
             <div class="flex gap-3">
                 <a href="https://api.whatsapp.com/send/?phone=6281322263716" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center brutalist-border bg-surface text-on-surface dark:bg-surface-container-high dark:text-on-surface hover:bg-green-600 hover:text-white transition-all" title="WhatsApp">
@@ -24,19 +24,19 @@
             <h4 class="font-bold uppercase mb-6 text-surface dark:text-on-surface">Kontak</h4>
             <div class="space-y-4 text-surface/80 font-body-md text-sm md:text-body-md leading-relaxed dark:text-on-surface/80">
                 <div class="flex items-start gap-3">
-                    <i class="fas fa-map-marker-alt mt-1 text-primary"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mt-1 shrink-0 text-primary"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     <span>Jl. Pahlawan No. 54 Bandung</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-phone text-primary"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0 text-primary"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
                     <span>022-7201621 / 022-7216143</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-envelope text-primary"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0 text-primary"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                     <span>info@smkmerdekabdg.sch.id</span>
                 </div>
                 <div class="flex items-center gap-3">
-                    <i class="fas fa-envelope text-primary"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="shrink-0 text-primary"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                     <span>smksmerdekabdg@gmail.com</span>
                 </div>
             </div>
@@ -44,7 +44,7 @@
         <div>
             <h4 class="font-bold uppercase mb-6 text-surface dark:text-on-surface">Jam Operasional</h4>
             <div class="flex items-start gap-3 text-surface/80 font-body-md text-sm md:text-body-md leading-relaxed dark:text-on-surface/80">
-                <i class="fas fa-clock mt-1 text-primary"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mt-1 shrink-0 text-primary"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
                 <div>
                     <p class="mb-1">Senin - Jumat</p>
                     <p class="font-semibold">06.45 - 17.00 WIB</p>
