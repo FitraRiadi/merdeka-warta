@@ -11,5 +11,9 @@
         @include('profile.partials.update-password-form')
 
         @include('profile.partials.delete-user-form')
+
+        @if(Auth::user()->isSuperAdmin())
+            @include('profile.partials.update-settings-form')
+        @endif
     </div>
 @endsection

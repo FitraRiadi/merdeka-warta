@@ -556,7 +556,7 @@
                           + 'Alasan: ' + alasan + '\n'
                           + 'No. HP: ' + phone;
 
-                var waUrl = 'https://api.whatsapp.com/send/?phone=6281322263716&text=' + encodeURIComponent(pesan);
+                var waUrl = 'https://api.whatsapp.com/send/?phone=' + (window.contributorPhone || '6281322263716') + '&text=' + encodeURIComponent(pesan);
 
                 cForm.reset();
                 closeCModal();

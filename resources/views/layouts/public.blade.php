@@ -271,6 +271,10 @@
         </div>
     </footer>
 
+    <script>
+        window.contributorPhone = '{{ $globalSettings['contributor_phone'] ?? '6281322263716' }}';
+    </script>
+
     {{-- Alpine x-cloak --}}
     <style>
         [x-cloak] { display: none !important; }
