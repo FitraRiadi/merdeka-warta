@@ -552,53 +552,22 @@
         if (cForm) {
             cForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                cSubmitBtn.disabled = true;
-                cSubmitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> MENGIRIM...';
 
-                var fd = new FormData(cForm);
+                var nama = cForm.querySelector('[name="name"]').value;
+                var kelas = cForm.querySelector('[name="class"]').value;
+                var alasan = cForm.querySelector('[name="reason"]').value;
+                var phone = cForm.querySelector('[name="phone"]').value;
 
-                fetch('{{ route('public.contributor.permission') }}', {
-                    method: 'POST',
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
-                    body: fd
-                })
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: data.message,
-                            text: data.subtitle,
-                            confirmButtonColor: '#004ac6',
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'rounded-xl shadow-2xl',
-                                title: 'font-headline-lg text-2xl uppercase',
-                                confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
-                            }
-                        });
-                        cForm.reset();
-                        closeCModal();
-                    }
-                })
-                .catch(function() {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal',
-                        text: 'Terjadi kesalahan. Silakan coba lagi.',
-                        confirmButtonColor: '#004ac6',
-                        confirmButtonText: 'OK',
-                        customClass: {
-                            popup: 'rounded-xl shadow-2xl',
-                            title: 'font-headline-lg text-2xl uppercase',
-                            confirmButton: 'bg-primary text-on-primary rounded-xl px-8 py-3 font-bold'
-                        }
-                    });
-                })
-                .finally(function() {
-                    cSubmitBtn.disabled = false;
-                    cSubmitBtn.innerHTML = '<span class="material-symbols-outlined">send</span> KIRIM PERMINTAAN';
-                });
+                var pesan = 'Halo, saya ' + nama + ' dari kelas ' + kelas + '. Saya ingin bergabung menjadi kontributor Merdeka Warta.\n\n'
+                          + 'Alasan: ' + alasan + '\n'
+                          + 'No. HP: ' + phone;
+
+                var waUrl = 'https://api.whatsapp.com/send/?phone=6281322263716&text=' + encodeURIComponent(pesan);
+
+                cForm.reset();
+                closeCModal();
+
+                window.open(waUrl, '_blank');
             });
         }
 

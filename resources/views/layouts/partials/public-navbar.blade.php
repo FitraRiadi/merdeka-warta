@@ -64,8 +64,16 @@
 
     {{-- NEWS TICKER --}}
     @if($runningTexts->isNotEmpty())
-        <div class="bg-secondary text-on-secondary py-3 border-3 border-on-background shadow-sm rounded-2xl max-w-7xl mx-2 md:mx-auto overflow-hidden whitespace-nowrap">
-            <div class="flex animate-marquee" id="marqueeTrack">
+        <div class="bg-secondary text-on-secondary py-3 border-3 border-on-background shadow-sm rounded-2xl max-w-7xl mx-2 md:mx-auto overflow-hidden">
+            <div class="flex running-text-track">
+                <div class="flex items-center gap-8 px-4">
+                    @foreach($runningTexts as $rt)
+                        <span class="font-label-mono text-label-mono uppercase tracking-widest whitespace-nowrap">{{ $rt->text }}</span>
+                        @if(!$loop->last)
+                            <span class="material-symbols-outlined">stars</span>
+                        @endif
+                    @endforeach
+                </div>
                 <div class="flex items-center gap-8 px-4">
                     @foreach($runningTexts as $rt)
                         <span class="font-label-mono text-label-mono uppercase tracking-widest whitespace-nowrap">{{ $rt->text }}</span>
@@ -76,21 +84,19 @@
                 </div>
             </div>
             <style>
-                @keyframes marquee {
+                @keyframes running-text-scroll {
                     0% { transform: translateX(0); }
-                    50% { transform: translateX(var(--marquee-x, -50%)); }
-                    100% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
                 }
-                .animate-marquee { animation: marquee 20s ease-in-out infinite; }
+                .running-text-track {
+                    display: flex;
+                    width: max-content;
+                    animation: running-text-scroll 30s linear infinite;
+                }
+                .running-text-track:hover {
+                    animation-play-state: paused;
+                }
             </style>
-            <script>
-                (function() {
-                    var el = document.getElementById('marqueeTrack');
-                    if (!el) return;
-                    var dist = Math.max(0, el.scrollWidth - el.parentElement.clientWidth);
-                    el.style.setProperty('--marquee-x', (dist > 0 ? '-' + dist : '0') + 'px');
-                })();
-            </script>
         </div>
     @endif
 </div>
