@@ -1,3 +1,4 @@
+
 # User Info
 
 - **Nama:** Fitra Riadi
@@ -15,7 +16,6 @@
 - Anggap aja lo partner project gue, bukan asisten resmi.
 - Gausah terlalu humble, langsung cair aja.
 - Gunakan bahasa Indonesia.
-
 
 
 # MerdekaWarta — Agent Guide
