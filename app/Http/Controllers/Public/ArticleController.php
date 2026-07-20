@@ -22,7 +22,7 @@ class ArticleController extends Controller
             ->get();
 
         if ($spotlights->isEmpty()) {
-            $fallback = Article::where('is_published', true)
+            $fallback = Article::where('is_published', true)->where('status', 'published')
                 ->latest('published_at')
                 ->take(3)
                 ->get();
@@ -43,7 +43,7 @@ class ArticleController extends Controller
             }
         }
 
-        $articles = Article::where('is_published', true)
+        $articles = Article::where('is_published', true)->where('status', 'published')
             ->with('author')
             ->latest('published_at')
             ->take(9)
@@ -62,7 +62,7 @@ class ArticleController extends Controller
 
         $galleries = Gallery::get();
 
-        $popularWeek = Article::where('is_published', true)
+        $popularWeek = Article::where('is_published', true)->where('status', 'published')
             ->withCount(['views' => function ($q) {
                 $q->where('created_at', '>=', now()->startOfWeek());
             }])
@@ -74,7 +74,7 @@ class ArticleController extends Controller
 
         if ($popularWeek->count() < 5) {
             $existingIds = $popularWeek->pluck('id');
-            $pad = Article::where('is_published', true)
+            $pad = Article::where('is_published', true)->where('status', 'published')
                 ->whereNotIn('id', $existingIds)
                 ->latest('published_at')
                 ->take(5 - $popularWeek->count())
@@ -91,7 +91,7 @@ class ArticleController extends Controller
 
     public function list(Request $request)
     {
-        $query = Article::where('is_published', true)->with('author');
+        $query = Article::where('is_published', true)->where('status', 'published')->with('author');
 
         // Filter by category
         if ($request->filled('category')) {
@@ -110,7 +110,7 @@ class ArticleController extends Controller
         $articles = $query->latest('published_at')->paginate(9);
 
         // Categories list for filter dropdown
-        $categories = Article::where('is_published', true)
+        $categories = Article::where('is_published', true)->where('status', 'published')
             ->select('category', DB::raw('count(*) as total'))
             ->groupBy('category')
             ->orderBy('total', 'desc')
@@ -133,13 +133,13 @@ class ArticleController extends Controller
     public function show($slug)
     {
         $article = Article::where('slug', $slug)
-            ->where('is_published', true)
+            ->where('is_published', true)->where('status', 'published')
             ->with('author')
             ->withCount('views')
             ->firstOrFail();
 
         // Sidebar: artikel populer (paling banyak dilihat)
-        $popularArticles = Article::where('is_published', true)
+        $popularArticles = Article::where('is_published', true)->where('status', 'published')
             ->withCount('views')
             ->orderBy('views_count', 'desc')
             ->orderBy('published_at', 'desc')
@@ -147,14 +147,14 @@ class ArticleController extends Controller
             ->get();
 
         // Bottom section: artikel lain secara acak (kecuali artikel yang sedang dibuka)
-        $relatedArticles = Article::where('is_published', true)
+        $relatedArticles = Article::where('is_published', true)->where('status', 'published')
             ->where('id', '!=', $article->id)
             ->inRandomOrder()
             ->limit(6)
             ->get();
 
         // Sidebar: kategori dengan jumlah artikel
-        $categories = Article::where('is_published', true)
+        $categories = Article::where('is_published', true)->where('status', 'published')
             ->select('category', DB::raw('count(*) as total'))
             ->groupBy('category')
             ->orderBy('total', 'desc')

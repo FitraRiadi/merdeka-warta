@@ -200,6 +200,7 @@
                     </div>
                 </div>
 
+                @if(Auth::user()->isSuperAdmin())
                 <div class="md:col-span-2">
                     <label class="flex items-center gap-3 cursor-pointer group p-3 border-2 border-on-background hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
                         <input type="checkbox" name="is_published" value="1" {{ old('is_published', true) ? 'checked' : '' }}
@@ -208,6 +209,7 @@
                         <span class="font-label-mono text-xs uppercase group-hover:text-primary transition-colors">Terbitkan langsung</span>
                     </label>
                 </div>
+                @endif
             </div>
         </div>
 

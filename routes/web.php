@@ -46,6 +46,9 @@ Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
     // CRUD Artikel (author & super_admin)
     // Otorisasi diatur melalui Policy (author hanya milik sendiri)
     Route::resource('articles', AdminArticleController::class);
+    Route::patch('/articles/{article}/approve', [AdminArticleController::class, 'approve'])->name('articles.approve');
+    Route::patch('/articles/{article}/reject', [AdminArticleController::class, 'reject'])->name('articles.reject');
+    Route::patch('/articles/{article}/resubmit', [AdminArticleController::class, 'resubmit'])->name('articles.resubmit');
 
     // CRUD Pemberitahuan (hanya super_admin)
     Route::resource('announcements', AnnouncementController::class)

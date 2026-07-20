@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Article;
+use App\Models\Setting;
 use App\Models\Spotlight;
 use App\Services\CdnService;
 use Illuminate\Http\Request;
@@ -182,20 +183,25 @@ class ArticleController extends Controller
     /**
      * Display a listing of the articles.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Article::class);
 
         $user = Auth::user();
 
+        $query = Article::with('author')->withCount('views');
+
+        if (!$user->isSuperAdmin()) {
+            $query->where('user_id', $user->id);
+        } elseif ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $articles = $query->latest()->paginate(10);
+
         if ($user->isSuperAdmin()) {
-            $articles = Article::with('author')->withCount('views')->latest()->paginate(10);
-        } else {
-            $articles = Article::where('user_id', $user->id)
-                ->with('author')
-                ->withCount('views')
-                ->latest()
-                ->paginate(10);
+            $pendingCount = Article::where('status', 'pending')->count();
+            return view('admin.articles.index', compact('articles', 'pendingCount'));
         }
 
         return view('admin.articles.index', compact('articles'));
@@ -255,7 +261,18 @@ class ArticleController extends Controller
 
         $validated['user_id'] = Auth::id();
         $validated['published_at'] = now();
-        $validated['is_published'] = $request->has('is_published');
+
+        $user = Auth::user();
+        if ($user->isSuperAdmin()) {
+            $validated['is_published'] = $request->has('is_published');
+            $validated['status'] = $request->has('is_published') ? 'published' : 'draft';
+        } elseif (Setting::getValue('contributor_add_without_permission', '1') !== '1') {
+            $validated['status'] = 'pending';
+            $validated['is_published'] = false;
+        } else {
+            $validated['status'] = 'published';
+            $validated['is_published'] = true;
+        }
 
         $article = Article::create($validated);
 
@@ -331,7 +348,13 @@ class ArticleController extends Controller
 
         unset($validated['user_id']);
 
-        $validated['is_published'] = $request->has('is_published');
+        $user = Auth::user();
+        if ($user->isSuperAdmin()) {
+            $validated['is_published'] = $request->has('is_published');
+            $validated['status'] = $request->has('is_published') ? 'published' : 'draft';
+        } else {
+            unset($validated['is_published']);
+        }
 
         $article->update($validated);
 
@@ -361,5 +384,55 @@ class ArticleController extends Controller
 
         return redirect()->route('admin.articles.index')
             ->with('success', 'Artikel berhasil dihapus.');
+    }
+
+    public function approve(Article $article)
+    {
+        if (!Auth::user()->isSuperAdmin()) {
+            abort(403);
+        }
+
+        $article->update([
+            'status' => 'published',
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        ActivityLog::log('UPDATED', 'article', $article->id, "Menyetujui artikel \"" . e($article->title) . "\"");
+
+        return redirect()->route('admin.articles.index')
+            ->with('success', 'Artikel berhasil disetujui dan dipublikasikan.');
+    }
+
+    public function reject(Article $article)
+    {
+        if (!Auth::user()->isSuperAdmin()) {
+            abort(403);
+        }
+
+        $article->update([
+            'status' => 'rejected',
+            'is_published' => false,
+        ]);
+
+        ActivityLog::log('UPDATED', 'article', $article->id, "Menolak artikel \"" . e($article->title) . "\"");
+
+        return redirect()->route('admin.articles.index')
+            ->with('success', 'Artikel ditolak.');
+    }
+
+    public function resubmit(Article $article)
+    {
+        $this->authorize('update', $article);
+
+        $article->update([
+            'status' => 'pending',
+            'is_published' => false,
+        ]);
+
+        ActivityLog::log('UPDATED', 'article', $article->id, "Mengajukan ulang artikel \"" . e($article->title) . "\"");
+
+        return redirect()->route('admin.articles.index')
+            ->with('success', 'Artikel berhasil diajukan ulang.');
     }
 }

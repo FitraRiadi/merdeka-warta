@@ -21,6 +21,7 @@ class Article extends Model
         'is_published',
         'category',
         'user_id',
+        'status',
     ];
 
     protected function casts(): array

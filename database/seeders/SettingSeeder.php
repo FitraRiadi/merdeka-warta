@@ -20,6 +20,9 @@ class SettingSeeder extends Seeder
             ['key' => 'contact_email_secondary', 'value' => 'smksmerdekabdg@gmail.com'],
             ['key' => 'contact_hours', 'value' => 'Senin - Jumat, 06.45 - 17.00 WIB'],
             ['key' => 'contributor_phone', 'value' => '6281322263716'],
+            ['key' => 'contributor_add_without_permission', 'value' => '1'],
+            ['key' => 'contributor_delete_without_permission', 'value' => '1'],
+            ['key' => 'contributor_edit_without_permission', 'value' => '1'],
         ];
 
         foreach ($settings as $data) {

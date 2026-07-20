@@ -42,6 +42,9 @@ class ProfileController extends Controller
             'social_whatsapp', 'social_facebook', 'social_youtube', 'social_instagram',
             'contact_address', 'contact_phone', 'contact_email_primary', 'contact_email_secondary', 'contact_hours',
             'contributor_phone',
+            'contributor_add_without_permission',
+            'contributor_delete_without_permission',
+            'contributor_edit_without_permission',
         ];
 
         foreach ($keys as $key) {

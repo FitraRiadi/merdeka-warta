@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Article;
+use App\Models\Setting;
 use App\Models\User;
 
 class ArticlePolicy
@@ -39,8 +40,15 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article): bool
     {
-        // Super admin bisa update semua, author hanya punya sendiri
-        return $user->isSuperAdmin() || $user->id === $article->user_id;
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        if ($user->id !== $article->user_id) {
+            return false;
+        }
+
+        return Setting::getValue('contributor_edit_without_permission', '1') === '1';
     }
 
     /**
@@ -48,8 +56,15 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): bool
     {
-        // Sama seperti update
-        return $user->isSuperAdmin() || $user->id === $article->user_id;
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+
+        if ($user->id !== $article->user_id) {
+            return false;
+        }
+
+        return Setting::getValue('contributor_delete_without_permission', '1') === '1';
     }
 
     /**

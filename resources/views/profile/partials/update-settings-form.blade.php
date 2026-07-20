@@ -10,6 +10,9 @@
         'contact_email_secondary' => \App\Models\Setting::getValue('contact_email_secondary', 'smksmerdekabdg@gmail.com'),
         'contact_hours' => \App\Models\Setting::getValue('contact_hours', 'Senin - Jumat, 06.45 - 17.00 WIB'),
         'contributor_phone' => \App\Models\Setting::getValue('contributor_phone', '6281322263716'),
+        'contributor_add_without_permission' => \App\Models\Setting::getValue('contributor_add_without_permission', '1'),
+        'contributor_delete_without_permission' => \App\Models\Setting::getValue('contributor_delete_without_permission', '1'),
+        'contributor_edit_without_permission' => \App\Models\Setting::getValue('contributor_edit_without_permission', '1'),
     ];
 @endphp
 
@@ -75,12 +78,146 @@
 
         <div class="border-t-3 border-on-background pt-6">
             <h3 class="font-headline-lg text-base uppercase tracking-tight mb-4">Perizinan Kontributor</h3>
-            <div>
-                <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">No. WhatsApp <span class="text-error">*</span></label>
-                <input name="contributor_phone" type="text" class="admin-input" value="{{ old('contributor_phone', $settings['contributor_phone']) }}" placeholder="6281322263716">
-                <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Nomor ini yang menerima permintaan kontributor dari siswa</p>
+            <div class="space-y-4 max-w-xl">
+                <div>
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">No. WhatsApp <span class="text-error">*</span></label>
+                    <input name="contributor_phone" type="text" class="admin-input" value="{{ old('contributor_phone', $settings['contributor_phone']) }}" placeholder="6281322263716">
+                    <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Nomor ini yang menerima permintaan kontributor dari siswa</p>
+                </div>
+                <div class="flex items-center justify-between gap-4 p-4 border-3 border-on-background bg-surface-container-low rounded-xl">
+                    <div>
+                        <p class="font-body-md text-sm font-bold text-on-surface">Tambah Artikel</p>
+                        <p class="font-label-mono text-[10px] text-on-surface-variant">Izinkan kontributor menambahkan artikel tanpa perizinan</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="hidden" name="contributor_add_without_permission" value="0">
+                        <input type="checkbox" name="contributor_add_without_permission" value="1" {{ $settings['contributor_add_without_permission'] === '1' ? 'checked' : '' }}>
+                        <span class="toggle-slider">
+                            <span class="toggle-text toggle-off">OFF</span>
+                            <span class="toggle-text toggle-on">ON</span>
+                        </span>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between gap-4 p-4 border-3 border-on-background bg-surface-container-low rounded-xl">
+                    <div>
+                        <p class="font-body-md text-sm font-bold text-on-surface">Hapus Artikel</p>
+                        <p class="font-label-mono text-[10px] text-on-surface-variant">Izinkan kontributor menghapus artikel tanpa perizinan</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="hidden" name="contributor_delete_without_permission" value="0">
+                        <input type="checkbox" name="contributor_delete_without_permission" value="1" {{ $settings['contributor_delete_without_permission'] === '1' ? 'checked' : '' }}>
+                        <span class="toggle-slider">
+                            <span class="toggle-text toggle-off">OFF</span>
+                            <span class="toggle-text toggle-on">ON</span>
+                        </span>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between gap-4 p-4 border-3 border-on-background bg-surface-container-low rounded-xl">
+                    <div>
+                        <p class="font-body-md text-sm font-bold text-on-surface">Edit Artikel</p>
+                        <p class="font-label-mono text-[10px] text-on-surface-variant">Izinkan kontributor mengedit artikel tanpa perizinan</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="hidden" name="contributor_edit_without_permission" value="0">
+                        <input type="checkbox" name="contributor_edit_without_permission" value="1" {{ $settings['contributor_edit_without_permission'] === '1' ? 'checked' : '' }}>
+                        <span class="toggle-slider">
+                            <span class="toggle-text toggle-off">OFF</span>
+                            <span class="toggle-text toggle-on">ON</span>
+                        </span>
+                    </label>
+                </div>
             </div>
         </div>
+
+        <style>
+            .toggle-switch {
+                position: relative;
+                display: inline-block;
+                width: 64px;
+                height: 30px;
+                flex-shrink: 0;
+                cursor: pointer;
+            }
+            .toggle-switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+                position: absolute;
+            }
+            .toggle-slider {
+                position: absolute;
+                inset: 0;
+                background-color: #9ca3af;
+                border: 3px solid #191c1d;
+                border-radius: 999px;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+                display: flex;
+                align-items: center;
+                padding: 0 6px;
+            }
+            .toggle-slider::before {
+                content: '';
+                position: absolute;
+                width: 18px;
+                height: 18px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                border: 2px solid #191c1d;
+                border-radius: 50%;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.3);
+                z-index: 2;
+            }
+            .toggle-switch input:checked + .toggle-slider {
+                background-color: #004ac6;
+            }
+            .toggle-switch input:checked + .toggle-slider::before {
+                transform: translateX(34px);
+                background-color: #fff;
+            }
+            .toggle-text {
+                font-family: 'Inter', sans-serif;
+                font-size: 9px;
+                font-weight: 800;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: opacity 0.2s ease;
+                z-index: 1;
+                line-height: 1;
+            }
+            .toggle-off {
+                left: 8px;
+                color: white;
+                opacity: 1;
+            }
+            .toggle-on {
+                right: 8px;
+                color: white;
+                opacity: 0;
+            }
+            .toggle-switch input:checked + .toggle-slider .toggle-off {
+                opacity: 0;
+            }
+            .toggle-switch input:checked + .toggle-slider .toggle-on {
+                opacity: 1;
+            }
+            .dark .toggle-slider {
+                border-color: #fff;
+                box-shadow: 2px 2px 0px 0px rgba(255,255,255,0.15);
+            }
+            .dark .toggle-slider::before {
+                border-color: #fff;
+                background-color: #e0e0e0;
+            }
+            .dark .toggle-switch input:checked + .toggle-slider {
+                background-color: #3b82f6;
+            }
+        </style>
 
         <div class="flex items-center gap-4 pt-2">
             <button type="submit" class="admin-btn-primary">

@@ -5,6 +5,24 @@
 @section('page_description', 'Ringkasan data dan aktivitas terbaru')
 
 @section('content')
+    @if(Auth::user()->isSuperAdmin() && isset($totalPending) && $totalPending > 0)
+        <a href="{{ route('admin.articles.index', ['status' => 'pending']) }}" class="block bg-amber-50 border-3 border-amber-500 rounded-xl p-5 mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+            <div class="flex items-start gap-4">
+                <span class="material-symbols-outlined text-3xl text-amber-600 shrink-0 mt-0.5">pending_actions</span>
+                <div class="flex-1">
+                    <p class="font-headline-lg text-lg uppercase text-amber-900">Perhatian!</p>
+                    <p class="font-body-md text-sm text-amber-800 mt-1">
+                        Terdapat <strong class="text-amber-900">{{ $totalPending }}</strong> artikel dari kontributor yang memerlukan persetujuan Anda.
+                    </p>
+                    <span class="inline-flex items-center gap-1 mt-3 font-label-mono text-xs uppercase text-amber-700 font-bold underline underline-offset-4">
+                        Tinjau Sekarang
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </span>
+                </div>
+            </div>
+        </a>
+    @endif
+
     {{-- Stat Cards --}}
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         <div class="admin-card stat-card stat-card-blue p-4 md:p-5">
@@ -67,6 +85,7 @@
                 </div>
                 <p class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $totalAuthors }}</p>
             </div>
+
         @endif
     </div>
 
