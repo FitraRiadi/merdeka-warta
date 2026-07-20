@@ -830,7 +830,7 @@
 
         // Intro Animation
         (function() {
-            var played = sessionStorage.getItem('intro_played');
+            var played = localStorage.getItem('intro_merdekawarta');
             var intro = document.getElementById('app-intro');
             var navbar = document.querySelector('.navbar-sticky');
             var main = document.querySelector('main');
@@ -888,7 +888,7 @@
                         el.classList.add('fade-reveal');
                     }, 300 + i * 100);
                 });
-                sessionStorage.setItem('intro_played', '1');
+                localStorage.setItem('intro_merdekawarta', 'true');
             }, 3200);
         })();
     </script>
