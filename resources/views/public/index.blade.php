@@ -129,6 +129,10 @@
         .news-slider-item { flex: 0 0 100%; padding: 0 8px; }
         @media (min-width: 768px) { .news-slider-item { flex: 0 0 50%; padding: 0 6px; } }
         @media (min-width: 1024px) { .news-slider-item { flex: 0 0 33.333%; } }
+
+        .testimonial-track { display: flex; width: max-content; animation: scroll-testimonial 40s linear infinite; }
+        .testimonial-track:hover { animation-play-state: paused; }
+        @keyframes scroll-testimonial { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -450,39 +454,71 @@
                         'quote' => 'Sangat membantu untuk mengetahui info sekolah terbaru! Merdeka Warta jadi rujukan utama saya.',
                         'name' => 'Budi Santoso',
                         'role' => 'Siswa Kelas XI',
-                        'image' => 'https://i.pravatar.cc/80?u=budi',
                     ],
                     [
                         'quote' => 'Desain beritanya sangat modern dan mudah dibaca oleh semua kalangan civitas akademika.',
                         'name' => 'Siti Aisyah',
                         'role' => 'Guru',
-                        'image' => 'https://i.pravatar.cc/80?u=siti',
                     ],
                     [
                         'quote' => 'Informasi pengumuman sekarang jauh lebih jelas dan transparan. Sukses terus untuk tim redaksi!',
                         'name' => 'Rian Pratama',
                         'role' => 'Alumni',
-                        'image' => 'https://i.pravatar.cc/80?u=rian',
+                    ],
+                    [
+                        'quote' => 'Pelayanan administrasi sekolah jadi lebih cepat dan efisien dengan adanya portal ini!',
+                        'name' => 'Dewi Sartika',
+                        'role' => 'Siswa Kelas XII',
+                    ],
+                    [
+                        'quote' => 'Semoga SMK Merdeka semakin maju dan jadi kebanggaan sekolah unggulan.',
+                        'name' => 'Ahmad Fauzi',
+                        'role' => 'Orang Tua Siswa',
+                    ],
+                    [
+                        'quote' => 'Sangat membantu dalam menyebarkan informasi secara luas dan cepat ke seluruh warga sekolah.',
+                        'name' => 'Nurul Hidayah',
+                        'role' => 'Staff Tata Usaha',
                     ],
                 ];
             @endphp
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach($staticTestimonials as $t)
-                    <div class="bg-white dark:bg-surface-container-high rounded-xl bento-shadow p-6 flex flex-col gap-4 bento-card">
-                        <div class="flex items-center gap-4">
-                            <img src="{{ $t['image'] }}" alt="{{ $t['name'] }}"
-                                 class="w-12 h-12 rounded-full object-cover border-2 border-on-background shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                            <div>
-                                <p class="font-bold font-body-md text-sm text-on-surface">{{ $t['name'] }}</p>
-                                <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">{{ $t['role'] }}</p>
+            <div class="overflow-hidden w-full">
+                <div class="flex gap-6 testimonial-track">
+                    @foreach($staticTestimonials as $t)
+                        <div class="bg-white dark:bg-surface-container-high rounded-xl bento-shadow p-6 flex flex-col gap-4 bento-card min-w-[240px] max-w-[280px] md:max-w-[300px]">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center border-2 border-on-background bg-surface-container-high dark:bg-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-on-surface-variant"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold font-body-md text-sm text-on-surface">{{ $t['name'] }}</p>
+                                    <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">{{ $t['role'] }}</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-outline-variant pt-4">
+                                <span class="material-symbols-outlined text-primary text-xl leading-none select-none">format_quote</span>
+                                <p class="font-body-md text-sm text-on-surface mt-1 leading-relaxed">{{ $t['quote'] }}</p>
                             </div>
                         </div>
-                        <div class="border-t border-outline-variant pt-4">
-                            <span class="material-symbols-outlined text-primary text-xl leading-none select-none">format_quote</span>
-                            <p class="font-body-md text-sm text-on-surface mt-1 leading-relaxed">{{ $t['quote'] }}</p>
+                    @endforeach
+                    @foreach($staticTestimonials as $t)
+                        <div class="bg-white dark:bg-surface-container-high rounded-xl bento-shadow p-6 flex flex-col gap-4 bento-card min-w-[240px] max-w-[280px] md:max-w-[300px]">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full flex items-center justify-center border-2 border-on-background bg-surface-container-high dark:bg-surface shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-on-surface-variant"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div>
+                                    <p class="font-bold font-body-md text-sm text-on-surface">{{ $t['name'] }}</p>
+                                    <p class="font-label-mono text-[10px] uppercase text-on-surface-variant">{{ $t['role'] }}</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-outline-variant pt-4">
+                                <span class="material-symbols-outlined text-primary text-xl leading-none select-none">format_quote</span>
+                                <p class="font-body-md text-sm text-on-surface mt-1 leading-relaxed">{{ $t['quote'] }}</p>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </section>
 
