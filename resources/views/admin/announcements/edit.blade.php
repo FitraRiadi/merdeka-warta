@@ -31,26 +31,35 @@
                     @error('title') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
-                <div x-data="{ open: false, selected: '{{ old('type', $announcement->type) }}', options: { info: { label: 'Info', icon: 'campaign', color: 'text-primary' }, warning: { label: 'Peringatan', icon: 'warning_amber', color: 'text-tertiary' }, important: { label: 'Penting', icon: 'error', color: 'text-error' } }, select(val) { this.selected = val; this.open = false; } }" class="relative">
-                    <input type="hidden" name="type" x-model="selected">
-                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Tipe <span class="text-error">*</span></label>
+                <div x-data='{
+                    open: false,
+                    selectedId: "{{ old('announcement_category_id', $announcement->announcement_category_id) }}",
+                    options: @json($annCategories->map(fn($c) => ["id" => (string)$c->id, "name" => $c->name, "type" => $c->type])->values()),
+                    select(opt) { this.selectedId = opt.id; this.open = false; },
+                    get selectedName() { let o = this.options.find(x => x.id === this.selectedId); return o ? o.name : `Pilih kategori...`; },
+                    get selected() { return this.options.find(x => x.id === this.selectedId); }
+                }' class="relative">
+                    <input type="hidden" name="announcement_category_id" x-model="selectedId">
+                    <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kategori <span class="text-error">*</span></label>
                     <button type="button" @click="open = !open" class="admin-input flex items-center justify-between w-full cursor-pointer">
                         <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-sm" :class="options[selected]?.color || 'text-on-surface-variant'" x-text="options[selected]?.icon || 'campaign'"></span>
-                            <span x-text="options[selected]?.label || 'Pilih tipe...'" class="font-body-md text-sm text-on-surface"></span>
+                            <template x-if="selected">
+                                <span class="material-symbols-outlined text-sm" :class="{'text-primary': selected.type === 'info', 'text-tertiary': selected.type === 'warning', 'text-error': selected.type === 'important'}" x-text="{'info': 'campaign', 'warning': 'warning_amber', 'important': 'error'}[selected.type] || 'campaign'"></span>
+                            </template>
+                            <span x-text="selectedName" :class="selectedId ? 'text-on-surface' : 'text-on-surface-variant'" class="font-body-md text-sm"></span>
                         </div>
                         <span class="material-symbols-outlined text-sm transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
                     </button>
                     <div x-show="open" @click.outside="open = false" x-cloak class="absolute z-50 mt-1 w-full bg-white dark:bg-surface-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                        <template x-for="(val, key) in options" :key="key">
-                            <button type="button" @click="select(key)" class="w-full flex items-center gap-2 px-3 py-2.5 font-body-md text-sm hover:bg-primary-fixed transition-colors border-b-2 border-on-background/10 last:border-b-0" :class="selected === key ? 'bg-primary-fixed font-bold' : 'text-on-surface'">
-                                <span class="material-symbols-outlined text-sm" :class="val.color" x-text="val.icon"></span>
-                                <span x-text="val.label"></span>
-                                <span x-show="selected === key" class="material-symbols-outlined text-sm text-primary ml-auto">check</span>
+                        <template x-for="opt in options" :key="opt.id">
+                            <button type="button" @click="select(opt)" class="w-full flex items-center gap-2 px-3 py-2.5 font-body-md text-sm hover:bg-primary-fixed transition-colors border-b-2 border-on-background/10 last:border-b-0" :class="selectedId === opt.id ? 'bg-primary-fixed font-bold' : 'text-on-surface'">
+                                <span class="material-symbols-outlined text-sm" :class="{'text-primary': opt.type === 'info', 'text-tertiary': opt.type === 'warning', 'text-error': opt.type === 'important'}" x-text="{'info': 'campaign', 'warning': 'warning_amber', 'important': 'error'}[opt.type] || 'campaign'"></span>
+                                <span x-text="opt.name"></span>
+                                <span x-show="selectedId === opt.id" class="material-symbols-outlined text-sm text-primary ml-auto">check</span>
                             </button>
                         </template>
                     </div>
-                    @error('type') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                    @error('announcement_category_id') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div x-data="editorModal()">

@@ -27,6 +27,7 @@ class Announcement extends Model
         'type',
         'is_active',
         'expired_at',
+        'announcement_category_id',
     ];
 
     protected function casts(): array
@@ -40,6 +41,11 @@ class Announcement extends Model
     public function views(): MorphMany
     {
         return $this->morphMany(View::class, 'viewable');
+    }
+
+    public function announcementCategory(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AnnouncementCategory::class);
     }
 
     public function getContentArrayAttribute(): array

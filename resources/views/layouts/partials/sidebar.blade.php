@@ -36,6 +36,12 @@
         <span>GALLERY</span>
     </a>
 
+    <a href="{{ route('admin.categories.index') }}"
+       class="sidebar-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+        <span class="material-symbols-outlined {{ request()->routeIs('admin.categories.*') ? 'material-symbols-filled' : '' }}">label</span>
+        <span>KATEGORI</span>
+    </a>
+
     <a href="{{ route('admin.spotlights.index') }}"
        class="sidebar-link {{ request()->routeIs('admin.spotlights.*') ? 'active' : '' }}">
         <span class="material-symbols-outlined {{ request()->routeIs('admin.spotlights.*') ? 'material-symbols-filled' : '' }}">stars</span>

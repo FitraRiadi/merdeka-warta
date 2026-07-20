@@ -31,24 +31,30 @@
                     @error('title') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
-                <div x-data="{ open: false, selected: '{{ old('category', $article->category) }}', options: ['Prestasi', 'Kegiatan', 'Akademik', 'Kesiswaan', 'Alumni', 'Informasi', 'Pengumuman', 'Olahraga', 'Seni Budaya', 'Teknologi', 'Ekstrakurikuler', 'Liputan'], select(val) { this.selected = val; this.open = false; } }" class="relative">
-                    <input type="hidden" name="category" x-model="selected">
+                <div x-data='{
+                    open: false,
+                    selectedId: "{{ old('category_id', $article->category_id) }}",
+                    options: @json($categories->map(fn($c) => ["id" => (string)$c->id, "name" => $c->name])->values()),
+                    select(opt) { this.selectedId = opt.id; this.open = false; },
+                    get selectedName() { let o = this.options.find(x => x.id === this.selectedId); return o ? o.name : "Pilih kategori..."; }
+                }' class="relative">
+                    <input type="hidden" name="category_id" x-model="selectedId">
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Kategori <span class="text-error">*</span></label>
                     <button type="button" @click="open = !open" class="admin-input flex items-center justify-between w-full cursor-pointer">
-                        <span x-text="selected || 'Pilih kategori...'" :class="selected ? 'text-on-surface' : 'text-on-surface-variant'" class="font-body-md text-sm"></span>
+                        <span x-text="selectedName" :class="selectedId ? 'text-on-surface' : 'text-on-surface-variant'" class="font-body-md text-sm"></span>
                         <span class="material-symbols-outlined text-sm transition-transform" :class="open ? 'rotate-180' : ''">expand_more</span>
                     </button>
                     <div x-show="open" @click.outside="open = false" x-cloak class="absolute z-50 mt-1 w-full bg-white dark:bg-surface-container border-3 border-on-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-h-48 overflow-y-auto">
-                        <template x-for="opt in options" :key="opt">
-                            <button type="button" @click="select(opt)" class="w-full text-left px-3 py-2.5 font-body-md text-sm hover:bg-primary-fixed transition-colors border-b-2 border-on-background/10 last:border-b-0" :class="selected === opt ? 'bg-primary-fixed font-bold text-primary' : 'text-on-surface'">
+                        <template x-for="opt in options" :key="opt.id">
+                            <button type="button" @click="select(opt)" class="w-full text-left px-3 py-2.5 font-body-md text-sm hover:bg-primary-fixed transition-colors border-b-2 border-on-background/10 last:border-b-0" :class="selectedId === opt.id ? 'bg-primary-fixed font-bold text-primary' : 'text-on-surface'">
                                 <div class="flex items-center gap-2">
-                                    <span x-show="selected === opt" class="material-symbols-outlined text-sm text-primary">check</span>
-                                    <span x-text="opt"></span>
+                                    <span x-show="selectedId === opt.id" class="material-symbols-outlined text-sm text-primary">check</span>
+                                    <span x-text="opt.name"></span>
                                 </div>
                             </button>
                         </template>
                     </div>
-                    @error('category') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                    @error('category_id') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
                 <div>

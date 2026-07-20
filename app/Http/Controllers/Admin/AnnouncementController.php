@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Announcement;
+use App\Models\AnnouncementCategory;
 use App\Models\Spotlight;
 use Illuminate\Http\Request;
 
@@ -24,19 +25,22 @@ class AnnouncementController extends Controller
 
     public function create()
     {
-        return view('admin.announcements.create');
+        $annCategories = AnnouncementCategory::orderBy('name')->get();
+        return view('admin.announcements.create', compact('annCategories'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:100',
-            'content' => 'required|string', // JSON Editor.js
-            'type' => 'required|in:info,warning,important',
+            'content' => 'required|string',
+            'announcement_category_id' => 'required|exists:announcement_categories,id',
             'is_active' => 'nullable|boolean',
             'expired_at' => 'nullable|date|after:today',
         ]);
 
+        $category = AnnouncementCategory::findOrFail($validated['announcement_category_id']);
+        $validated['type'] = $category->type;
         $validated['is_active'] = $request->has('is_active');
 
         $announcement = Announcement::create($validated);
@@ -54,7 +58,8 @@ class AnnouncementController extends Controller
 
     public function edit(Announcement $announcement)
     {
-        return view('admin.announcements.edit', compact('announcement'));
+        $annCategories = AnnouncementCategory::orderBy('name')->get();
+        return view('admin.announcements.edit', compact('announcement', 'annCategories'));
     }
 
     public function update(Request $request, Announcement $announcement)
@@ -62,11 +67,13 @@ class AnnouncementController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:100',
             'content' => 'required|string',
-            'type' => 'required|in:info,warning,important',
+            'announcement_category_id' => 'required|exists:announcement_categories,id',
             'is_active' => 'nullable|boolean',
             'expired_at' => 'nullable|date|after:today',
         ]);
 
+        $category = AnnouncementCategory::findOrFail($validated['announcement_category_id']);
+        $validated['type'] = $category->type;
         $validated['is_active'] = $request->has('is_active');
 
         $announcement->update($validated);

@@ -23,6 +23,7 @@ class Article extends Model
         'user_id',
         'status',
         'backup_author_name',
+        'category_id',
     ];
 
     protected function casts(): array
@@ -42,6 +43,11 @@ class Article extends Model
     public function getDisplayAuthorAttribute(): string
     {
         return $this->author?->name ?? $this->backup_author_name ?? '-';
+    }
+
+    public function categoryModel(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Category::class);
     }
 
     public function views(): MorphMany

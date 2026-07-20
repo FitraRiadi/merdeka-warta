@@ -214,7 +214,8 @@ class ArticleController extends Controller
     {
         $this->authorize('create', Article::class);
 
-        return view('admin.articles.create');
+        $categories = \App\Models\Category::orderBy('name')->get();
+        return view('admin.articles.create', compact('categories'));
     }
 
     /**
@@ -231,8 +232,12 @@ class ArticleController extends Controller
             'image' => 'nullable|image|max:5120',
             'image_url' => 'nullable|string|max:500',
             'is_published' => 'nullable|boolean',
-            'category' => 'required|string|max:100',
+            'category_id' => 'required|exists:categories,id',
         ]);
+
+        // Resolve category name
+        $category = \App\Models\Category::findOrFail($validated['category_id']);
+        $validated['category'] = $category->name;
 
         // Slug
         if (empty($validated['slug'])) {
@@ -300,7 +305,8 @@ class ArticleController extends Controller
     {
         $this->authorize('update', $article);
 
-        return view('admin.articles.edit', compact('article'));
+        $categories = \App\Models\Category::orderBy('name')->get();
+        return view('admin.articles.edit', compact('article', 'categories'));
     }
 
     /**
@@ -317,8 +323,12 @@ class ArticleController extends Controller
             'image' => 'nullable|image|max:5120',
             'image_url' => 'nullable|string|max:500',
             'is_published' => 'nullable|boolean',
-            'category' => 'required|string|max:100',
+            'category_id' => 'required|exists:categories,id',
         ]);
+
+        // Resolve category name
+        $category = \App\Models\Category::findOrFail($validated['category_id']);
+        $validated['category'] = $category->name;
 
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['title']);

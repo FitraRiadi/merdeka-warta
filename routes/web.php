@@ -85,6 +85,16 @@ Route::middleware(['auth', 'not_hidden'])->prefix('admin')->as('admin.')->group(
     Route::resource('galleries', GalleryController::class)
         ->middleware('super_admin');
 
+    // Category (hanya super_admin)
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)
+        ->middleware('super_admin')
+        ->except(['show']);
+
+    // Announcement Category (hanya super_admin)
+    Route::resource('announcement-categories', \App\Http\Controllers\Admin\AnnouncementCategoryController::class)
+        ->middleware('super_admin')
+        ->except(['show']);
+
 });
 
 // ============================================================
