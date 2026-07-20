@@ -72,7 +72,7 @@
    class="sidebar-link"
    onclick="event.preventDefault(); document.documentElement.classList.toggle('dark'); localStorage.setItem('dark-mode', document.documentElement.classList.contains('dark'));">
     <span class="material-symbols-outlined" id="sidebar-theme-icon">dark_mode</span>
-    <span id="sidebar-theme-text">GELAP</span>
+    <span id="sidebar-theme-text">THEME</span>
 </a>
 
 <script>

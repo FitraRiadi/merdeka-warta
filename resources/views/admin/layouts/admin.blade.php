@@ -1502,7 +1502,7 @@
                         <div class="w-8 h-8 navbar-brand-icon border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                             <span class="material-symbols-outlined text-on-primary text-lg">dashboard</span>
                         </div>
-                        <span class="font-headline-lg text-lg uppercase tracking-tight">Admin</span>
+                        <span class="font-headline-lg text-lg uppercase tracking-tight">{{ auth()->user()->isSuperAdmin() ? 'Admin' : 'Author' }}</span>
                     </a>
                     <button @click="sidebarOpen = false" class="p-1.5 border-2 border-on-background hover:bg-surface-container-highest">
                         <span class="material-symbols-outlined">close</span>
@@ -1521,7 +1521,7 @@
                         <div class="w-9 h-9 navbar-brand-icon border-3 border-on-background flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                             <span class="material-symbols-outlined text-on-primary">dashboard</span>
                         </div>
-                        <span class="font-headline-lg text-xl uppercase tracking-tight text-on-surface">Admin</span>
+                        <span class="font-headline-lg text-xl uppercase tracking-tight text-on-surface">{{ auth()->user()->isSuperAdmin() ? 'Admin' : 'Author' }}</span>
                     </a>
                 </div>
 
