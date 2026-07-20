@@ -278,5 +278,6 @@
             });
         });
     </script>
+    @include('layouts.partials.scroll-to-top')
 </body>
 </html>
