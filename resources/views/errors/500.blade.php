@@ -8,7 +8,7 @@
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>404 - Halaman Tidak Ditemukan</title>
+    <title>500 - Kesalahan Server</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Plus+Jakarta+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -105,10 +105,10 @@
 
     {{-- Brutalist Decorations --}}
     <div class="fixed inset-0 pointer-events-none z-0">
-        <div class="absolute top-12 left-12 w-8 h-8 bg-primary border-3 border-on-background rotate-12 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hidden md:block anim-float"></div>
+        <div class="absolute top-12 left-12 w-8 h-8 bg-error border-3 border-on-background rotate-12 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hidden md:block anim-float"></div>
         <div class="absolute top-20 right-20 w-10 h-10 bg-secondary-container border-3 border-on-background rounded-full -rotate-6 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hidden md:block anim-float-delayed"></div>
-        <div class="absolute bottom-24 left-16 w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-b-[28px] border-b-tertiary-container rotate-12 drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] hidden md:block anim-spin" style="animation: spin-slow 8s linear infinite;"></div>
-        <div class="absolute bottom-32 right-16 w-6 h-6 bg-secondary-fixed border-3 border-on-background rotate-45 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hidden md:block anim-float"></div>
+        <div class="absolute bottom-24 left-16 w-0 h-0 border-l-[14px] border-l-transparent border-r-[14px] border-r-transparent border-b-[28px] border-b-tertiary-container rotate-12 drop-shadow-[3px_3px_0px_rgba(0,0,0,1)] hidden md:block" style="animation: spin-slow 8s linear infinite;"></div>
+        <div class="absolute bottom-32 right-16 w-6 h-6 bg-error-fixed border-3 border-on-background rotate-45 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hidden md:block anim-float"></div>
         <div class="absolute top-1/3 left-8 w-5 h-5 bg-tertiary border-3 border-on-background rounded-full -rotate-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden lg:block anim-wobble"></div>
         <div class="absolute top-1/2 right-10 w-7 h-7 bg-primary-fixed-dim border-3 border-on-background rotate-[20deg] shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hidden lg:block anim-float-delayed"></div>
         <div class="absolute bottom-1/3 left-20 w-6 h-6 bg-secondary-fixed-dim border-3 border-on-background rotate-[30deg] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hidden lg:block anim-wobble"></div>
@@ -116,9 +116,9 @@
     </div>
 
     <div class="relative z-10 text-center max-w-lg">
-        <div class="text-[120px] md:text-[160px] font-headline-lg leading-none text-primary tracking-tight">404</div>
+        <div class="text-[120px] md:text-[160px] font-headline-lg leading-none text-error tracking-tight">500</div>
         <div class="-mt-4 mb-6 w-20 h-2 bg-error mx-auto"></div>
-        <p class="font-body-md text-lg text-on-surface-variant mb-8">Halaman yang kamu cari tidak tersedia atau telah dihapus.</p>
+        <p class="font-body-md text-lg text-on-surface-variant mb-8">Terjadi kesalahan pada server. Silakan coba lagi nanti.</p>
         <div class="flex items-center justify-center gap-4 flex-wrap">
             @auth
                 <a href="{{ url('/admin/dashboard') }}"
