@@ -112,6 +112,7 @@
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { animation: marquee 30s linear infinite; }
     </style>
+    @include('layouts.partials.pattern-styles')
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col font-body-md">
 
@@ -178,7 +179,7 @@
         @endif
 
         {{-- CATEGORY FILTER & SEARCH --}}
-        <section class="mb-12">
+        <section class="mb-12 bg-dots py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8 rounded-none">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                 <div class="flex items-center gap-3 flex-wrap">
                     <div class="relative">

@@ -104,6 +104,7 @@
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { animation: marquee 30s linear infinite; }
     </style>
+    @include('layouts.partials.pattern-styles')
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col font-body-md">
 
@@ -161,7 +162,7 @@
         @endif
 
         {{-- CATEGORY FILTER & SEARCH --}}
-        <section class="mb-12" id="announcements-section">
+        <section class="mb-12 bg-stripes py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8" id="announcements-section">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
                 <div class="flex items-center gap-3 flex-wrap">
                     <div class="relative">
@@ -287,7 +288,7 @@
                                     <span class="text-[10px] font-label-mono text-on-surface-variant">/</span>
                                     <span class="text-[10px] font-label-mono text-on-surface-variant">{{ $announcement->created_at->format('d M Y') }}</span>
                                 </div>
-                                <h3 class="font-headline-lg text-sm md:text-base uppercase leading-tight group-hover:text-primary transition-colors">{{ $announcement->title }}</h3>
+                                <h3 class="font-headline-lg text-sm md:text-base uppercase leading-tight group-hover:text-primary transition-colors line-clamp-2">{{ $announcement->title }}</h3>
                             </div>
                         </div>
                         @if($isFeaturedGrid)

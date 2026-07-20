@@ -134,6 +134,7 @@
         .testimonial-track:hover { animation-play-state: paused; }
         @keyframes scroll-testimonial { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     </style>
+    @include('layouts.partials.pattern-styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="text-on-surface font-body-md">
@@ -316,7 +317,7 @@
         {{-- POPULAR THIS WEEK --}}
         {{-- ============================================================ --}}
         @if($popularWeek->isNotEmpty())
-        <section class="mb-12 md:mb-16">
+        <section class="mb-12 md:mb-16 bg-dots py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8">
             <div class="flex items-center gap-3 mb-6 md:mb-8">
                 <span class="w-1.5 h-6 md:w-2 md:h-8 bg-secondary rounded"></span>
                 <h2 class="font-headline-lg text-xl md:text-3xl uppercase">TERPOPULER MINGGU INI</h2>
@@ -354,7 +355,7 @@
         {{-- ============================================================ --}}
         {{-- NEWS SLIDER (BERITA TERBARU) --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16" id="berita">
+        <section class="mb-12 md:mb-16 bg-stripes py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8" id="berita">
             <div class="flex items-center justify-between mb-6 md:mb-8 gap-4">
                 <div class="flex items-center gap-3">
                     <span class="w-1.5 h-6 md:w-2 md:h-8 bg-primary rounded"></span>
@@ -390,7 +391,7 @@
                                             <span class="bg-white dark:bg-surface-container px-2.5 py-0.5 font-label-mono text-[10px] rounded">{{ $article->category ?? 'BERITA' }}</span>
                                             <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $article->published_at->format('d M Y') }}</span>
                                         </div>
-                                        <h3 class="font-bold font-headline-lg text-lg md:text-xl max-lg:text-base leading-tight mb-2 uppercase dark:text-gray-400">{{ $article->title }}</h3>
+                                        <h3 class="font-bold font-headline-lg text-lg md:text-xl max-lg:text-base leading-tight mb-2 uppercase dark:text-gray-400 line-clamp-2">{{ $article->title }}</h3>
                                         <p class="font-body-md text-xs md:text-sm max-lg:text-xs text-on-surface-variant mb-4 flex-grow">{{ Str::limit($article->content_text, 120) }}</p>
                                         <a class="font-bold flex items-center gap-1.5 text-sm text-primary group" href="{{ route('public.article.show', $article->slug) }}">
                                             BACA BERITA <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
@@ -435,7 +436,7 @@
         {{-- ============================================================ --}}
         {{-- TESTIMONIALS --}}
         {{-- ============================================================ --}}
-        <section class="mb-12 md:mb-16">
+        <section class="mb-12 md:mb-16 bg-crosshatch py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8">
             <div class="flex items-center justify-between mb-6 gap-4">
                 <div class="flex items-center gap-3">
                     <span class="w-1.5 h-6 md:w-2 md:h-8 bg-tertiary rounded"></span>

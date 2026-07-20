@@ -111,6 +111,7 @@
         .prose blockquote { border-left: 3px solid #004ac6; padding-left: 1rem; margin: 1.5rem 0; font-style: italic; color: #434655; }
         .prose a { color: #004ac6; text-decoration: underline; }
     </style>
+    @include('layouts.partials.pattern-styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="font-body-md text-on-surface">
@@ -123,7 +124,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
 
             {{-- MAIN CONTENT --}}
-            <article class="lg:col-span-2 flex flex-col gap-6">
+            <article class="lg:col-span-2 flex flex-col gap-6 bg-paper p-6 md:p-8 rounded-xl bento-card">
 
                 {{-- Breadcrumbs & Type Badge --}}
                 <div class="flex items-center gap-3 flex-wrap">
@@ -216,7 +217,7 @@
                         <div class="bg-white dark:bg-surface-container rounded-xl bento-shadow bento-card bento-shadow-hover flex flex-col overflow-hidden">
                             <div class="p-4 flex flex-col flex-grow">
                                 <span class="{{ $oColor }} px-2 py-0.5 text-[10px] font-label-mono uppercase rounded self-start mb-2">{{ $oLabel }}</span>
-                                <h3 class="font-headline-lg text-base uppercase mb-1.5 leading-tight">{{ $other->title }}</h3>
+                                <h3 class="font-headline-lg text-base uppercase mb-1.5 leading-tight line-clamp-2">{{ $other->title }}</h3>
                                 <p class="text-xs text-on-surface-variant mb-3 flex-grow line-clamp-2">{{ Str::limit($other->content_text, 100) }}</p>
                                 <a class="font-label-mono text-[10px] uppercase font-bold text-secondary hover:underline flex items-center gap-1" href="{{ route('public.announcement.show', $other->id) }}">
                                     Baca Selengkapnya <span class="material-symbols-outlined text-xs">arrow_forward</span>

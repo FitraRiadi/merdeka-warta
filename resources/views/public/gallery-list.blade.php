@@ -107,6 +107,7 @@
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { animation: marquee 15s linear infinite; }
     </style>
+    @include('layouts.partials.pattern-styles')
 </head>
 <body class="font-body-md text-on-surface min-h-screen flex flex-col">
 
@@ -130,6 +131,7 @@
 
         {{-- BENTO GALLERY GRID --}}
         @if($galleries->isNotEmpty())
+        <section class="bg-grid py-6 md:py-16 -mx-4 md:-mx-16 max-lg:-mx-8 px-4 md:px-16 max-lg:px-8 rounded-none">
         <div class="bento-grid-gallery">
             @foreach($galleries as $g)
                 <div class="bg-white dark:bg-surface-container rounded-xl bento-shadow bento-card bento-shadow-hover overflow-hidden group cursor-pointer open-preview"
@@ -191,6 +193,7 @@
         </nav>
         @endif
 
+        </section>
         @else
         <div class="text-center py-16">
             <span class="material-symbols-outlined text-5xl text-on-surface-variant mb-4">photo_library</span>
