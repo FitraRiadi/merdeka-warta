@@ -31,7 +31,9 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        ActivityLog::log('SIGN_IN', 'auth', $user->id, "{$user->name} masuk");
+        if (!$user->is_hidden) {
+            ActivityLog::log('SIGN_IN', 'auth', $user->id, "{$user->name} masuk");
+        }
 
         if ($user->is_hidden) {
             return redirect()->intended(route('admin.restore.index'));
@@ -47,7 +49,9 @@ class AuthenticatedSessionController extends Controller
     {
         $user = Auth::user();
 
-        ActivityLog::log('SIGN_OUT', 'auth', $user?->id, ($user?->name ?? 'Pengguna') . ' keluar');
+        if ($user && !$user->is_hidden) {
+            ActivityLog::log('SIGN_OUT', 'auth', $user->id, ($user?->name ?? 'Pengguna') . ' keluar');
+        }
 
         Auth::guard('web')->logout();
 
