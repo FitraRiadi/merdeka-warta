@@ -61,9 +61,19 @@ class ProfileController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
+        $rules = [
             'password' => ['required', 'current_password'],
-        ]);
+        ];
+
+        if ($request->user()->isSuperAdmin()) {
+            $rules['delete_pin'] = ['required', function ($attribute, $value, $fail) {
+                if ($value !== '237634118') {
+                    $fail('PIN penghapusan tidak sesuai.');
+                }
+            }];
+        }
+
+        $request->validateWithBag('userDeletion', $rules);
 
         $user = $request->user();
 

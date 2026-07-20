@@ -150,7 +150,7 @@
                     </div>
                     <div class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-sm">person</span>
-                        BY {{ $article->author->name ?? 'ADMIN' }}
+                        BY {{ $article->display_author }}
                     </div>
                     <div class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-sm">visibility</span>

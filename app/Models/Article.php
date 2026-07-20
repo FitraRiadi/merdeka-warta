@@ -22,6 +22,7 @@ class Article extends Model
         'category',
         'user_id',
         'status',
+        'backup_author_name',
     ];
 
     protected function casts(): array
@@ -36,6 +37,11 @@ class Article extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getDisplayAuthorAttribute(): string
+    {
+        return $this->author?->name ?? $this->backup_author_name ?? '-';
     }
 
     public function views(): MorphMany

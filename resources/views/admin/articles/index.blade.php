@@ -66,7 +66,7 @@
                                 </div>
                             </td>
                             <td class="hidden md:table-cell">
-                                <span class="font-body-md text-sm text-on-surface-variant">{{ $article->author?->name ?? '-' }}</span>
+                                <span class="font-body-md text-sm text-on-surface-variant">{{ $article->display_author }}</span>
                             </td>
                             <td class="hidden sm:table-cell">
                                 @if($article->category)

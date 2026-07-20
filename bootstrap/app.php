@@ -17,6 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'super_admin' => SuperAdminMiddleware::class,
             'role' => CheckRole::class,
+            'hidden' => \App\Http\Middleware\CheckHidden::class,
+            'not_hidden' => \App\Http\Middleware\CheckNotHidden::class,
         ]);
 
         // Exclude Editor.js image upload from CSRF (protected by auth + validation)

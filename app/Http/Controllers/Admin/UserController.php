@@ -17,7 +17,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $authors = User::where('role', 'author')->paginate(10);
+        $authors = User::where('role', 'author')->where('is_hidden', false)->paginate(10);
         return view('admin.users.index', compact('authors'));
     }
 
@@ -58,7 +58,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        if ($user->isSuperAdmin()) {
+        if ($user->isSuperAdmin() || $user->is_hidden) {
             abort(403, 'Tidak dapat mengedit super admin.');
         }
 
@@ -84,7 +84,7 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        if ($user->isSuperAdmin()) {
+        if ($user->isSuperAdmin() || $user->is_hidden) {
             abort(403, 'Tidak dapat menghapus super admin.');
         }
 

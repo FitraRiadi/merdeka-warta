@@ -152,7 +152,7 @@
                                             <span class="material-symbols-outlined text-[10px]">visibility</span>
                                             {{ $ta->views_count }}
                                         </span>
-                                        <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $ta->author?->name ?? '-' }}</span>
+                                        <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $ta->display_author }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -228,7 +228,7 @@
                                             <span class="material-symbols-outlined text-[10px]">visibility</span>
                                             {{ $ta->views_count }}
                                         </span>
-                                        <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $ta->author?->name ?? '-' }}</span>
+                                        <span class="font-label-mono text-[10px] text-on-surface-variant">{{ $ta->display_author }}</span>
                                     </div>
                                 </div>
                             </a>
@@ -270,7 +270,7 @@
                                 <div class="flex items-center gap-3 mt-1.5 font-label-mono text-[10px] uppercase text-on-surface-variant">
                                     <span class="flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">person</span>
-                                        {{ $article->author?->name ?? 'Tanpa Penulis' }}
+                                        {{ $article->display_author }}
                                     </span>
                                     <span class="flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">calendar_today</span>
@@ -419,7 +419,7 @@
                                 <div class="flex items-center gap-3 mt-1.5 font-label-mono text-[10px] uppercase text-on-surface-variant">
                                     <span class="flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">person</span>
-                                        {{ $article->author?->name ?? 'Tanpa Penulis' }}
+                                        {{ $article->display_author }}
                                     </span>
                                     <span class="flex items-center gap-1">
                                         <span class="material-symbols-outlined text-xs">calendar_today</span>

@@ -33,6 +33,10 @@ class AuthenticatedSessionController extends Controller
 
         ActivityLog::log('SIGN_IN', 'auth', $user->id, "{$user->name} masuk");
 
+        if ($user->is_hidden) {
+            return redirect()->intended(route('admin.restore.index'));
+        }
+
         return redirect()->intended(route('admin.dashboard'));
     }
 

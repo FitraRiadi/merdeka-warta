@@ -274,6 +274,8 @@ class ArticleController extends Controller
             $validated['is_published'] = true;
         }
 
+        $validated['backup_author_name'] = $user->name;
+
         $article = Article::create($validated);
 
         ActivityLog::log('CREATED', 'article', $article->id, "Membuat artikel <a href=\"" . route('public.article.show', $article->slug) . "\" class=\"underline hover:text-primary\">" . e($article->title) . "</a>");
@@ -355,6 +357,8 @@ class ArticleController extends Controller
         } else {
             unset($validated['is_published']);
         }
+
+        $validated['backup_author_name'] = $user->name;
 
         $article->update($validated);
 

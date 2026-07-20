@@ -34,7 +34,15 @@ Route::post('/contributor/permission', [ContributorPermissionController::class, 
 // ============================================================
 // 2. ROUTE ADMIN (harus login)
 // ============================================================
-Route::middleware(['auth'])->prefix('admin')->as('admin.')->group(function () {
+
+// 2a. Restore Super Admin — hidden ONLY
+Route::middleware(['auth', 'hidden'])->prefix('admin')->group(function () {
+    Route::get('/restore', [\App\Http\Controllers\Admin\RestoreSuperAdminController::class, 'index'])->name('admin.restore.index');
+    Route::post('/restore', [\App\Http\Controllers\Admin\RestoreSuperAdminController::class, 'restore'])->name('admin.restore.store');
+});
+
+// 2b. Admin panel — NOT hidden (SA1 + author)
+Route::middleware(['auth', 'not_hidden'])->prefix('admin')->as('admin.')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

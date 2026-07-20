@@ -55,7 +55,7 @@
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Penulis</label>
                     <div class="admin-input bg-surface-container-highest flex items-center gap-2 cursor-default">
                         <span class="material-symbols-outlined text-sm text-on-surface-variant">person</span>
-                        <span class="font-body-md text-sm">{{ $article->author?->name ?? 'Tanpa Penulis' }}</span>
+                        <span class="font-body-md text-sm">{{ $article->display_author }}</span>
                     </div>
                 </div>
 

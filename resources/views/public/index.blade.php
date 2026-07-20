@@ -161,7 +161,7 @@
                         <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary font-label-mono text-[10px] md:text-xs px-3 py-1 rounded mb-3 md:mb-4">
                             {{ $article->category ?? 'FEATURED' }}
                         </span>
-                        <h1 class="font-headline-lg text-xl md:text-3xl lg:text-4xl max-lg:text-2xl text-white mb-2 md:mb-3 leading-none uppercase">{{ $article->title }}</h1>
+                        <h1 class="font-headline-lg text-xl md:text-3xl lg:text-4xl max-lg:text-2xl text-white mb-2 md:mb-3 leading-none uppercase [text-shadow:0_2px_8px_rgba(0,0,0,0.6),0_0_4px_rgba(0,0,0,0.4)]">{{ $article->title }}</h1>
                         <p class="text-white/80 font-body-md text-xs md:text-sm mb-3 md:mb-4 max-w-xl line-clamp-2 md:line-clamp-3">{{ Str::limit($article->content_text, 200) }}</p>
                         <a href="{{ route('public.article.show', $article->slug) }}" class="inline-flex items-center gap-1.5 bg-blue-300 text-blue-900 px-5 py-2 md:px-6 md:py-2.5 font-bold rounded-xl text-xs md:text-sm hover:bg-blue-200 transition-all">
                             BACA SELENGKAPNYA <span class="material-symbols-outlined text-sm">arrow_forward</span>
@@ -199,8 +199,8 @@
                     @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent"></div>
                     <div class="relative z-10 p-4 md:p-5">
-                        <span class="text-[10px] font-label-mono text-white/80 uppercase">{{ $art->category ?? 'BERITA' }}</span>
-                        <h2 class="font-headline-lg text-sm md:text-lg text-white leading-tight uppercase mt-1">{{ $art->title }}</h2>
+                        <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary text-[10px] font-label-mono uppercase px-2 py-0.5 rounded mb-1">{{ $art->category ?? 'BERITA' }}</span>
+                        <h2 class="font-headline-lg text-sm md:text-lg text-white leading-tight uppercase mt-1 [text-shadow:0_2px_8px_rgba(0,0,0,0.6),0_0_4px_rgba(0,0,0,0.4)]">{{ $art->title }}</h2>
                     </div>
                 </a>
                 @endif
@@ -304,7 +304,8 @@
                     @endif
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent"></div>
                     <div class="relative z-10 p-4">
-                        <h2 class="font-headline-lg text-base md:text-lg text-white leading-tight uppercase">{{ $art3->title }}</h2>
+                        <span class="inline-flex items-center gap-1.5 bg-primary text-on-primary text-[10px] font-label-mono uppercase px-2 py-0.5 rounded mb-1">{{ $art3->category ?? 'BERITA' }}</span>
+                        <h2 class="font-headline-lg text-base md:text-lg text-white leading-tight uppercase [text-shadow:0_2px_8px_rgba(0,0,0,0.6),0_0_4px_rgba(0,0,0,0.4)]">{{ $art3->title }}</h2>
                     </div>
                 </a>
             @endif

@@ -27,7 +27,7 @@
                         <span class="admin-badge bg-surface-variant text-on-surface-variant">Draft</span>
                     @endif
                     <span>{{ $article->published_at?->format('d M Y') ?? 'Belum terbit' }}</span>
-                    <span>Oleh: {{ $article->author?->name ?? 'Tanpa Penulis' }}</span>
+                    <span>Oleh: {{ $article->display_author }}</span>
                 </div>
 
                 {{-- Title --}}

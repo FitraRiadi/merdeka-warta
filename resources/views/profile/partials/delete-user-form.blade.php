@@ -43,6 +43,14 @@
                     @error('password', 'userDeletion') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                 </div>
 
+                @if(Auth::user()->isSuperAdmin())
+                <div class="mb-6">
+                    <label for="delete_pin" class="sr-only">PIN Penghapusan</label>
+                    <input id="delete_pin" name="delete_pin" type="password" class="admin-input" placeholder="Masukkan PIN penghapusan">
+                    @error('delete_pin', 'userDeletion') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
+                </div>
+                @endif
+
                 <div class="flex items-center justify-end gap-3">
                     <button type="button" x-on:click="show = false" class="admin-btn-secondary">
                         <span class="material-symbols-outlined text-sm">close</span>
