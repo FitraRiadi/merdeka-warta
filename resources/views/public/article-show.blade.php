@@ -179,7 +179,7 @@
                 @if(count($tags) > 0)
                 <div class="flex flex-wrap gap-2 pt-6 border-t border-outline-variant">
                     @foreach($tags as $tag)
-                    <a class="bg-surface-container-high rounded px-3 py-1 font-label-mono text-[10px] hover:bg-primary hover:text-on-primary transition-all bento-shadow" href="#">{{ $tag }}</a>
+                    <a class="bg-surface-container-high rounded px-3 py-1 font-label-mono text-[10px] hover:bg-primary hover:text-on-primary transition-all bento-shadow" href="{{ route('public.article.list', ['tag' => substr($tag, 1)]) }}#articles-section">{{ $tag }}</a>
                     @endforeach
                 </div>
                 @endif

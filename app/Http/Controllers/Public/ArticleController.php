@@ -107,6 +107,12 @@ class ArticleController extends Controller
             });
         }
 
+        // Filter by tag/hashtag
+        if ($request->filled('tag')) {
+            $tag = $request->tag;
+            $query->where('content', 'like', '%#' . addcslashes($tag, '%_') . '%');
+        }
+
         $articles = $query->latest('published_at')->paginate(9);
 
         // Categories list for filter dropdown

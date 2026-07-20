@@ -32,6 +32,12 @@ class AnnouncementController extends Controller
             });
         }
 
+        // Filter by tag/hashtag
+        if ($request->filled('tag')) {
+            $tag = $request->tag;
+            $query->where('content', 'like', '%#' . addcslashes($tag, '%_') . '%');
+        }
+
         $announcements = $query->latest()->paginate(9);
 
         // Categories list for filter dropdown (group by type)
