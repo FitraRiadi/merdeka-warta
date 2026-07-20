@@ -422,15 +422,9 @@
                 <h2 class="font-headline-lg text-2xl md:text-4xl mb-4 leading-none">PUNYA BERITA MENARIK? SUARAKAN DISINI!</h2>
                 <p class="font-body-md text-sm md:text-base mb-8 text-white/70">Ayo, suarakan ide dan ceritamu! Kirimkan tulisanmu sekarang dan jadilah bagian dari Merdeka Warta.</p>
                 <div class="flex flex-wrap gap-4 justify-center">
-                    @auth
-                        <a href="{{ route('admin.articles.create') }}" class="bg-primary text-on-primary rounded-xl px-8 py-3.5 font-bold text-base btn-press hover:bg-primary/90 transition-all inline-flex items-center gap-2 bento-shadow">
-                            <span class="material-symbols-outlined">send</span> KIRIM DISINI
-                        </a>
-                    @else
-                        <a class="cursor-pointer open-contributor-modal bg-primary text-on-primary rounded-xl px-8 py-3.5 font-bold text-base btn-press hover:bg-primary/90 transition-all inline-flex items-center gap-2 bento-shadow">
-                            <span class="material-symbols-outlined">send</span> KIRIM DISINI
-                        </a>
-                    @endauth
+                    <a class="cursor-pointer open-contributor-modal bg-primary text-on-primary rounded-xl px-8 py-3.5 font-bold text-base btn-press hover:bg-primary/90 transition-all inline-flex items-center gap-2 bento-shadow">
+                        <span class="material-symbols-outlined">send</span> KIRIM DISINI
+                    </a>
                 </div>
             </div>
         </section>
