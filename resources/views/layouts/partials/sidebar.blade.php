@@ -12,6 +12,13 @@
     <span>ARTICLES</span>
 </a>
 
+{{-- Gallery (all roles, policy-gated) --}}
+<a href="{{ route('admin.galleries.index') }}"
+   class="sidebar-link {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
+    <span class="material-symbols-outlined {{ request()->routeIs('admin.galleries.*') ? 'material-symbols-filled' : '' }}">imagesmode</span>
+    <span>GALERI</span>
+</a>
+
 {{-- Super Admin only --}}
 @if(Auth::user()->isSuperAdmin())
     <div class="pt-5 pb-1 px-3">
@@ -30,12 +37,6 @@
         <span>RUNNING TEXT</span>
     </a>
 
-    <a href="{{ route('admin.galleries.index') }}"
-       class="sidebar-link {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
-        <span class="material-symbols-outlined {{ request()->routeIs('admin.galleries.*') ? 'material-symbols-filled' : '' }}">imagesmode</span>
-        <span>GALLERY</span>
-    </a>
-
     <a href="{{ route('admin.categories.index') }}"
        class="sidebar-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
         <span class="material-symbols-outlined {{ request()->routeIs('admin.categories.*') ? 'material-symbols-filled' : '' }}">label</span>
@@ -47,7 +48,6 @@
         <span class="material-symbols-outlined {{ request()->routeIs('admin.spotlights.*') ? 'material-symbols-filled' : '' }}">stars</span>
         <span>SOROTAN</span>
     </a>
-
 
     <a href="{{ route('admin.users.index') }}"
        class="sidebar-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">

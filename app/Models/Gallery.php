@@ -12,5 +12,22 @@ class Gallery extends Model
     protected $fillable = [
         'image_url',
         'caption',
+        'user_id',
+        'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', 'approved');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
+    }
 }

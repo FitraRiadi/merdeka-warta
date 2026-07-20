@@ -45,6 +45,7 @@ class ProfileController extends Controller
             'contributor_add_without_permission',
             'contributor_delete_without_permission',
             'contributor_edit_without_permission',
+            'contributor_gallery_without_permission',
         ];
 
         foreach ($keys as $key) {

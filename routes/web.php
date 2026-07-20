@@ -81,9 +81,10 @@ Route::middleware(['auth', 'not_hidden'])->prefix('admin')->as('admin.')->group(
             Route::post('/', 'store')->name('store');
         });
 
-    // Gallery (hanya super_admin)
-    Route::resource('galleries', GalleryController::class)
-        ->middleware('super_admin');
+    // Gallery (otorisasi via GalleryPolicy)
+    Route::resource('galleries', GalleryController::class);
+    Route::patch('/galleries/{gallery}/approve', [GalleryController::class, 'approve'])->name('galleries.approve');
+    Route::patch('/galleries/{gallery}/reject', [GalleryController::class, 'reject'])->name('galleries.reject');
 
     // Category (hanya super_admin)
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)

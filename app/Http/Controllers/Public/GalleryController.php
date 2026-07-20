@@ -10,7 +10,7 @@ class GalleryController extends Controller
 {
     public function index()
     {
-        $galleries = Gallery::paginate(12);
+        $galleries = Gallery::approved()->paginate(12);
 
         $runningTexts = RunningText::latest()
             ->get();

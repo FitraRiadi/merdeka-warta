@@ -682,6 +682,26 @@
             color: #ffb4ab;
             border-color: #ffb4ab;
         }
+        .action-btn-approve:hover {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-color: #2e7d32;
+        }
+        .dark .action-btn-approve:hover {
+            background: #1b5e20;
+            color: #a5d6a7;
+            border-color: #a5d6a7;
+        }
+        .action-btn-reject:hover {
+            background: #ffebee;
+            color: #c62828;
+            border-color: #c62828;
+        }
+        .dark .action-btn-reject:hover {
+            background: #93000a;
+            color: #ffb4ab;
+            border-color: #ffb4ab;
+        }
 
         /* Stat card variants */
         .stat-card {

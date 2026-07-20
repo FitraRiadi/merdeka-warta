@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Announcement;
 use App\Models\Article;
+use App\Models\Gallery;
 use App\Models\RunningText;
 use App\Models\User;
 use App\Models\View;
@@ -24,6 +25,7 @@ class DashboardController extends Controller
             $data['totalPublished'] = Article::where('is_published', true)->count();
             $data['totalDraft'] = Article::where('is_published', false)->count();
             $data['totalPending'] = Article::where('status', 'pending')->count();
+            $data['pendingGalleries'] = Gallery::pending()->count();
             $data['totalAnnouncements'] = Announcement::count();
             $data['totalRunningTexts'] = RunningText::count();
             $data['totalAuthors'] = User::where('role', 'author')->count();
@@ -38,6 +40,8 @@ class DashboardController extends Controller
             $data['articleViews'] = $articleViews;
             $data['announcementViews'] = $announcementViews;
             $data['totalViews'] = $articleViews + $announcementViews;
+
+            $data['totalGalleries'] = Gallery::count();
 
             // Trending articles (paling banyak dilihat)
             $data['trendingArticles'] = Article::with('author')
@@ -75,6 +79,8 @@ class DashboardController extends Controller
                 ->orderBy('published_at', 'desc')
                 ->limit(3)
                 ->get();
+
+            $data['totalGalleries'] = Gallery::where('user_id', $user->id)->count();
         }
 
         return view('admin.dashboard', $data);

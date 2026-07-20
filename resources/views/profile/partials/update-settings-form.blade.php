@@ -13,6 +13,7 @@
         'contributor_add_without_permission' => \App\Models\Setting::getValue('contributor_add_without_permission', '1'),
         'contributor_delete_without_permission' => \App\Models\Setting::getValue('contributor_delete_without_permission', '1'),
         'contributor_edit_without_permission' => \App\Models\Setting::getValue('contributor_edit_without_permission', '1'),
+        'contributor_gallery_without_permission' => \App\Models\Setting::getValue('contributor_gallery_without_permission', '1'),
     ];
 @endphp
 
@@ -84,6 +85,9 @@
                     <input name="contributor_phone" type="text" class="admin-input" value="{{ old('contributor_phone', $settings['contributor_phone']) }}" placeholder="6281322263716">
                     <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Nomor ini yang menerima permintaan kontributor dari siswa</p>
                 </div>
+
+                <h4 class="font-label-mono text-xs uppercase text-on-surface-variant tracking-wider pt-4 pb-1 border-b-2 border-on-background/20">Artikel</h4>
+
                 <div class="flex items-center justify-between gap-4 p-4 border-3 border-on-background bg-surface-container-low rounded-xl">
                     <div>
                         <p class="font-body-md text-sm font-bold text-on-surface">Tambah Artikel</p>
@@ -120,6 +124,23 @@
                     <label class="toggle-switch">
                         <input type="hidden" name="contributor_edit_without_permission" value="0">
                         <input type="checkbox" name="contributor_edit_without_permission" value="1" {{ $settings['contributor_edit_without_permission'] === '1' ? 'checked' : '' }}>
+                        <span class="toggle-slider">
+                            <span class="toggle-text toggle-off">OFF</span>
+                            <span class="toggle-text toggle-on">ON</span>
+                        </span>
+                    </label>
+                </div>
+
+                <h4 class="font-label-mono text-xs uppercase text-on-surface-variant tracking-wider pt-4 pb-1 border-b-2 border-on-background/20">Galeri</h4>
+
+                <div class="flex items-center justify-between gap-4 p-4 border-3 border-on-background bg-surface-container-low rounded-xl">
+                    <div>
+                        <p class="font-body-md text-sm font-bold text-on-surface">Galeri</p>
+                        <p class="font-label-mono text-[10px] text-on-surface-variant">Izinkan Kontributor mengakses Galeri tanpa perizinan</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="hidden" name="contributor_gallery_without_permission" value="0">
+                        <input type="checkbox" name="contributor_gallery_without_permission" value="1" {{ $settings['contributor_gallery_without_permission'] === '1' ? 'checked' : '' }}>
                         <span class="toggle-slider">
                             <span class="toggle-text toggle-off">OFF</span>
                             <span class="toggle-text toggle-on">ON</span>

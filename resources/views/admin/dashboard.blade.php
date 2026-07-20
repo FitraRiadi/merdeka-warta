@@ -23,6 +23,24 @@
         </a>
     @endif
 
+    @if(Auth::user()->isSuperAdmin() && isset($pendingGalleries) && $pendingGalleries > 0)
+        <a href="{{ route('admin.galleries.index', ['status' => 'pending']) }}" class="block bg-amber-50 border-3 border-amber-500 rounded-xl p-5 mb-8 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-0.5 hover:translate-y-0.5 transition-all">
+            <div class="flex items-start gap-4">
+                <span class="material-symbols-outlined text-3xl text-amber-600 shrink-0 mt-0.5">imagesmode</span>
+                <div class="flex-1">
+                    <p class="font-headline-lg text-lg uppercase text-amber-900">Galeri Menunggu!</p>
+                    <p class="font-body-md text-sm text-amber-800 mt-1">
+                        Terdapat <strong class="text-amber-900">{{ $pendingGalleries }}</strong> gambar galeri yang memerlukan persetujuan Anda.
+                    </p>
+                    <span class="inline-flex items-center gap-1 mt-3 font-label-mono text-xs uppercase text-amber-700 font-bold underline underline-offset-4">
+                        Tinjau Sekarang
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </span>
+                </div>
+            </div>
+        </a>
+    @endif
+
     {{-- Stat Cards --}}
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         <div class="admin-card stat-card stat-card-blue p-4 md:p-5">
@@ -85,7 +103,16 @@
                 </div>
                 <p class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $totalAuthors }}</p>
             </div>
-
+        @else
+            <div class="admin-card stat-card stat-card-teal p-4 md:p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-label-mono text-[10px] uppercase text-teal-700 dark:text-teal-400 font-bold tracking-wider">Galeri</span>
+                    <span class="w-9 h-9 bg-teal-700 dark:bg-teal-800 border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                        <span class="material-symbols-outlined text-white text-sm">imagesmode</span>
+                    </span>
+                </div>
+                <p class="font-headline-lg text-3xl md:text-4xl tracking-tight">{{ $totalGalleries }}</p>
+            </div>
         @endif
     </div>
 
