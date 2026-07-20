@@ -333,10 +333,7 @@
                         <div class="absolute top-2 left-2 w-8 h-8 bg-primary border-2 border-on-background flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
                             <span class="font-headline-lg text-sm text-on-primary">{{ $i + 1 }}</span>
                         </div>
-                            <div class="absolute top-2 right-2 bg-surface/80 border border-on-background rounded px-2 py-0.5 flex items-center gap-1 text-[10px] font-label-mono text-white">
-                                <span class="material-symbols-outlined text-xs">visibility</span>
-                                {{ $article->views_count }}
-                            </div>
+
                     </div>
                     <div class="p-3 md:p-4 flex flex-col flex-grow">
                         <span class="font-label-mono text-[10px] text-primary uppercase mb-1">{{ $article->category ?? 'BERITA' }}</span>

@@ -219,7 +219,7 @@ class ArticleController extends Controller
         $this->authorize('create', Article::class);
 
         $validated = $request->validate([
-            'title' => 'required|string|max:50',
+            'title' => 'required|string|max:100',
             'slug' => 'nullable|string|max:255|unique:articles,slug',
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
@@ -292,7 +292,7 @@ class ArticleController extends Controller
         $this->authorize('update', $article);
 
         $validated = $request->validate([
-            'title' => 'required|string|max:50',
+            'title' => 'required|string|max:100',
             'slug' => 'nullable|string|max:255|unique:articles,slug,' . $article->id,
             'content' => 'required|string',
             'image' => 'nullable|image|max:5120',
