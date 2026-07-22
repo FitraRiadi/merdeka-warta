@@ -47,7 +47,7 @@ npm run build           # vite build
 - `app/Models/` — User, Article, Announcement, RunningText
 - `app/Policies/ArticlePolicy.php` — gates article CRUD per role
 - `app/Http/Middleware/` — SuperAdminMiddleware (alias `super_admin`), CheckRole (alias `role`)
-- `app/Services/CdnService.php` — image upload to external CDN
+- `app/Services/CdnService.php` — image upload to local storage (`storage/app/public/images/`)
 - `routes/web.php` — public routes + admin group (`/admin`, auth gate) + profile
 - `routes/auth.php` — Breeze auth routes (included from web.php)
 - `resources/views/public/` — public-facing Blade views
@@ -85,7 +85,7 @@ npm run build           # vite build
 
 ## Notable quirks
 - `Article.content` stores JSON string (blocks format), decoded via `$article->content_array` accessor
-- Image uploads go to external CDN (`https://cdn.ryzahen.web.id/upload`) via `CdnService` — CDN does not support DELETE
+- Image uploads go to local storage (`storage/app/public/images/`) via `CdnService`, served via `/storage/...` symlink
 - Slug auto-generated from title with deduplication suffix
 - **Login redirect**: ALL roles go to `admin.dashboard` after login (`AuthenticatedSessionController` line 34), author no longer sent to `admin.articles.index`
 - Blade views use Indonesian language in UI text
