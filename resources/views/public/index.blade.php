@@ -252,15 +252,30 @@
         .intro-skip [data-intro-fade] { opacity: 1; transform: translateY(0); }
 
         .testimonial-mask {
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
-            mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
-            -webkit-mask-size: 100% 100%;
-            mask-size: 100% 100%;
+            position: relative;
+        }
+        .testimonial-mask::before,
+        .testimonial-mask::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 48px;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .testimonial-mask::before {
+            left: 0;
+            background: linear-gradient(to right, var(--background), transparent);
+        }
+        .testimonial-mask::after {
+            right: 0;
+            background: linear-gradient(to left, var(--background), transparent);
         }
         @media (min-width: 768px) {
-            .testimonial-mask {
-                -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-                mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+            .testimonial-mask::before,
+            .testimonial-mask::after {
+                width: 80px;
             }
         }
     </style>
