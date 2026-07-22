@@ -250,6 +250,19 @@
         .intro-skip .navbar-hidden { opacity: 1 !important; transform: translateY(0) !important; }
         .intro-skip [data-intro-pop] { opacity: 1; transform: scale(1); }
         .intro-skip [data-intro-fade] { opacity: 1; transform: translateY(0); }
+
+        .testimonial-mask {
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%);
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+        }
+        @media (min-width: 768px) {
+            .testimonial-mask {
+                -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+                mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+            }
+        }
     </style>
     @include('layouts.partials.pattern-styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -602,7 +615,7 @@
                     ],
                 ];
             @endphp
-            <div class="overflow-hidden w-full">
+            <div class="overflow-hidden w-full testimonial-mask">
                 <div class="flex gap-6 testimonial-track">
                     @foreach($staticTestimonials as $t)
                         <div class="bg-white dark:bg-surface-container-high rounded-xl bento-shadow p-6 flex flex-col gap-4 bento-card min-w-[240px] max-w-[280px] md:max-w-[300px]">
