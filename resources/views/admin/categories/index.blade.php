@@ -116,14 +116,14 @@
                     <h3 class="font-headline-lg text-sm uppercase">Kategori Pengumuman</h3>
                 </div>
                 <p class="font-label-mono text-[10px] text-on-surface-variant mb-4">Digunakan saat membuat pengumuman</p>
-                <form action="{{ route('admin.announcement-categories.store') }}" method="POST" class="flex items-end gap-3">
+                <form action="{{ route('admin.announcement-categories.store') }}" method="POST" class="flex flex-col md:flex-row items-stretch md:items-end gap-3">
                     @csrf
-                    <div class="flex-[2]">
+                    <div class="w-full md:flex-[2]">
                         <label for="ann_name" class="font-label-mono text-xs uppercase text-on-surface-variant block mb-1">Nama Kategori</label>
                         <input type="text" name="name" id="ann_name" class="admin-input w-full" placeholder="Misal: Acara" value="{{ old('name') }}" required>
                         @error('name') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                     </div>
-                    <div class="flex-1" x-data="{ selected: '{{ old('type', 'info') }}' }">
+                    <div class="w-full md:flex-1" x-data="{ selected: '{{ old('type', 'info') }}' }">
                         <label class="font-label-mono text-xs uppercase text-on-surface-variant block mb-1">Tipe</label>
                         <input type="hidden" name="type" x-model="selected">
                         <div class="flex gap-1.5">
@@ -137,10 +137,12 @@
                         </div>
                         @error('type') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
                     </div>
-                    <button type="submit" class="admin-btn-primary admin-btn-sm">
-                        <span class="material-symbols-outlined text-sm">add</span>
-                        Tambah
-                    </button>
+                    <div class="md:self-end">
+                        <button type="submit" class="admin-btn-primary admin-btn-sm w-full md:w-auto">
+                            <span class="material-symbols-outlined text-sm">add</span>
+                            Tambah
+                        </button>
+                    </div>
                 </form>
             </div>
 
@@ -194,13 +196,13 @@
                                     </div>
                                 </td>
                                 <td x-show="editing" colspan="3" class="bg-surface-container p-3">
-                                    <form action="{{ route('admin.announcement-categories.update', $cat) }}" method="POST" class="flex items-end gap-3 max-w-md mx-auto">
+                                    <form action="{{ route('admin.announcement-categories.update', $cat) }}" method="POST" class="flex flex-col md:flex-row items-stretch md:items-end gap-3 max-w-md mx-auto">
                                         @csrf @method('PUT')
-                                        <div class="flex-[2]">
+                                        <div class="w-full md:flex-[2]">
                                             <label class="font-label-mono text-[10px] uppercase text-on-surface-variant block mb-1">Edit Nama</label>
                                             <input type="text" name="name" value="{{ $cat->name }}" class="admin-input w-full text-sm" required>
                                         </div>
-                                        <div class="flex-1" x-data="{ selected: '{{ $cat->type }}' }">
+                                        <div class="w-full md:flex-1" x-data="{ selected: '{{ $cat->type }}' }">
                                             <label class="font-label-mono text-[10px] uppercase text-on-surface-variant block mb-1">Tipe</label>
                                             <input type="hidden" name="type" x-model="selected">
                                             <div class="flex gap-1">
@@ -213,7 +215,7 @@
                                                 </template>
                                             </div>
                                         </div>
-                                        <div class="flex gap-1.5">
+                                        <div class="flex gap-1.5 md:self-end">
                                             <button type="submit" class="admin-btn-primary admin-btn-sm">
                                                 <span class="material-symbols-outlined text-sm">check</span>
                                                 Simpan
