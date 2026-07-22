@@ -7,11 +7,13 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\RunningTextController;
 use App\Http\Controllers\Admin\SpotlightController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\PollController as AdminPollController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\AnnouncementController as PublicAnnouncementController;
 use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\ContributorPermissionController;
 use App\Http\Controllers\Public\GalleryController as PublicGalleryController;
+use App\Http\Controllers\Public\PollController as PublicPollController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +32,10 @@ Route::get('/announcements', [PublicAnnouncementController::class, 'list'])->nam
 Route::get('/announcements/{id}', [PublicAnnouncementController::class, 'show'])->name('public.announcement.show');
 Route::get('/galleries', [PublicGalleryController::class, 'index'])->name('public.gallery.list');
 Route::post('/contributor/permission', [ContributorPermissionController::class, 'store'])->name('public.contributor.permission');
+
+// Polling (public)
+Route::post('/polls/{poll}/vote', [PublicPollController::class, 'vote'])->name('public.poll.vote');
+Route::get('/polls/{poll}/results', [PublicPollController::class, 'results'])->name('public.poll.results');
 
 // ============================================================
 // 2. ROUTE ADMIN (harus login)
@@ -68,6 +74,11 @@ Route::middleware(['auth', 'not_hidden'])->prefix('admin')->as('admin.')->group(
     // Manajemen Author (hanya super_admin)
     Route::resource('users', UserController::class)
         ->middleware('super_admin');
+
+    // Polling (hanya super_admin, tanpa edit/update)
+    Route::resource('polls', AdminPollController::class)
+        ->middleware('super_admin')
+        ->except(['edit', 'update']);
 
     // Spotlight (hanya super_admin)
     Route::controller(SpotlightController::class)

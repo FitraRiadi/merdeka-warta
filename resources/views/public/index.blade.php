@@ -7,6 +7,7 @@
         }
     </script>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>Merdeka Warta | Portal Berita SMK Merdeka</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -281,6 +282,7 @@
     </style>
     @include('layouts.partials.pattern-styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @include('layouts.partials.seo-meta', [
         'title' => 'Merdeka Warta | Portal Berita SMK Merdeka',
         'description' => 'Portal berita dan informasi resmi SMK Merdeka Bandung. Temukan berita terbaru, pengumuman, prestasi, dan galeri kegiatan sekolah.',
@@ -568,6 +570,11 @@
                 </div>
             @endif
         </section>
+
+        {{-- ============================================================ --}}
+        {{-- POLLING WIDGET --}}
+        {{-- ============================================================ --}}
+        @include('layouts.partials.poll-widget')
 
         {{-- ============================================================ --}}
         {{-- CTA SECTION --}}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Announcement;
 use App\Models\Article;
 use App\Models\Gallery;
+use App\Models\Poll;
 use App\Models\RunningText;
 use App\Models\Spotlight;
 use Illuminate\Http\Request;
@@ -83,9 +84,11 @@ class ArticleController extends Controller
             $popularWeek = $popularWeek->concat($pad);
         }
 
+        $polls = Poll::with('options.votes')->active()->latest()->get();
+
         return view('public.index', compact(
             'spotlights', 'spotlightAnnouncement', 'articles', 'runningTexts',
-            'announcements', 'galleries', 'popularWeek'
+            'announcements', 'galleries', 'popularWeek', 'polls'
         ));
     }
 

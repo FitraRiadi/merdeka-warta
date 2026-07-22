@@ -271,6 +271,8 @@
         </div>
     </footer>
 
+    @stack('scripts')
+
     <script>
         window.contributorPhone = '{{ $globalSettings['contributor_phone'] ?? '6281322263716' }}';
     </script>
