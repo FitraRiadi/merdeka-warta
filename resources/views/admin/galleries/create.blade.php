@@ -14,47 +14,26 @@
 
         <div class="admin-card p-6">
             <div class="space-y-6">
-                <div x-data="{ source: 'upload', previewUrl: '{{ old('image_url') }}', previewFile: null, imageError: false }">
+                <div x-data="{ previewFile: null, imageError: false }">
                     <label class="font-label-mono text-xs uppercase text-on-surface-variant mb-2 block">Gambar <span class="text-error">*</span></label>
 
-                    <div class="flex gap-2 mb-3">
-                        <button type="button" @click="source='upload'"
-                            :class="source==='upload' ? 'admin-btn-primary admin-btn-sm' : 'admin-btn-secondary admin-btn-sm'">
-                            <span class="material-symbols-outlined text-sm">upload</span> Upload
-                        </button>
-                        <button type="button" @click="source='url'"
-                            :class="source==='url' ? 'admin-btn-primary admin-btn-sm' : 'admin-btn-secondary admin-btn-sm'">
-                            <span class="material-symbols-outlined text-sm">link</span> URL
-                        </button>
-                    </div>
-
-                    <div x-show="source==='upload'" x-cloak
-                         class="p-3 border-2 border-dashed border-on-background/20 rounded">
+                    <div class="p-3 border-2 border-dashed border-on-background/20 rounded">
                         <p class="font-label-mono text-[10px] text-on-surface-variant mb-1">Upload dari perangkat</p>
-                        <input type="file" name="image" accept="image/*"
+                        <input type="file" name="image" accept="image/*" required
                             @change="const f = $event.target.files[0]; if (f && f.size > 5*1024*1024) { alert('Gambar maksimal 5MB.'); $event.target.value = ''; previewFile = null; imageError = false; return; } previewFile = f || null; imageError = false"
                             class="admin-input custom-file-input py-2">
                         <p class="mt-1 font-label-mono text-[10px] text-on-surface-variant">Maks. 5MB. Format: JPG, PNG, WebP</p>
                     </div>
 
-                    <div x-show="source==='url'" x-cloak
-                         class="p-3 border-2 border-dashed border-on-background/20 rounded">
-                        <p class="font-label-mono text-[10px] text-on-surface-variant mb-1">URL gambar eksternal</p>
-                        <input type="url" name="image_url" x-model="previewUrl"
-                            @input="imageError = false"
-                            class="admin-input" placeholder="https://contoh.com/gambar.jpg">
-                    </div>
-
                     @error('image') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
-                    @error('image_url') <p class="mt-1 font-label-mono text-xs text-error">{{ $message }}</p> @enderror
 
                     <div class="mt-3 border-3 border-on-background shadow-[3px_3px_0px_0px_rgba(0,0,0,0.1)] overflow-hidden">
-                        <template x-if="(previewFile || previewUrl) && !imageError">
-                            <img :src="previewFile ? URL.createObjectURL(previewFile) : previewUrl"
+                        <template x-if="previewFile && !imageError">
+                            <img :src="URL.createObjectURL(previewFile)"
                                 @@error="imageError = true"
                                 class="w-full h-48 object-cover">
                         </template>
-                        <div x-show="(!previewFile && !previewUrl) || imageError"
+                        <div x-show="!previewFile || imageError"
                             class="w-full h-48 flex items-center justify-center bg-surface-container-highest">
                             <div class="text-center">
                                 <span class="material-symbols-outlined text-5xl text-on-surface-variant">image</span>

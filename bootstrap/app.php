@@ -24,7 +24,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Exclude Editor.js image upload from CSRF (protected by auth + validation)
         $middleware->validateCsrfTokens(except: [
             'admin/editor/upload-image',
-            'admin/editor/upload-by-url',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -53,29 +53,18 @@ class GalleryController extends Controller
         Gate::authorize('create', Gallery::class);
 
         $validated = $request->validate([
-            'image' => 'nullable|image|max:5120',
-            'image_url' => 'nullable|string|max:500',
+            'image' => 'required|image|max:5120',
             'caption' => 'nullable|string|max:200',
         ]);
 
-        if ($request->hasFile('image')) {
-            $result = $this->cdn->upload($request->file('image'));
-            if ($result && $result['success']) {
-                $validated['image_url'] = $result['url'];
-            } else {
-                return back()->withErrors([
-                    'image' => $result['error'] ?? 'Gagal upload gambar ke CDN.'
-                ])->withInput();
-            }
-        }
-
-        if (empty($validated['image_url'])) {
+        $result = $this->cdn->upload($request->file('image'));
+        if ($result && $result['success']) {
+            $validated['image_url'] = $result['url'];
+        } else {
             return back()->withErrors([
-                'image_url' => 'URL gambar atau file upload harus diisi.'
+                'image' => $result['error'] ?? 'Gagal upload gambar ke CDN.'
             ])->withInput();
         }
-
-        unset($validated['image']);
 
         $user = Auth::user();
         $validated['user_id'] = $user->id;
@@ -111,7 +100,6 @@ class GalleryController extends Controller
 
         $validated = $request->validate([
             'image' => 'nullable|image|max:5120',
-            'image_url' => 'nullable|string|max:500',
             'caption' => 'nullable|string|max:200',
         ]);
 
@@ -125,12 +113,6 @@ class GalleryController extends Controller
                 ])->withInput();
             }
         }
-
-        if (empty($validated['image_url'])) {
-            $validated['image_url'] = $gallery->image_url;
-        }
-
-        unset($validated['image']);
 
         $gallery->update($validated);
 

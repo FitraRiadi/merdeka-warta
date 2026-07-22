@@ -367,7 +367,6 @@
                             config: {
                                 endpoints: {
                                     byFile: '{{ route('admin.editor.upload-image') }}',
-                                    byUrl: '{{ route('admin.editor.upload-by-url') }}',
                                 },
                                 field: 'image',
                                 captionPlaceholder: 'Tulis keterangan gambar...',

@@ -48,7 +48,6 @@ Route::middleware(['auth', 'not_hidden'])->prefix('admin')->as('admin.')->group(
 
     // Upload gambar & file untuk Editor.js
     Route::post('/editor/upload-image', [AdminArticleController::class, 'uploadImage'])->name('editor.upload-image');
-    Route::post('/editor/upload-by-url', [AdminArticleController::class, 'uploadImageByUrl'])->name('editor.upload-by-url');
     Route::post('/editor/upload-file', [AdminArticleController::class, 'uploadFile'])->name('editor.upload-file');
 
     // CRUD Artikel (author & super_admin)
