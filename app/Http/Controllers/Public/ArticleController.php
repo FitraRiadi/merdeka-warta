@@ -84,7 +84,7 @@ class ArticleController extends Controller
             $popularWeek = $popularWeek->concat($pad);
         }
 
-        $polls = Poll::with('options.votes')->active()->latest()->get();
+        $polls = Poll::with('options.votes')->active()->latest()->limit(1)->get();
 
         return view('public.index', compact(
             'spotlights', 'spotlightAnnouncement', 'articles', 'runningTexts',

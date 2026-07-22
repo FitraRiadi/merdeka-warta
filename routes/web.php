@@ -34,6 +34,7 @@ Route::get('/galleries', [PublicGalleryController::class, 'index'])->name('publi
 Route::post('/contributor/permission', [ContributorPermissionController::class, 'store'])->name('public.contributor.permission');
 
 // Polling (public)
+Route::get('/polls', [PublicPollController::class, 'index'])->name('public.polls.index');
 Route::post('/polls/{poll}/vote', [PublicPollController::class, 'vote'])->name('public.poll.vote');
 Route::get('/polls/{poll}/results', [PublicPollController::class, 'results'])->name('public.poll.results');
 

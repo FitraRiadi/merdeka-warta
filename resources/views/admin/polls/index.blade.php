@@ -8,8 +8,15 @@
         <div>
             <h1 class="font-headline-lg text-2xl md:text-3xl uppercase">Polling</h1>
             <p class="text-on-surface-variant text-sm mt-1">Kelola polling dan voting</p>
+            <div class="flex items-center gap-2 mt-2">
+                <span class="font-label-mono text-[10px] uppercase text-on-surface-variant">{{ $pollCount ?? 0 }}/8</span>
+                <div class="w-32 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+                    <div class="h-full rounded-full transition-all duration-300 {{ ($pollCount ?? 0) >= 8 ? 'bg-error' : 'bg-primary' }}" style="width: {{ min(($pollCount ?? 0) / 8 * 100, 100) }}%"></div>
+                </div>
+            </div>
         </div>
-        <a href="{{ route('admin.polls.create') }}" class="bg-primary text-on-primary rounded-xl px-5 py-2.5 font-label-mono text-xs uppercase hover:bg-primary/90 transition-all bento-shadow inline-flex items-center gap-1.5">
+        @php $full = ($pollCount ?? 0) >= 8; @endphp
+        <a href="{{ $full ? '#' : route('admin.polls.create') }}" class="bg-primary text-on-primary rounded-xl px-5 py-2.5 font-label-mono text-xs uppercase hover:bg-primary/90 transition-all bento-shadow inline-flex items-center gap-1.5 {{ $full ? 'opacity-50 cursor-not-allowed' : '' }}" @if($full) onclick="return false;" @endif>
             <span class="material-symbols-outlined text-sm">add</span> BUAT POLLING
         </a>
     </div>

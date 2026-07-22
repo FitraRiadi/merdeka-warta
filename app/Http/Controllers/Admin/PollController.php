@@ -18,7 +18,8 @@ class PollController extends Controller
     public function index()
     {
         $polls = Poll::withCount('votes')->latest()->paginate(10);
-        return view('admin.polls.index', compact('polls'));
+        $pollCount = Poll::count();
+        return view('admin.polls.index', compact('polls', 'pollCount'));
     }
 
     public function create()
@@ -28,6 +29,11 @@ class PollController extends Controller
 
     public function store(Request $request)
     {
+        $count = Poll::count();
+        if ($count >= 8) {
+            return back()->withErrors(['question' => 'Maksimal 8 polling. Hapus polling lama sebelum membuat baru.'])->withInput();
+        }
+
         $validated = $request->validate([
             'question' => 'required|string|max:255',
             'type' => 'required|in:single,multiple',

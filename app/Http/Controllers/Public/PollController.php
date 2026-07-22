@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\Poll;
+use App\Models\RunningText;
 use App\Models\PollVote;
 use Illuminate\Http\Request;
 
 class PollController extends Controller
 {
+    public function index()
+    {
+        $polls = Poll::with('options.votes')->active()->latest()->paginate(12);
+        $runningTexts = RunningText::latest()->get();
+        return view('public.polls', compact('polls', 'runningTexts'));
+    }
+
     public function vote(Request $request, Poll $poll)
     {
         if (!$poll->is_active || ($poll->closes_at && $poll->closes_at->isPast())) {
@@ -49,7 +57,6 @@ class PollController extends Controller
                 'poll_option_id' => $optionId,
                 'poll_id' => $poll->id,
                 'ip_address' => $ip,
-                'response_text' => $request->response_text,
             ]);
         }
 
@@ -64,7 +71,16 @@ class PollController extends Controller
 
     public function results(Poll $poll)
     {
-        return response()->json($this->getResults($poll));
+        $data = $this->getResults($poll);
+        $ip = request()->ip();
+        $data['has_voted'] = PollVote::where('poll_id', $poll->id)
+            ->where('ip_address', $ip)
+            ->exists();
+        $data['voted_option_ids'] = PollVote::where('poll_id', $poll->id)
+            ->where('ip_address', $ip)
+            ->pluck('poll_option_id')
+            ->toArray();
+        return response()->json($data);
     }
 
     private function getResults(Poll $poll): array
