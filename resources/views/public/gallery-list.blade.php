@@ -108,6 +108,10 @@
         .animate-marquee { animation: marquee 15s linear infinite; }
     </style>
     @include('layouts.partials.pattern-styles')
+    @include('layouts.partials.seo-meta', [
+        'title' => 'Galeri | Merdeka Warta',
+        'description' => 'Koleksi foto dan momen kegiatan SMK Merdeka Bandung. Dokumentasi acara, prestasi, dan kegiatan sehari-hari.',
+    ])
 </head>
 <body class="font-body-md text-on-surface min-h-screen flex flex-col">
 

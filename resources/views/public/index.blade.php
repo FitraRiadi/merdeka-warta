@@ -281,6 +281,10 @@
     </style>
     @include('layouts.partials.pattern-styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('layouts.partials.seo-meta', [
+        'title' => 'Merdeka Warta | Portal Berita SMK Merdeka',
+        'description' => 'Portal berita dan informasi resmi SMK Merdeka Bandung. Temukan berita terbaru, pengumuman, prestasi, dan galeri kegiatan sekolah.',
+    ])
 </head>
 <body class="text-on-surface font-body-md">
 

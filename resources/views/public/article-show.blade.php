@@ -113,6 +113,15 @@
     </style>
     @include('layouts.partials.pattern-styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @include('layouts.partials.seo-meta', [
+        'title' => $article->title . ' | Merdeka Warta',
+        'description' => Str::limit($article->content_text, 160),
+        'image' => $article->image,
+        'type' => 'article',
+        'publishedTime' => $article->published_at?->toIso8601String(),
+        'author' => $article->display_author,
+        'section' => $article->category,
+    ])
 </head>
 <body class="font-body-md text-on-surface">
 
