@@ -110,7 +110,7 @@
 
     @include('layouts.partials.public-navbar', ['runningTexts' => $runningTexts])
 
-    <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 md:px-margin-desktop py-8 md:py-12">
+    <main class="flex-grow max-w-[1440px] mx-auto w-full px-4 md:px-margin-desktop py-8 md:py-12 overflow-x-hidden">
 
         {{-- PAGE TITLE --}}
         <div class="mb-10 md:mb-12">
